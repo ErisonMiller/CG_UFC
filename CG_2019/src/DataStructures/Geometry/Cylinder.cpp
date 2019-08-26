@@ -17,6 +17,11 @@ Cylinder::Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB
 	this->direction   = direction;
 }
 
+Cylinder::~Cylinder()
+{
+
+}
+
 CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 {
 	//Colisions
@@ -40,7 +45,6 @@ CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 	float c = dot(v, v) - (this->radius * this->radius);
 	//Delta
 	float delta = (b*b) - (a*c);
-
 
 	if (delta == 0) { // One intersection
 		t.distance = (-b / a);
