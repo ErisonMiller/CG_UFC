@@ -41,7 +41,7 @@ CRAB::RayCollisionList Cone::CollideAll(const CRAB::Ray &ray)
 
 	CRAB::Vector4Df v = this->top_vertex - ray.origin; // Vector between the Cone top vertex and the ray origin.
 
-	float v_dot_n = dot(v, ray.direction);
+	float v_dot_n = dot(v, this->direction);
 
 	//Equantion Constants
 	float a = (d_dot_n*d_dot_n) - (d_dot_d * cos_alfa_2);
