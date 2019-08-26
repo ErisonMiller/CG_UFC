@@ -30,16 +30,16 @@ void disp(void)
 	RenderAPI::BufferClear();
 
 	
-	OpenGLRender(cam);
+	//OpenGLRender(cam);
 	
 	
 
 	//Cylinder
 	
 	
-	//RenderAPI::BufferBind(vbo);
-	//Vector4Df* colorBuffer = rc.Render(cam, objs);
-	//RenderAPI::MapBuffer(colorBuffer, width, height);
+	RenderAPI::BufferBind(vbo);
+	Vector4Df* colorBuffer = rc.Render(cam, objs);
+	RenderAPI::MapBuffer(colorBuffer, width, height);
 	
 
 	RenderAPI::SwapBuffers();
