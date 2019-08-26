@@ -5,6 +5,8 @@
 #include "Cylinder.h"
 #include "Cone.h"
 
+#include "WindowController/WindowController.h"
+
 //Test Defines
 #define CYLINDER_TEST 0 // Set to 1 to run the Cylinder Test
 #define CONE_TEST 0 // Set to 1 to run the Cone Test
@@ -96,7 +98,8 @@ int main(int argc, char** argv) {
 
 #endif
 
-	std::cin >> buff;
+	Start_Window(argc, argv);
+	//std::cin >> buff;
 
 	return 0;
 }
