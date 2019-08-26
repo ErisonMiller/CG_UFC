@@ -1,7 +1,6 @@
 //TODO: - Collision:
 //			- Handle a == 0;
 //			- Handle Base Intersection
-
 #include "Cylinder.h"
 
 Cylinder::Cylinder()
@@ -22,11 +21,17 @@ Cylinder::~Cylinder()
 
 }
 
-CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
+CRAB::RayCollisionList Cylinder::CollideAll(const std::vector<CRAB::Ray> &ray)
 {
 	//Colisions
-	CRAB::RayCollisionList col;
+	CRAB::RayCollisionList col, col_aux;
 	
+	for (int i = 0; i < ray.size(); i++)
+	{
+		col_aux = this->Collide(ray.at(i));
+		col.collisions.insert(col.collisions.end(), col_aux.collisions.begin(), col_aux.collisions.end());
+	}
+
 	return col;
 }
 

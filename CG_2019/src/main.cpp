@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
 
 	CRAB::Ray ray;
 
+	std::vector<CRAB::Ray> ray_vec;
+
 	ray.origin = ray_origin;
 	ray.direction = ray_dir;
 
@@ -61,9 +63,24 @@ int main(int argc, char** argv) {
 
 	//Intersection
 
+	//Collide one Ray
 	colList = cylinder.Collide(ray);
 
-	std::cout << "intersections Number:" << colList.collisions.size() << "\n";
+	std::cout << "Cylinder one ray Intersections Number:" << colList.collisions.size() << "\n";
+
+	//Collide more than one ray
+
+	ray_vec.clear();
+	for (int i = 0; i < 10; i++)
+	{
+		ray.origin.y = ray_origin.y * i;
+		ray.direction = ray_dir;
+		ray_vec.push_back(ray);
+	}
+
+	colList = cylinder.CollideAll(ray_vec);
+
+	std::cout << "Cylinder more than one ray Intersections Number:" << colList.collisions.size() << "\n";
 
 #endif
 
@@ -92,7 +109,20 @@ int main(int argc, char** argv) {
 
 	colList = cone.Collide(ray);
 
-	std::cout << "intersections Number:" << colList.collisions.size() << "\n";
+	std::cout << "Cone one ray Intersections Number:" << colList.collisions.size() << "\n";
+
+	//Collide more than one ray
+	ray_vec.clear();
+	for (int i = 0; i < 10; i++)
+	{
+		ray.origin.y = ray_origin.y * i;
+		ray.direction = ray_dir;
+		ray_vec.push_back(ray);
+	}
+
+	colList = cone.CollideAll(ray_vec);
+
+	std::cout << "Cone more than one ray Intersections Number:" << colList.collisions.size() << "\n";
 
 #endif
 
