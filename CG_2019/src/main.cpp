@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
 
 	//Intersection
 
-	colList = cylinder.CollideAll(ray);
+	colList = cylinder.Collide(ray);
 
 	std::cout << "intersections Number:" << colList.collisions.size() << "\n";
 
@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
 
 	//Intersection
 
-	colList = cone.CollideAll(ray);
+	colList = cone.Collide(ray);
 
 	std::cout << "intersections Number:" << colList.collisions.size() << "\n";
 

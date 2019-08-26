@@ -26,6 +26,14 @@ CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 {
 	//Colisions
 	CRAB::RayCollisionList col;
+	
+	return col;
+}
+
+CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
+{
+	//Colisions
+	CRAB::RayCollisionList col;
 	CRAB::Collision t;
 
 	t.geometry = this;
@@ -49,7 +57,7 @@ CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 		t.distance = (-b / a);
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
-		if (p_projection >= 0 && p_projection <= this->height){ // Does the ray hit the cylinder?
+		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
 			t.pint = p;
 			col.collisions.push_back(t);
 		}
@@ -73,11 +81,7 @@ CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 			col.collisions.push_back(t);
 		}
 	}
-	
-	return col;
-}
 
-float Cylinder::Collide(const CRAB::Ray &ray)
-{
-	return 0;
+	return col;
+
 }

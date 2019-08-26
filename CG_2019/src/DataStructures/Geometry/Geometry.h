@@ -12,7 +12,7 @@ public:
 	Geometry();
 	~Geometry();
 
-	virtual CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray) = 0;//return all the colisions
-	virtual float Collide(const CRAB::Ray &ray) = 0;//return the closest collision 
+	virtual CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray) = 0;//return all the colisions of a set of rays
+	virtual CRAB::RayCollisionList Collide(const CRAB::Ray &ray) = 0;//return the all the ray collisions
 };
 

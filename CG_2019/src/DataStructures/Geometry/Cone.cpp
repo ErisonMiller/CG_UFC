@@ -27,6 +27,14 @@ CRAB::RayCollisionList Cone::CollideAll(const CRAB::Ray &ray)
 {
 	//Colisions
 	CRAB::RayCollisionList col;
+
+	return col;
+}
+
+CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
+{
+	//Colisions
+	CRAB::RayCollisionList col;
 	CRAB::Collision t;
 
 	t.geometry = this;
@@ -80,9 +88,4 @@ CRAB::RayCollisionList Cone::CollideAll(const CRAB::Ray &ray)
 	}
 
 	return col;
-}
-
-float Cone::Collide(const CRAB::Ray &ray)
-{
-	return 0;
 }
