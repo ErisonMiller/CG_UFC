@@ -1,5 +1,11 @@
 #pragma once
 
+//
+//	This is to make a bridge btw the code and the grapgic API
+//	In this file we are using the OpenGL API, but can be easily changed without changing the main code
+//
+
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 
@@ -8,6 +14,7 @@
 namespace RenderAPI{
 
 	typedef GLuint VertexBuffer;
+
 
 	inline void StartRenderAPI(int argc, char **argv, int width, int height)
 	{

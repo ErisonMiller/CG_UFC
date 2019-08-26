@@ -1,11 +1,17 @@
 #pragma once
 #include "Linear_Algebra.h"
 
+//
+//	Camera class and camera transfomations
+//
+
+
 namespace CRAB {
 
 	struct float2 {
 		float x, y;
 	};
+
 
 	struct Camera
 	{
@@ -25,12 +31,13 @@ namespace CRAB {
 			resolution = { 512.0f, 512.0f };
 			dimensions = float2{ 1.0f, 1.0f };
 			n = 1.0f;
+			up.to_unitary();
 		}
 
 		Camera(const Vector4Df &_position, const Vector4Df &_view, const Vector4Df &_up, const float2 &_resolution,
 			const float2 &_dimensions, const float _n) :
 			position(_position), view(_view), up(_up), resolution(_resolution), dimensions(_dimensions), n(_n) {
-
+			up.to_unitary();
 		}
 
 		void Transform(const Matrix4 &m)
