@@ -89,10 +89,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\DLL;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Includes;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures\Geometry;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures;$(SolutionDir)\CG_2019\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -122,12 +122,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <UseFullPaths>false</UseFullPaths>
-      <AdditionalIncludeDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\DLL;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Includes;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures\Geometry;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>freeglut.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
