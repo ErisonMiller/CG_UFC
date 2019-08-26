@@ -7,3 +7,8 @@ Geometry::Geometry()
 
 }
 
+Geometry::~Geometry()
+{
+
+}
+

@@ -10,9 +10,9 @@
 //		- RayCollisionList
 //
 
+class Geometry;//foward declaration for geometry
 
 namespace CRAB {
-	class Geometry;//foward declaration for geometry
 
 	//struct just for readbility
 	struct Ray
@@ -24,6 +24,7 @@ namespace CRAB {
 	struct Collision
 	{
 		float distance;
+		Vector4Df pint; // Intersection Point
 		Geometry *geometry;
 	};
 

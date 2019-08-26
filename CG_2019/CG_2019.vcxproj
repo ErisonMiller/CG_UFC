@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D1542773-A014-4D7A-AFED-4594613ACCA7}</ProjectGuid>
     <RootNamespace>CG2019</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -84,6 +84,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\adahi\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures;C:\Users\adahi\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Geometry;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,11 +116,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataStructures\Geometry\Cylinder.h" />
     <ClInclude Include="src\DataStructures\Geometry\Geometry.h" />
     <ClInclude Include="src\DataStructures\Linear_Algebra.h" />
     <ClInclude Include="src\DataStructures\Ray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataStructures\Geometry\Cylinder.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Geometry.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

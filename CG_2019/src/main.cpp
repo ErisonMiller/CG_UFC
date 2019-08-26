@@ -1,4 +1,4 @@
-
+#include "Geometry.h"
 
 int main(int argc, char** argv) {
 	//this later will call the window controller
