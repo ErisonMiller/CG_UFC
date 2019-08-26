@@ -83,7 +83,7 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 	else if (delta > 0) {
 		delta = sqrtf(delta);
 		//First Point
-		t.distance = ((-1)*(delta * b)) / (2 * a);
+		t.distance = ((-1)*(delta + b)) / (2 * a);
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?

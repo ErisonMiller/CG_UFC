@@ -77,7 +77,7 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 	else if (delta > 0) {
 		//First Point
 		delta = sqrtf(delta);
-		t.distance = ((-1)*(delta * b)) / (2*a);
+		t.distance = ((-1)*(delta + b)) / (2*a);
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
