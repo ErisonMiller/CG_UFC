@@ -116,12 +116,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataStructures\Geometry\Cone.h" />
     <ClInclude Include="src\DataStructures\Geometry\Cylinder.h" />
     <ClInclude Include="src\DataStructures\Geometry\Geometry.h" />
     <ClInclude Include="src\DataStructures\Linear_Algebra.h" />
     <ClInclude Include="src\DataStructures\Ray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataStructures\Geometry\Cone.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Cylinder.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Geometry.cpp" />
     <ClCompile Include="src\main.cpp" />

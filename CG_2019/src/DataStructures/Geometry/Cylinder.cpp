@@ -29,7 +29,6 @@ CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 	CRAB::Collision t;
 
 	t.geometry = this;
-	//CRAB::Collision t2;
 
 	//Aux Variables
 	CRAB::Vector4Df k = ray.origin - this->base_center; // Vector between the Cylinder base center and the ray origin.
