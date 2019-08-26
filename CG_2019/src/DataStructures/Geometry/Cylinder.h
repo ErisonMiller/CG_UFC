@@ -20,6 +20,7 @@ class Cylinder : public Geometry
 
 public:
 	Cylinder();
+	Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector4Df direction);
 	virtual ~Cylinder() = 0;
 
 	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray);//return all the colisions

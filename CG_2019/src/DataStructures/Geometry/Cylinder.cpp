@@ -9,6 +9,14 @@ Cylinder::Cylinder()
 
 }
 
+Cylinder::Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector4Df direction)
+{
+	this->height      = height;
+	this->radius      = radius;
+	this->base_center = base_center;
+	this->direction   = direction;
+}
+
 CRAB::RayCollisionList Cylinder::CollideAll(const CRAB::Ray &ray)
 {
 	//Colisions
