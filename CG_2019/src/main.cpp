@@ -9,7 +9,7 @@
 
 //Test Defines
 #define CYLINDER_TEST 0 // Set to 1 to run the Cylinder Test
-#define CONE_TEST 0 // Set to 1 to run the Cone Test
+#define CONE_TEST 1 // Set to 1 to run the Cone Test
 
 int main(int argc, char** argv) {
 	//this later will call the window controller
@@ -21,14 +21,14 @@ int main(int argc, char** argv) {
 	CRAB::Vector4Df ray_origin, ray_dir;
 
 	//Ray Origin
-	ray_origin.x = 10;
-	ray_origin.y = 5;
-	ray_origin.z = 0;
+	ray_origin.x = 0;
+	ray_origin.y = 0;
+	ray_origin.z = 4;
 
 	//Ray Direction
-	ray_dir.x = -1;
-	ray_dir.y = 0;
-	ray_dir.z = 0;
+	ray_dir.x = 0;
+	ray_dir.y = 0.57;
+	ray_dir.z = -2;
 
 	ray_dir = ray_dir.to_unitary();
 
@@ -46,13 +46,13 @@ int main(int argc, char** argv) {
 
 	//Cylinder
 	CRAB::Vector4Df cylinder_base_center, cylinder_dir;
-	float H_cylinder = 100.0;
-	float R_cylinder = 5.0;
+	float H_cylinder = 4.0;
+	float R_cylinder = 0.5;
 
 	//Base Center
 	cylinder_base_center.x = 0;
 	cylinder_base_center.y = 0;
-	cylinder_base_center.z = 0;
+	cylinder_base_center.z = -10;
 
 	//Direction
 	cylinder_dir.x = 0;
@@ -69,6 +69,8 @@ int main(int argc, char** argv) {
 	colList = cylinder.Collide(ray);
 
 	std::cout << "Cylinder one ray Intersections Number:" << colList.collisions.size() << "\n";
+	for (int i = 0; i < colList.collisions.size(); i++)
+		std::cout << "t" << i + 1 << " = (" << colList.collisions[i].pint.x << ";" << colList.collisions[i].pint.y << ";" << colList.collisions[i].pint.z << ")" << std::endl;
 
 	//Collide more than one ray
 
@@ -90,13 +92,13 @@ int main(int argc, char** argv) {
 
 	//Cylinder
 	CRAB::Vector4Df cone_base_center, cone_dir;
-	float H_cone = 100.0;
-	float R_cone = 5.0;
+	float H_cone = 9.0;
+	float R_cone = 2.0;
 
 	//Base Center
 	cone_base_center.x = 0;
-	cone_base_center.y = 0;
-	cone_base_center.z = 0;
+	cone_base_center.y = 4;
+	cone_base_center.z = -10;
 
 	//Direction
 	cone_dir.x = 0;
@@ -112,6 +114,8 @@ int main(int argc, char** argv) {
 	colList = cone.Collide(ray);
 
 	std::cout << "Cone one ray Intersections Number:" << colList.collisions.size() << "\n";
+	for (int i = 0; i < colList.collisions.size(); i++)
+		std::cout << "t" << i + 1 << " = (" << colList.collisions[i].pint.x << ";" << colList.collisions[i].pint.y << ";" << colList.collisions[i].pint.z << ")" << std::endl;
 
 	//Collide more than one ray
 	ray_vec.clear();
