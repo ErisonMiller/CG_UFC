@@ -71,34 +71,50 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 	//Delta
 	float delta = (b*b) - (4 * a*c);
 
-	if (delta == 0) { // One intersection
-		t.distance = (-b / (2 * a));
-		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
-		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
-			t.pint = p;
-			col.collisions.push_back(t);
+	if (a != 0) {
+
+		if (delta == 0) { // One intersection
+			t.distance = (-b / (2 * a));
+			CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+			float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
+			if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
+				t.pint = p;
+				col.collisions.push_back(t);
+			}
+		}
+		else if (delta > 0) {
+			delta = sqrtf(delta);
+			//First Point
+			t.distance = ((-1)*(delta + b)) / (2 * a);
+			CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+			float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
+			if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
+				t.pint = p;
+				col.collisions.push_back(t);
+			}
+
+			//Second Point
+			t.distance = (delta - b) / (2 * a);
+			p = ray.origin + (ray.direction * t.distance); // Intersection Point
+			p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
+			if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
+				t.pint = p;
+				col.collisions.push_back(t);
+			}
 		}
 	}
-	else if (delta > 0) {
-		delta = sqrtf(delta);
-		//First Point
-		t.distance = ((-1)*(delta + b)) / (2 * a);
-		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
-		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
-			t.pint = p;
-			col.collisions.push_back(t);
-		}
 
-		//Second Point
-		t.distance = (delta - b) / (2 * a);
-		p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
-		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
-			t.pint = p;
-			col.collisions.push_back(t);
-		}
+	//TODO: It must be implmented only if one of the cone interception is not valid or 'a' is less than 0.
+	//Base
+	CRAB::Vector4Df base_dir = this->direction * (-1);
+	//OBS.: Base Center is a point on the base plan.
+	t.distance = dot((this->base_center - ray.origin), base_dir) / (dot(ray.direction, base_dir));
+	CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+	float int_to_center = (p - this->base_center).length(); // Distance of the intersection point from the base center.
+	
+	if (int_to_center <= this->radius) {//The point intercept tha base iff its distance from the center is less than the radius.
+		t.pint = p;
+		col.collisions.push_back(t);
 	}
 
 	return col;

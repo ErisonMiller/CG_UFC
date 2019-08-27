@@ -13,6 +13,7 @@
 #include "RenderEngine/RayCastRender.h"
 
 #include "Cylinder.h"
+#include "Cone.h"
 #include "Quad.h"
 #include "Cube.h"
 
@@ -137,7 +138,7 @@ void Start_Window(int argc, char **argv) {
 	RenderAPI::CreateVBO(&vbo, width, height);
 	
 	//fill the object list
-	objs.push_back(new Cylinder(2.0f, 0.5f, Vector4Df{ 0,0,0,1 }, Vector4Df{ 0,1,0,0 }));
+	objs.push_back(new Cone(2.0f, 0.5f, Vector4Df{ 0,0,0,1 }, Vector4Df{ 0,1,0,0 }));
 	//objs.push_back(new Quad(Vector4Df{ 0,0,0,0 }, Vector4Df{ 1,0,0,0 }, Vector4Df{ 1,1,0,0 }, Vector4Df{ 0,1,0,0 }));
 	//objs.push_back(new Cube(Vector4Df{ 0,-0.5f,0,0 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 1,0,0,0 }, 1.0f));
 

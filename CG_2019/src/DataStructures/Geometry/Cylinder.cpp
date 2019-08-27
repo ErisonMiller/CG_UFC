@@ -97,6 +97,7 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 		}
 	}
 
+	//TODO: It must be implmented only if one of the cylinder interception is not valid or 'a' is less than 0.
 	//Base
 	CRAB::Vector4Df base_dir = this->direction * (-1);
 	//OBS.: Base Center is a point on the base plan.
