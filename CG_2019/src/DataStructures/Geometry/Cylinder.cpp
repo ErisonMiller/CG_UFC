@@ -13,7 +13,7 @@ Cylinder::Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB
 	this->height      = height;
 	this->radius      = radius;
 	this->base_center = base_center;
-	this->direction   = direction;
+	this->direction   = direction.to_unitary();
 }
 
 Cylinder::~Cylinder()
@@ -64,59 +64,61 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 	float c = dot(v, v) - (this->radius * this->radius);
 	//Delta
 	float delta = (b*b) - (4*a*c);
+	if (a != 0){
+		if (delta == 0) { // One intersection
+			t.distance = (-b / (2 * a));
+			CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+			float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
+			if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
+				t.pint = p;
+				col.collisions.push_back(t);
+			}
+		}
+		else if (delta > 0) {
+			//First Point
+			delta = sqrtf(delta);
+			t.distance = ((-1)*(delta + b)) / (2 * a);
+			CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+			float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
+			if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
+				t.pint = p;
+				col.collisions.push_back(t);
+			}
 
-	if (delta == 0) { // One intersection
-		t.distance = (-b / (2*a));
-		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
-		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
-			t.pint = p;
-			col.collisions.push_back(t);
+			//Second Point
+			t.distance = (delta - b) / (2 * a);
+			p = ray.origin + (ray.direction * t.distance); // Intersection Point
+			p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
+			if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
+				t.pint = p;
+				col.collisions.push_back(t);
+			}
+
 		}
 	}
-	else if (delta > 0) {
-		//First Point
-		delta = sqrtf(delta);
-		t.distance = ((-1)*(delta + b)) / (2*a);
-		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
-		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
-			t.pint = p;
-			col.collisions.push_back(t);
-		}
 
-		//Second Point
-		t.distance = (delta - b) / (2*a);
-		p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
-		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
-			t.pint = p;
-			col.collisions.push_back(t);
-		}
-		
-	}
-
-
+	//TODO: It must be implmented only if one of the cylinder interception is not valid or 'a' is less than 0.
 	//Base
-		CRAB::Vector4Df base_dir = this->direction * (-1);
-		//OBS.: Base Center is a point on the base plan.
-		t.distance = dot((this->base_center - ray.origin), base_dir)/(dot(ray.direction, base_dir));
-		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		float int_to_center = (p - this->base_center).length(); // Distance of the intersection point from the base center.
+	CRAB::Vector4Df base_dir = this->direction * (-1);
+	//OBS.: Base Center is a point on the base plan.
+	t.distance = dot((this->base_center - ray.origin), base_dir)/(dot(ray.direction, base_dir));
+	CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+	float int_to_center = (p - this->base_center).length(); // Distance of the intersection point from the base center.
 
-		if (int_to_center <= this->radius){//The point intercept tha base iff its distance from the center is less than the radius.
-			t.pint = p;
-			col.collisions.push_back(t);
-		}
+	if (int_to_center <= this->radius){//The point intercept tha base iff its distance from the center is less than the radius.
+		t.pint = p;
+		col.collisions.push_back(t);
+	}
 
-		//Top
-		t.distance = dot((this->base_center - ray.origin), this->direction) / (dot(ray.direction, this->direction));
-		p = ray.origin + (ray.direction * t.distance); // Intersection Point
-		int_to_center = (p - this->base_center).length(); // Distance of the intersection point from the base center.
-		if (int_to_center <= this->radius) {//The point intercept tha top iff its distance from the center is less than the radius.
-			t.pint = p;
-			col.collisions.push_back(t);
-		}
+	//Top
+	CRAB::Vector4Df ppi = this->base_center + this->direction*this->height;
+	t.distance = dot((ppi - ray.origin), this->direction) / (dot(ray.direction, this->direction));
+	p = ray.origin + (ray.direction * t.distance); // Intersection Point
+	int_to_center = (p - ppi).length(); // Distance of the intersection point from the base center.
+	if (int_to_center <= this->radius) {//The point intercept tha top iff its distance from the center is less than the radius.
+		t.pint = p;
+		col.collisions.push_back(t);
+	}
 
 
 	return col;
