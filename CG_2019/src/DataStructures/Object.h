@@ -12,5 +12,6 @@ public:
 	~Object();
 	
 	float Collide(const CRAB::Ray &ray);
+	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray);
 };
 
