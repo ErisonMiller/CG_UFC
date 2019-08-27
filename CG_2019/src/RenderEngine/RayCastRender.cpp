@@ -14,15 +14,12 @@ RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
 }
 
 
-inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool print = false)
+inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool print)
 {
 	float dist = INFINITY;
 
 	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
 	
-	if (print) {
-		std::cout << "*** Testando ***\n";
-	}
 
 	int id = 0;
 	for (Object &obj : objects) {
@@ -30,13 +27,13 @@ inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool pri
 		const float o_dist = obj.Collide(ray);
 		if (o_dist < dist) {
 			dist = o_dist;
-			accucolor = Vector4Df{ 1.0f, 0.0f, 0.0f, 0.0f };
+			accucolor = obj.getColor();
 		}
 		if (print) {
 			RayCollisionList cols = obj.CollideAll(ray);
-			std::cout << "-- Colisões com :" << id << "\n";
+			std::cout << "-- Colisoes com :" << id << "\n";
 			for (Collision c : cols.collisions) {
-				std::cout << "    t :" << c.distance << "\n";
+				std::cout << "    t :" << c.distance << "; ";
 				std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
 			}
 		}
@@ -60,15 +57,20 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 
 	bool print = false;
 
+	#pragma omp parallel for
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direct = base * cam.n;
-			direct += up * (height*(-0.5f) + y);
-			direct += left * (width*(0.5f) - x);
+			direct += up * (height*(-0.5f) + y + 0.5f);
+			direct += left * (width*(0.5f) - x - 0.5f);
 			direct.normalize();
 
-			if (x == 256 && y == 256)print = true;
-			else print = false;
+			//if (x == 256 && y == 256) {
+			//	std::cout << "*** Testando *** x:" << x << " y:" << y << "\n";
+			//	print = true;
+			//}else {
+			//	print = false;
+			//}
 
 			accumulateBuffer[y*width + x] = ray_cast(Ray{ cam.position, direct }, objects, print);
 

@@ -15,6 +15,7 @@
 #include "Cylinder.h"
 #include "Quad.h"
 #include "Cube.h"
+#include "Cone.h"
 
 using namespace CRAB;
 
@@ -27,12 +28,12 @@ const int width = 512, height = 512;
 
 //main camera
 Camera cam = Camera(
-	Vector4Df{ 0.0f,0.0f,5.0f,1.0f },//position
+	Vector4Df{ 0.0f,0.0f,4.0f,1.0f },//position
 	Vector4Df{ 0.0f,0.0f,0.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{width*1.0f, height*1.0f}, //resolution
-	float2{ 1.0f, 1.0f },			//dimensions
-	1.0f							//near
+	float2{ 4.0f, 4.0f },			//dimensions
+	2.0f							//near
 );
 
 //raycast class for renderization 
@@ -137,10 +138,13 @@ void Start_Window(int argc, char **argv) {
 	RenderAPI::CreateVBO(&vbo, width, height);
 	
 	//fill the object list
-	objs.push_back(new Cylinder(2.0f, 0.5f, Vector4Df{ 0,0,0,1 }, Vector4Df{ 0,1,0,0 }));
-	//objs.push_back(new Quad(Vector4Df{ 0,0,0,0 }, Vector4Df{ 1,0,0,0 }, Vector4Df{ 1,1,0,0 }, Vector4Df{ 0,1,0,0 }));
-	//objs.push_back(new Cube(Vector4Df{ 0,-0.5f,0,0 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 1,0,0,0 }, 1.0f));
-
+	objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(4.0f, 0.5f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object(Vector4Df{ 0.0f, 1.0f, 0.0f,0 }, new Cone(9.0f, 2.0f, Vector4Df{ 0,4,-10,1 }, Vector4Df{ 0,1,0,0 })));
+	
+	objs.push_back(Object(Vector4Df{ 1.0f, 0.5f, 1.0f,0 }, new Cube(Vector4Df{ 0,0, -20,0 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 1,0,0,0 }, 5.0f)));
+	objs.push_back(Object(Vector4Df{ 1.0f, 0.5f, 1.0f,0 }, new Cube(Vector4Df{ 0,5, -20,0 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 1,0,0,0 }, 5.0f)));
+	objs.push_back(Object(Vector4Df{ 1.0f, 0.5f, 1.0f,0 }, new Cube(Vector4Df{ 0,10,-20,0 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 1,0,0,0 }, 5.0f)));
+	
 	//start render loop
     RenderAPI::RenderLoop();
 

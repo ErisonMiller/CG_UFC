@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\DLL;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Includes;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures\Geometry;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures;$(SolutionDir)\CG_2019\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -105,6 +107,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\DLL;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\Includes;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures\Geometry;C:\Users\Erison Miller\source\repos\CG_2019\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -123,6 +126,7 @@
       <ConformanceMode>true</ConformanceMode>
       <UseFullPaths>false</UseFullPaths>
       <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
