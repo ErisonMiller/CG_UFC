@@ -6,7 +6,7 @@ Quad::Quad()
 {
 }
 
-Quad::Quad(CRAB::Vector4Df _v1, CRAB::Vector4Df _v2, CRAB::Vector4Df _v3, CRAB::Vector4Df _v4) :
+Quad::Quad(const CRAB::Vector4Df &_v1, const CRAB::Vector4Df &_v2, const CRAB::Vector4Df &_v3, const CRAB::Vector4Df &_v4) :
 	v1(_v1) {
 	e1 = _v2 - _v1;
 	e2 = _v4 - _v1;

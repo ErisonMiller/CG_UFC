@@ -1,15 +1,16 @@
 #pragma once
 #include "Geometry.h"
-class Quad :
+#include "Quad.h"
+
+class Cube :
 	public Geometry
 {
-	CRAB::Vector4Df v1, e1, e2;
-	float size1, size2;
+	Quad quads[6];
 public:
-	Quad();
+	Cube();
+	Cube(const CRAB::Vector4Df &base, const CRAB::Vector4Df &up, const CRAB::Vector4Df &front, float size);
 
-	Quad(const CRAB::Vector4Df &_v1, const CRAB::Vector4Df &_v2, const CRAB::Vector4Df &_v3, const CRAB::Vector4Df &_v4);
-	~Quad();
+	~Cube();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);
 	CRAB::RayCollisionList CollideClosest(const CRAB::Ray &ray);
