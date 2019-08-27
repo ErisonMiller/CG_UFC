@@ -96,6 +96,29 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 		
 	}
 
+
+	//Base
+		CRAB::Vector4Df base_dir = this->direction * (-1);
+		//OBS.: Base Center is a point on the base plan.
+		t.distance = dot((this->base_center - ray.origin), base_dir)/(dot(ray.direction, base_dir));
+		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
+		float int_to_center = (p - this->base_center).length(); // Distance of the intersection point from the base center.
+
+		if (int_to_center <= this->radius){//The point intercept tha base iff its distance from the center is less than the radius.
+			t.pint = p;
+			col.collisions.push_back(t);
+		}
+
+		//Top
+		t.distance = dot((this->base_center - ray.origin), this->direction) / (dot(ray.direction, this->direction));
+		p = ray.origin + (ray.direction * t.distance); // Intersection Point
+		int_to_center = (p - this->base_center).length(); // Distance of the intersection point from the base center.
+		if (int_to_center <= this->radius) {//The point intercept tha top iff its distance from the center is less than the radius.
+			t.pint = p;
+			col.collisions.push_back(t);
+		}
+
+
 	return col;
 
 }
