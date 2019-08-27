@@ -56,10 +56,10 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 	float b = 2 * (dot(v, w));
 	float c = dot(v, v) - (this->radius * this->radius);
 	//Delta
-	float delta = (b*b) - (a*c);
+	float delta = (b*b) - (4*a*c);
 
 	if (delta == 0) { // One intersection
-		t.distance = (-b / a);
+		t.distance = (-b / (2*a));
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
@@ -68,8 +68,9 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 		}
 	}
 	else if (delta > 0) {
+		delta = sqrtf(delta);
 		//First Point
-		t.distance = (delta - b) / a;
+		t.distance = ((-1)*(delta * b)) / (2*a);
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
@@ -78,13 +79,14 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 		}
 
 		//Second Point
-		t.distance = ((-1)*(delta * b)) / a;
+		t.distance = (delta - b) / (2*a);
 		p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cylinder?
 			t.pint = p;
 			col.collisions.push_back(t);
 		}
+		
 	}
 
 	return col;

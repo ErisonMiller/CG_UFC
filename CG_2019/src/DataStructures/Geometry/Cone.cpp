@@ -62,10 +62,10 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 	float b = 2 * ((dot(v, ray.direction)*cos_alfa_2) - (v_dot_n * d_dot_n));
 	float c = (v_dot_n*v_dot_n) - (dot(v, v)*cos_alfa_2);
 	//Delta
-	float delta = (b*b) - (a*c);
+	float delta = (b*b) - (4 * a*c);
 
 	if (delta == 0) { // One intersection
-		t.distance = (-b / a);
+		t.distance = (-b / (2 * a));
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
@@ -74,8 +74,9 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 		}
 	}
 	else if (delta > 0) {
+		delta = sqrtf(delta);
 		//First Point
-		t.distance = (delta - b) / a;
+		t.distance = ((-1)*(delta * b)) / (2 * a);
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
@@ -84,7 +85,7 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 		}
 
 		//Second Point
-		t.distance = ((-1)*(delta * b)) / a;
+		t.distance = (delta - b) / (2 * a);
 		p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		p_projection = dot((this->top_vertex - p), this->direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0 && p_projection <= this->height) { // Does the ray hit the cone?
