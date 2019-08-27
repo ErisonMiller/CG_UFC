@@ -1,6 +1,8 @@
 #include "RayCastRender.h"
 
 
+#include <iostream>
+
 using namespace CRAB;
 
 RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
@@ -12,18 +14,33 @@ RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
 }
 
 
-inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects)
+inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool print = false)
 {
 	float dist = INFINITY;
 
 	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
 	
+	if (print) {
+		std::cout << "*** Testando ***\n";
+	}
+
+	int id = 0;
 	for (Object &obj : objects) {
+		
 		const float o_dist = obj.Collide(ray);
 		if (o_dist < dist) {
 			dist = o_dist;
 			accucolor = Vector4Df{ 1.0f, 0.0f, 0.0f, 0.0f };
 		}
+		if (print) {
+			RayCollisionList cols = obj.CollideAll(ray);
+			std::cout << "-- Colisões com :" << id << "\n";
+			for (Collision c : cols.collisions) {
+				std::cout << "    t :" << c.distance << "\n";
+				std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
+			}
+		}
+		id++;
 	}
 
 	return accucolor;
@@ -33,7 +50,6 @@ inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects)
 CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &objects) {
 	
 	const Vector4Df base = (cam.view - cam.position).to_unitary();
-	//up must be unitary
 	const Vector4Df up = cam.up * (cam.dimensions.y / cam.resolution.y);
 	const Vector4Df left = cross(cam.up, base) * (cam.dimensions.x / cam.resolution.x);
 
@@ -42,16 +58,19 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 	const int width = (int)cam.resolution.x;
 	const int height = (int)cam.resolution.y;
 
-
+	bool print = false;
 
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direct = base * cam.n;
 			direct += up * (height*(-0.5f) + y);
-			direct += left * (width*(-0.5f) + x);
+			direct += left * (width*(0.5f) - x);
 			direct.normalize();
 
-			accumulateBuffer[y*width + x] = ray_cast(Ray{ cam.position, direct }, objects);
+			if (x == 256 && y == 256)print = true;
+			else print = false;
+
+			accumulateBuffer[y*width + x] = ray_cast(Ray{ cam.position, direct }, objects, print);
 
 		}
 	}

@@ -128,6 +128,7 @@ int main(int argc, char** argv) {
 
 #endif
 
+	//start the window and the rendering
 	Start_Window(argc, argv);
 	std::cin >> buff;
 

@@ -1,3 +1,10 @@
+//
+//	Main Window class
+//	Call the Graphic API to cerate the window
+//	Call the events to recieve user input
+//	Call the render engines for renderization
+//
+
 #include "WindowController.h"
 #include "RenderEngine/RenderAPI.h"
 #include "RenderEngine/Camera.h"
@@ -6,13 +13,19 @@
 #include "RenderEngine/RayCastRender.h"
 
 #include "Cylinder.h"
+#include "Quad.h"
+#include "Cube.h"
 
 using namespace CRAB;
 
+//pixel buffer
 RenderAPI::VertexBuffer vbo;
+//list of objects
 std::vector<Object> objs;
 
 const int width = 512, height = 512;
+
+//main camera
 Camera cam = Camera(
 	Vector4Df{ 0.0f,0.0f,5.0f,1.0f },//position
 	Vector4Df{ 0.0f,0.0f,0.0f,1.0f },//lookat
@@ -22,21 +35,20 @@ Camera cam = Camera(
 	1.0f							//near
 );
 
+//raycast class for renderization 
 RayCast rc(cam);
 
-// display function called by glutMainLoop(), gets executed every frame 
+// display function called by MainLoop(), gets executed every frame 
 void disp(void)
 {
 	RenderAPI::BufferClear();
 
-	
+	//Render using OpenGL
 	//OpenGLRender(cam);
 	
 	
 
-	//Cylinder
-	
-	
+	//Render using RayCast
 	RenderAPI::BufferBind(vbo);
 	Vector4Df* colorBuffer = rc.Render(cam, objs);
 	RenderAPI::MapBuffer(colorBuffer, width, height);
@@ -121,13 +133,18 @@ void Start_Window(int argc, char **argv) {
 	
 	RenderAPI::DisplayFunc(disp);
 
+	//create the pixel buffer
 	RenderAPI::CreateVBO(&vbo, width, height);
 	
-	objs.push_back(new Cylinder(2.0f, 0.5f, Vector4Df{ 0,0,0,0 }, Vector4Df{ 0,1,0,0 }));
-	//CreateVBO2(&vbo, width, height);
+	//fill the object list
+	objs.push_back(new Cylinder(2.0f, 0.5f, Vector4Df{ 0,0,0,1 }, Vector4Df{ 0,1,0,0 }));
+	//objs.push_back(new Quad(Vector4Df{ 0,0,0,0 }, Vector4Df{ 1,0,0,0 }, Vector4Df{ 1,1,0,0 }, Vector4Df{ 0,1,0,0 }));
+	//objs.push_back(new Cube(Vector4Df{ 0,-0.5f,0,0 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 1,0,0,0 }, 1.0f));
+
 	//start render loop
     RenderAPI::RenderLoop();
 
+	//delete the pixel buffer
 	RenderAPI::DeleteVBO(&vbo);
 }
 
