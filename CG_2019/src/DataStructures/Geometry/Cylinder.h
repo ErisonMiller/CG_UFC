@@ -23,7 +23,8 @@ public:
 	Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector4Df direction);
 	~Cylinder();
 
-	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);//return all the colisions
-	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);//return the closest collision 
+	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);
+	CRAB::RayCollisionList CollideClosest(const CRAB::Ray &ray);
+	CRAB::RayCollisionList Collide(const CRAB::Ray &ray); 
 };
 

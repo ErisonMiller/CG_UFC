@@ -129,7 +129,7 @@ int main(int argc, char** argv) {
 #endif
 
 	Start_Window(argc, argv);
-	//std::cin >> buff;
+	std::cin >> buff;
 
 	return 0;
 }

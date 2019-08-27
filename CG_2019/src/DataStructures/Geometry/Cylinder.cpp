@@ -35,6 +35,13 @@ CRAB::RayCollisionList Cylinder::CollideAll(const std::vector<CRAB::Ray> &ray)
 	return col;
 }
 
+//TODO: Implement it
+CRAB::RayCollisionList Cylinder::CollideClosest(const CRAB::Ray &ray) {
+	CRAB::RayCollisionList col;
+
+	return col;
+}
+
 CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 {
 	//Colisions
@@ -68,8 +75,8 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 		}
 	}
 	else if (delta > 0) {
-		delta = sqrtf(delta);
 		//First Point
+		delta = sqrtf(delta);
 		t.distance = ((-1)*(delta * b)) / (2*a);
 		CRAB::Vector4Df p = ray.origin + (ray.direction * t.distance); // Intersection Point
 		float p_projection = dot((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis

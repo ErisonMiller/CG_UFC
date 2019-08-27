@@ -37,6 +37,13 @@ CRAB::RayCollisionList Cone::CollideAll(const std::vector<CRAB::Ray> &ray)
 	return col;
 }
 
+//TODO: Implement it
+CRAB::RayCollisionList Cone::CollideClosest(const CRAB::Ray &ray) {
+	CRAB::RayCollisionList col;
+
+	return col;
+}
+
 CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 {
 	//Colisions
