@@ -14,7 +14,7 @@ Cone::Cone(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector
 	this->height = height;
 	this->radius = radius;
 	this->base_center = base_center;
-	this->direction = direction;
+	this->direction = direction.to_unitary();
 	this->top_vertex = this->base_center + (this->direction * this->height);
 }
 

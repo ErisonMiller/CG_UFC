@@ -13,7 +13,7 @@ Cylinder::Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB
 	this->height      = height;
 	this->radius      = radius;
 	this->base_center = base_center;
-	this->direction   = direction;
+	this->direction   = direction.to_unitary();
 }
 
 Cylinder::~Cylinder()
