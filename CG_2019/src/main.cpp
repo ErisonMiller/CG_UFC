@@ -11,6 +11,7 @@
 //Test Defines
 #define CYLINDER_TEST 0 // Set to 1 to run the Cylinder Test
 #define CONE_TEST 0 // Set to 1 to run the Cone Test
+#define SPHERE_TEST 0 // Set to 1 to run the Sphere Test
 
 int main(int argc, char** argv) {
 	//this later will call the window controller
@@ -28,8 +29,8 @@ int main(int argc, char** argv) {
 
 	//Ray Direction
 	ray_dir.x = 0;
-	ray_dir.y = 0.57;
-	ray_dir.z = -2;
+	ray_dir.y = 2;
+	ray_dir.z = -3;
 
 	ray_dir = ray_dir.to_unitary();
 
@@ -130,6 +131,46 @@ int main(int argc, char** argv) {
 	colList = cone.CollideAll(ray_vec);
 
 	std::cout << "Cone more than one ray Intersections Number:" << colList.collisions.size() << "\n";
+
+#endif
+
+#if SPHERE_TEST == 1
+
+	//Sphere
+	CRAB::Vector4Df sphere_center;
+	sphere_center.x = 0.0f;
+	sphere_center.y = 10.0f;
+	sphere_center.z = -10.0f;
+
+	float sphere_radius = 5.0f;
+
+	Sphere S = Sphere(sphere_center, sphere_radius);
+
+	//Intersection
+
+	colList = S.Collide(ray);
+
+	std::cout << "Ray direction = (" << ray.direction.x << "; " << ray.direction.y << "; " << ray.direction.z << ")" << std::endl;
+	std::cout << "Sphere one ray Intersections Number:" << colList.collisions.size() << "\n";
+	for (int i = 0; i < colList.collisions.size(); i++)
+		std::cout << "t" << i + 1 << " = (" << colList.collisions[i].pint.x << ";" << colList.collisions[i].pint.y << ";" << colList.collisions[i].pint.z << ")" << std::endl;
+
+	//Collide more than one ray
+	ray_vec.clear();
+	for (int i = 0; i < 10; i++)
+	{
+		ray.direction.y += 0.01f;
+		ray.direction = ray.direction.to_unitary();
+		ray_vec.push_back(ray);
+	}
+
+	colList = S.CollideAll(ray_vec);
+
+	std::cout << "Sphere more than one ray Intersections Number:" << colList.collisions.size() << "\n";
+	for (int i = 0; i < colList.collisions.size(); i++)
+	{
+		std::cout << "t" << i + 1 << " = (" << colList.collisions[i].pint.x << ";" << colList.collisions[i].pint.y << ";" << colList.collisions[i].pint.z << ")" << std::endl;
+	}
 
 #endif
 
