@@ -44,12 +44,18 @@ namespace CRAB {
 		inline void operator*=(const float& a) { x *= a; y *= a; z *= a; }
 		inline void operator*=(const Vector4Df& v) { x *= v.x; y *= v.y; z *= v.z; }
 		inline void operator/=(const float& a) { x /= a; y /= a; z /= a; }
-		inline Vector4Df operator*(float a) const { return Vector4Df{ x*a, y*a, z*a, w }; }
-		inline Vector4Df operator/(float a) const { return Vector4Df{ x / a, y / a, z / a, w }; }
-		inline Vector4Df operator*(const Vector4Df& v) const { return Vector4Df{ x * v.x, y * v.y, z * v.z, w * v.w }; }
-		inline Vector4Df operator/(const Vector4Df& v) const { return Vector4Df{ x / v.x, y / v.y, z / v.z, w / v.w }; }
-		inline Vector4Df operator+(const Vector4Df& v) const { return Vector4Df{ x + v.x, y + v.y, z + v.z, w + v.w }; }
-		inline Vector4Df operator-(const Vector4Df& v) const { return Vector4Df{ x - v.x, y - v.y, z - v.z, w - v.w }; }
+		//inline Vector4Df operator*(float a) const { return Vector4Df{ x*a, y*a, z*a, w }; }
+		inline Vector4Df operator*(const float a) const { return *(Vector4Df*)&_mm_mul_ps(v128, _mm_set_ps1(a)); }
+		//inline Vector4Df operator/(const float a) const { return Vector4Df{ x / a, y / a, z / a, w }; }
+		inline Vector4Df operator/(const float a) const { return *(Vector4Df*)&_mm_div_ps(v128, _mm_set_ps1(a)); }
+		//inline Vector4Df operator*(const Vector4Df& v) const { return Vector4Df{ x * v.x, y * v.y, z * v.z, w * v.w }; }
+		inline Vector4Df operator*(const Vector4Df& v) const { return *(Vector4Df*)&_mm_mul_ps(v128, v.v128); }
+		//inline Vector4Df operator/(const Vector4Df& v) const { return Vector4Df{ x / v.x, y / v.y, z / v.z, w / v.w }; }
+		inline Vector4Df operator/(const Vector4Df& v) const { return *(Vector4Df*)&_mm_div_ps(v128, v.v128); }
+		//inline Vector4Df operator+(const Vector4Df& v) const { return Vector4Df{ x + v.x, y + v.y, z + v.z, w + v.w }; }
+		inline Vector4Df operator+(const Vector4Df& v) const { return *(Vector4Df*)&_mm_add_ps(v128, v.v128); }
+		//inline Vector4Df operator-(const Vector4Df& v) const { return Vector4Df{ x - v.x, y - v.y, z - v.z, w - v.w }; }
+		inline Vector4Df operator-(const Vector4Df& v) const { return *(Vector4Df*)&_mm_sub_ps(v128, v.v128); }
 		inline bool operator!=(const Vector4Df& v) const { return x != v.x || y != v.y || z != v.z; }
 		inline bool operator==(const Vector4Df& v) const { return fabs(x - v.x) < SMALL_NUMBER && fabs(y - v.y) < SMALL_NUMBER && fabs(z - v.z) < SMALL_NUMBER; }
 
@@ -73,6 +79,7 @@ namespace CRAB {
 	inline float dot(const Vector4Df& v1, const Vector4Df& v2) { return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z; }
 	//dot product using vetorial instructions
 	__forceinline float dot_simd(const __m128& v1, const __m128& v2) {return _mm_cvtss_f32(_mm_dp_ps(v1, v2, 0xff));}
+	__forceinline Vector4Df dot_simd_Vec(const __m128& v1, const __m128& v2) { return *(Vector4Df*)&_mm_dp_ps(v1, v2, 0xff); }
 
 	
 	inline float distancesq(const Vector4Df& v1, const Vector4Df& v2) { return (v1-v2).lengthsq(); }

@@ -25,7 +25,7 @@ CRAB::RayCollisionList Sphere::CollideAll(const std::vector<CRAB::Ray> &ray)
 	//Colisions
 	CRAB::RayCollisionList col, col_aux;
 
-	for (int i = 0; i < ray.size(); i++)
+	for (unsigned i = 0; i < ray.size(); i++)
 	{
 		col_aux = this->Collide(ray.at(i));
 		col.collisions.insert(col.collisions.end(), col_aux.collisions.begin(), col_aux.collisions.end());
@@ -35,11 +35,10 @@ CRAB::RayCollisionList Sphere::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-CRAB::RayCollisionList Sphere::CollideClosest(const CRAB::Ray &ray)
+float Sphere::CollideClosest(const CRAB::Ray &ray)
 {
-	CRAB::RayCollisionList col;
 
-	return col;
+	return INFINITY;
 }
 
 //TODO: Implement it

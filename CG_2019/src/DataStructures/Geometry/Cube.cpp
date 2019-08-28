@@ -48,10 +48,13 @@ CRAB::RayCollisionList Cube::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-CRAB::RayCollisionList Cube::CollideClosest(const CRAB::Ray &ray) {
-	CRAB::RayCollisionList col;
-
-	return col;
+float Cube::CollideClosest(const CRAB::Ray &ray) {
+	float final_distance = INFINITY;
+	for (int i = 0; i < 6; i++) {
+		const float dist = quads[i].CollideClosest(ray);
+		if (dist < final_distance)final_distance = dist;
+	}
+	return final_distance;
 }
 
 CRAB::RayCollisionList Cube::Collide(const CRAB::Ray &ray)

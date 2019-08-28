@@ -26,7 +26,7 @@ CRAB::RayCollisionList Cylinder::CollideAll(const std::vector<CRAB::Ray> &ray)
 	//Colisions
 	CRAB::RayCollisionList col, col_aux;
 	
-	for (int i = 0; i < ray.size(); i++)
+	for (unsigned i = 0; i < ray.size(); i++)
 	{
 		col_aux = this->Collide(ray.at(i));
 		col.collisions.insert(col.collisions.end(), col_aux.collisions.begin(), col_aux.collisions.end());
@@ -36,10 +36,54 @@ CRAB::RayCollisionList Cylinder::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-CRAB::RayCollisionList Cylinder::CollideClosest(const CRAB::Ray &ray) {
-	CRAB::RayCollisionList col;
+float Cylinder::CollideClosest(const CRAB::Ray &ray) {
+	//Aux Variables
+	const CRAB::Vector4Df k = ray.origin - this->base_center; // Vector between the Cylinder base center and the ray origin.
+	const float k_dot_u = dot_simd(k, this->direction);
+	const float d_dot_u = dot_simd(ray.direction, this->direction); // Dot product between ray direction and cylinder one.
 
-	return col;
+	const CRAB::Vector4Df v = k - ((this->direction)*k_dot_u);
+	const CRAB::Vector4Df w = ray.direction - (this->direction*d_dot_u);
+
+	const float r_2 = this->radius * this->radius;
+	//Equantion Constants
+	const float a = dot_simd(w, w);
+	const float b = 2.0f * (dot_simd(v, w));
+	const float c = dot_simd(v, v) - (r_2);
+	//Delta
+	const float delta = (b*b) - (4.0f * a*c);
+	float distance_final = INFINITY;
+	if (a != 0.0f && delta >= 0.0f) {
+		const float distance = (sqrtf(delta) + b) / (-2.0f * a);
+		const CRAB::Vector4Df p = ray.origin + (ray.direction * distance); // Intersection Point
+		float p_projection = dot_simd((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
+		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cylinder?
+			distance_final = distance;
+		}
+	}
+
+	//TODO: It must be implmented only if one of the cylinder interception is not valid or 'a' is less than 0.
+	//Base
+	const CRAB::Vector4Df base_dir = this->direction * (-1.0f);
+	//OBS.: Base Center is a point on the base plan.
+	float distance = dot_simd((this->base_center - ray.origin), base_dir) / (dot_simd(ray.direction, base_dir));
+	CRAB::Vector4Df p = ray.origin + (ray.direction * distance); // Intersection Point
+	float int_to_center = (p - this->base_center).lengthsq(); // Distance of the intersection point from the base center.
+
+	if (int_to_center <= r_2 && distance < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
+		distance_final = distance;
+	}
+
+	//Top
+	CRAB::Vector4Df ppi = this->base_center + this->direction*this->height;
+	distance = dot_simd((ppi - ray.origin), this->direction) / (dot_simd(ray.direction, this->direction));
+	p = ray.origin + (ray.direction * distance); // Intersection Point
+	int_to_center = (p - ppi).lengthsq(); // Distance of the intersection point from the base center.
+	if (int_to_center <= r_2 && distance < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
+		distance_final = distance;
+	}
+
+	return distance_final;
 }
 
 CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)

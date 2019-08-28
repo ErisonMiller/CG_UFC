@@ -2,11 +2,13 @@
 
 #include "Geometry/Geometry.h"
 
+
 class Object
 {
 	Geometry *geometry;
 	CRAB::Vector4Df color;
 public:
+
 	Object();
 	Object(Geometry *_geometry);
 	Object(const CRAB::Vector4Df &_color, Geometry *_geometry);
@@ -17,5 +19,6 @@ public:
 	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray);
 
 	CRAB::Vector4Df getColor();
+	Geometry* getGeometry();
 };
 

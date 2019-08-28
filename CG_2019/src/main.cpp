@@ -13,7 +13,7 @@
 #define CYLINDER_TEST 0 // Set to 1 to run the Cylinder Test
 #define CONE_TEST 0 // Set to 1 to run the Cone Test
 #define SPHERE_TEST 0 // Set to 1 to run the Sphere Test
-#define IMAGE_TEST 1 // Set to 1 to run the Image Test
+#define IMAGE_TEST 0 // Set to 1 to run the Image Test
 
 int main(int argc, char** argv) {
 	//this later will call the window controller

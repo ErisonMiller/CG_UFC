@@ -3,6 +3,13 @@
 
 #include <iostream>
 
+#include <time.h>
+
+#define PRINT 0 //set if will print the colisions on terminal or not
+
+#define X_PRINT 256
+#define Y_PRINT 256
+
 using namespace CRAB;
 
 RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
@@ -20,8 +27,10 @@ inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool pri
 
 	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
 	
-
+	#if PRINT == 1
 	int id = 0;
+	#endif
+
 	for (Object &obj : objects) {
 		
 		const float o_dist = obj.Collide(ray);
@@ -29,15 +38,17 @@ inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool pri
 			dist = o_dist;
 			accucolor = obj.getColor();
 		}
+		#if PRINT == 1
 		if (print) {
 			RayCollisionList cols = obj.CollideAll(ray);
-			std::cout << "-- Colisoes com :" << id << "\n";
+			std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
 			for (Collision c : cols.collisions) {
 				std::cout << "    t :" << c.distance << "; ";
 				std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
 			}
 		}
 		id++;
+		#endif
 	}
 
 	return accucolor;
@@ -45,7 +56,9 @@ inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool pri
 
 
 CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &objects) {
-	
+	clock_t t;
+	t = clock();
+
 	const Vector4Df base = (cam.view - cam.position).to_unitary();
 	const Vector4Df up = cam.up * (cam.dimensions.y / cam.resolution.y);
 	const Vector4Df left = cross(cam.up, base) * (cam.dimensions.x / cam.resolution.x);
@@ -56,27 +69,33 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 	const int height = (int)cam.resolution.y;
 
 	bool print = false;
+	
+	const Vector4Df &posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
 	#pragma omp parallel for
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			Vector4Df direct = base * cam.n;
-			direct += up * (height*(-0.5f) + y + 0.5f);
-			direct += left * (width*(0.5f) - x - 0.5f);
+			Vector4Df direct = posi_pix_0_0;
+			direct += up * (y);
+			direct += left * (-x);
 			direct.normalize();
 
-			//if (x == 256 && y == 256) {
-			//	std::cout << "*** Testando *** x:" << x << " y:" << y << "\n";
-			//	print = true;
-			//}else {
-			//	print = false;
-			//}
+#if PRINT == 1
+			if (x == X_PRINT && y == Y_PRINT) {
+				std::cout << "*** Testando *** x:" << x << " y:" << y << "\n";
+				print = true;
+			}else {
+				print = false;
+			}
+#endif
 
 			accumulateBuffer[y*width + x] = ray_cast(Ray{ cam.position, direct }, objects, print);
 
 		}
 	}
 
+	t = clock() - t;
+	std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
 
     //RayPathRender(triangles, cam, accumulatebuffer);
 	return accumulateBuffer;

@@ -30,10 +30,44 @@ CRAB::RayCollisionList Quad::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-CRAB::RayCollisionList Quad::CollideClosest(const CRAB::Ray &ray) {
-	CRAB::RayCollisionList col;
+float Quad::CollideClosest(register const CRAB::Ray &ray) {
+	
+	Vector4Df normal;
+	normal.v128 = cross_simd(e1, e2);
 
-	return col;
+	const Vector4Df &t = dot_simd_Vec(v1 - ray.origin, normal) / dot_simd_Vec(ray.direction, normal);
+
+	const Vector4Df &p_plane = ray.origin + ray.direction*t;
+
+
+	//const Vector4Df &proj1 = dot_simd_Vec(p_plane - v1, e1);
+	//const Vector4Df &proj2 = dot_simd_Vec(p_plane - v1, e2);
+
+
+	//const Vector4Df tst{
+	//	_mm_cvtss_f32(proj1),
+	//	_mm_cvtss_f32(proj2),
+	//	size1,
+	//	size2
+	//};
+	//const Vector4Df tst2{
+	//	0.0f,
+	//	0.0f,
+	//	_mm_cvtss_f32(proj1),
+	//	_mm_cvtss_f32(proj2)
+	//};
+
+	//if (_mm_test_all_ones(_mm_castps_si128(_mm_cmpgt_ps(tst, tst2)))) {
+	//	return t.x;
+	//}
+	
+	const float proj1 = dot_simd(p_plane - v1, e1);
+	const float proj2 = dot_simd(p_plane - v1, e2);
+
+	if (proj1 >= 0.000001f && proj1 <= size1 && proj2 >= 0.000001f && proj2 <= size2) {
+		return _mm_cvtss_f32(t);
+	}
+	return INFINITY;
 }
 
 CRAB::RayCollisionList Quad::Collide(const CRAB::Ray &ray)

@@ -12,7 +12,7 @@ public:
 	~Quad();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);
-	CRAB::RayCollisionList CollideClosest(const CRAB::Ray &ray);
+	float CollideClosest(register const CRAB::Ray &ray);
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);
 };
 
