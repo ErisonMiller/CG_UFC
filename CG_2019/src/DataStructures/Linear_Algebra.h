@@ -37,8 +37,9 @@ namespace CRAB {
 		//_mm_dp_ps is the vetorial instruction for dot product
 		__forceinline float lengthsq() const { return _mm_cvtss_f32(_mm_dp_ps(v128, v128, 0xff)); }
 		__forceinline float length() const { return sqrtf(lengthsq()); }
-		inline void normalize() { float norm = length();  x /= norm; y /= norm; z /= norm; };
-		inline Vector4Df to_unitary() const { float norm = 1.0f / sqrtf(x * x + y * y + z * z); return Vector4Df{ x *norm, y * norm, z * norm, 0.0f }; }
+		//inline void normalize() { float norm = length();  x /= norm; y /= norm; z /= norm; };
+		inline void normalize() { v128 = _mm_div_ps(v128, _mm_sqrt_ps(_mm_dp_ps(v128, v128, 0xff))); };
+		inline Vector4Df to_unitary() const { float norm = 1.0f/length(); return Vector4Df{ x *norm, y * norm, z * norm, w }; }
 		inline void operator+=(const Vector4Df& v) { x += v.x; y += v.y; z += v.z; }
 		inline void operator-=(const Vector4Df& v) { x -= v.x; y -= v.y; z -= v.z; }
 		inline void operator*=(const float& a) { x *= a; y *= a; z *= a; }
@@ -65,13 +66,23 @@ namespace CRAB {
 	//normal cross product
 	inline Vector4Df cross(const Vector4Df& v1, const Vector4Df& v2) { return { v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x, 0.0f }; }
 	//cross product using vetorial instructions
-	__forceinline __m128 cross_simd(const __m128& v1, const __m128& v2) {
+	__forceinline Vector4Df cross_simd(const __m128& v1, const __m128& v2) {
 		
 		const __m128 &v1_yzx = _mm_shuffle_ps(v1, v1, _MM_SHUFFLE(3, 0, 2, 1));
 		const __m128 &v2_yzx = _mm_shuffle_ps(v2, v2, _MM_SHUFFLE(3, 0, 2, 1));
 		const __m128 &mul1 = _mm_mul_ps(v1, v2_yzx);
 		const __m128 &mul2 = _mm_mul_ps(v1_yzx, v2);
 		const __m128 &c = _mm_sub_ps(mul1,mul2);
+		return *(Vector4Df*)&_mm_shuffle_ps(c, c, _MM_SHUFFLE(3, 0, 2, 1));
+	}
+
+	__forceinline __m128 cross_simd_mm128(const __m128& v1, const __m128& v2) {
+
+		const __m128 &v1_yzx = _mm_shuffle_ps(v1, v1, _MM_SHUFFLE(3, 0, 2, 1));
+		const __m128 &v2_yzx = _mm_shuffle_ps(v2, v2, _MM_SHUFFLE(3, 0, 2, 1));
+		const __m128 &mul1 = _mm_mul_ps(v1, v2_yzx);
+		const __m128 &mul2 = _mm_mul_ps(v1_yzx, v2);
+		const __m128 &c = _mm_sub_ps(mul1, mul2);
 		return _mm_shuffle_ps(c, c, _MM_SHUFFLE(3, 0, 2, 1));
 	}
 

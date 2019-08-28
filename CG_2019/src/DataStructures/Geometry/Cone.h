@@ -25,7 +25,7 @@ public:
 	~Cone();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);//return all the colisions
-	float CollideClosest(const CRAB::Ray &ray);
+	float CollideClosest(const CRAB::Ray &ray) const;
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);//return the closest collision 
 };
 

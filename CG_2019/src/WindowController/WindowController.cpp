@@ -153,12 +153,12 @@ void Start_Window(int argc, char **argv) {
 	//objs.push_back(Object(Vector4Df{ 0.1f, 0.2f, 0.2f,0 }, new Quad({ 3.5f, 0.0f, -30.0f, 1.0f }, { -3.5f, 0.0f, -30.0f, 1.0f }, { -3.5f, 0.0f, 0.0f, 1.0f }, { 3.5f, 0.0f, 0.0f, 1.0f })));
 
 	//fill the object list
-	objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 0,-2,-10,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object(Vector4Df{ 0.0f, 1.0f, 0.0f,0 }, new Cone(8.0f, 3.0f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 0,-2,-10,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object(Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
 	
-	objs.push_back(Object(Vector4Df{ 1.0f, 0.5f, 0.6f,0 }, new Cube(Vector4Df{ 0,-2, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object(Vector4Df{ 1.0f, 0.5f, 0.8f,0 }, new Cube(Vector4Df{ 0, 4, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object(Vector4Df{ 1.0f, 0.5f, 1.0f,0 }, new Cube(Vector4Df{ 0,10, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	objs.push_back(Object(Vector4Df{ 1.0f, 0.6f, 0.1f, 0 }, new Cube(Vector4Df{ 0,-2, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	objs.push_back(Object(Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 0, 4, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	objs.push_back(Object(Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 0,10, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	
 
 

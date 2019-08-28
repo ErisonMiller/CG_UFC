@@ -31,6 +31,10 @@ Cube::Cube(const CRAB::Vector4Df &base, const CRAB::Vector4Df &up, const CRAB::V
 
 	quads[4] = Quad(p1, p2, p6, p5);
 	quads[5] = Quad(p3, p0, p4, p7);
+
+	center = base + _up * (size*0.5f);
+	const float size2 = size * size;
+	r2 = size2 * 0.5f + size2 * 0.25f;
 }
 
 Cube::~Cube()
@@ -47,11 +51,18 @@ CRAB::RayCollisionList Cube::CollideAll(const std::vector<CRAB::Ray> &ray)
 	return col;
 }
 
-//TODO: Implement it
-float Cube::CollideClosest(const CRAB::Ray &ray) {
+
+__forceinline float Cube::CollideClosest(register const CRAB::Ray &ray) const {
+	//Test if the ray collides with the sphere that sorrounds the cube 
+	const Vector4Df &n = cross_simd(center - ray.origin, ray.direction);
+	if (dot_simd(n, n) > r2)return INFINITY;//don't collide
+	
+
 	float final_distance = INFINITY;
-	for (int i = 0; i < 6; i++) {
+
+	for (unsigned i = 0; i < 6; i++) {
 		const float dist = quads[i].CollideClosest(ray);
+		
 		if (dist < final_distance)final_distance = dist;
 	}
 	return final_distance;

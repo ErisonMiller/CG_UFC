@@ -21,7 +21,7 @@ RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
 }
 
 
-inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool print)
+inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print)
 {
 	float dist = INFINITY;
 
@@ -31,7 +31,7 @@ inline Vector4Df ray_cast(const Ray &ray, std::vector<Object> &objects, bool pri
 	int id = 0;
 	#endif
 
-	for (Object &obj : objects) {
+	for (const Object &obj : objects) {
 		
 		const float o_dist = obj.Collide(ray);
 		if (o_dist < dist) {
@@ -61,7 +61,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 
 	const Vector4Df base = (cam.view - cam.position).to_unitary();
 	const Vector4Df up = cam.up * (cam.dimensions.y / cam.resolution.y);
-	const Vector4Df left = cross(cam.up, base) * (cam.dimensions.x / cam.resolution.x);
+	const Vector4Df left = cross_simd(cam.up, base) * (cam.dimensions.x / cam.resolution.x);
 
 
 	//Vector4Df *pix = accumulatebuffer;
@@ -70,14 +70,12 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 
 	bool print = false;
 	
-	const Vector4Df &posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
+	Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
 	#pragma omp parallel for
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			Vector4Df direct = posi_pix_0_0;
-			direct += up * (y);
-			direct += left * (-x);
+			Vector4Df direct = posi_pix_0_0 + up * (y) + left * (-x);
 			direct.normalize();
 
 #if PRINT == 1

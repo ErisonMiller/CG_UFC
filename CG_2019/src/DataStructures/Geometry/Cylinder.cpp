@@ -36,9 +36,9 @@ CRAB::RayCollisionList Cylinder::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-float Cylinder::CollideClosest(const CRAB::Ray &ray) {
+float Cylinder::CollideClosest(const CRAB::Ray &ray) const {
 	//Aux Variables
-	const CRAB::Vector4Df k = ray.origin - this->base_center; // Vector between the Cylinder base center and the ray origin.
+	const CRAB::Vector4Df &k = ray.origin - this->base_center; // Vector between the Cylinder base center and the ray origin.
 	const float k_dot_u = dot_simd(k, this->direction);
 	const float d_dot_u = dot_simd(ray.direction, this->direction); // Dot product between ray direction and cylinder one.
 
@@ -55,7 +55,7 @@ float Cylinder::CollideClosest(const CRAB::Ray &ray) {
 	float distance_final = INFINITY;
 	if (a != 0.0f && delta >= 0.0f) {
 		const float distance = (sqrtf(delta) + b) / (-2.0f * a);
-		const CRAB::Vector4Df p = ray.origin + (ray.direction * distance); // Intersection Point
+		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 		float p_projection = dot_simd((p - this->base_center), this->direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cylinder?
 			distance_final = distance;
@@ -64,7 +64,7 @@ float Cylinder::CollideClosest(const CRAB::Ray &ray) {
 
 	//TODO: It must be implmented only if one of the cylinder interception is not valid or 'a' is less than 0.
 	//Base
-	const CRAB::Vector4Df base_dir = this->direction * (-1.0f);
+	const CRAB::Vector4Df &base_dir = this->direction * (-1.0f);
 	//OBS.: Base Center is a point on the base plan.
 	float distance = dot_simd((this->base_center - ray.origin), base_dir) / (dot_simd(ray.direction, base_dir));
 	CRAB::Vector4Df p = ray.origin + (ray.direction * distance); // Intersection Point
@@ -75,7 +75,7 @@ float Cylinder::CollideClosest(const CRAB::Ray &ray) {
 	}
 
 	//Top
-	CRAB::Vector4Df ppi = this->base_center + this->direction*this->height;
+	const CRAB::Vector4Df &ppi = this->base_center + this->direction*this->height;
 	distance = dot_simd((ppi - ray.origin), this->direction) / (dot_simd(ray.direction, this->direction));
 	p = ray.origin + (ray.direction * distance); // Intersection Point
 	int_to_center = (p - ppi).lengthsq(); // Distance of the intersection point from the base center.

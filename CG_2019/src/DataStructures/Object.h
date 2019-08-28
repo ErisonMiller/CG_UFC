@@ -15,10 +15,10 @@ public:
 
 	~Object();
 	
-	float Collide(const CRAB::Ray &ray);
-	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray);
+	float Collide(register const CRAB::Ray &ray) const;
+	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray) const;
 
-	CRAB::Vector4Df getColor();
-	Geometry* getGeometry();
+	CRAB::Vector4Df getColor() const;
+	Geometry* getGeometry() const;
 };
 

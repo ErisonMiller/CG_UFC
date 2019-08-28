@@ -23,7 +23,7 @@ namespace RenderAPI{
 		// specify the display mode to be RGB and single buffering:
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 		// specify the initial window position:
-		glutInitWindowPosition(0, 0);
+		glutInitWindowPosition(500, 100);
 		// specify the initial window size:
 		glutInitWindowSize(width, height);
 		// create the window and set title:

@@ -24,7 +24,7 @@ public:
 	~Cylinder();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);
-	float CollideClosest(const CRAB::Ray &ray);
+	float CollideClosest(const CRAB::Ray &ray) const;
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray); 
 };
 

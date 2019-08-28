@@ -35,10 +35,21 @@ CRAB::RayCollisionList Sphere::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-float Sphere::CollideClosest(const CRAB::Ray &ray)
+float Sphere::CollideClosest(const CRAB::Ray &ray) const
 {
+	const CRAB::Vector4Df &W = ray.origin - center;		// The difference of P0 - C
 
-	return INFINITY;
+	// Coefficients of the equation
+	//const float A = 1.0f;//considering that the direction is already normalized
+	const float B = 2.0f * dot_simd(W, ray.direction);
+	const float C = dot_simd(W, W) - (radius * radius);
+	// Discriminant
+	float Delta = (B*B) - (4.0f * C);
+
+	if (Delta < 0.0f) return INFINITY;
+
+	// First point
+	return (B + sqrtf(Delta)) * (-0.5f);
 }
 
 //TODO: Implement it
