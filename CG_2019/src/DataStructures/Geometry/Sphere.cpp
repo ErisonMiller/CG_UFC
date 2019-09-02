@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Sphere.h"
 
 using namespace CRAB;
@@ -8,10 +7,8 @@ Sphere::Sphere()
 
 }
 
-Sphere::Sphere(const CRAB::Vector4Df &C, float &R)
+Sphere::Sphere(const CRAB::Vector4Df &C, float R) : center(C), radius(R)
 {
-	center = C;
-	radius = R;
 }
 
 Sphere::~Sphere()
@@ -41,15 +38,15 @@ float Sphere::CollideClosest(const CRAB::Ray &ray) const
 
 	// Coefficients of the equation
 	//const float A = 1.0f;//considering that the direction is already normalized
-	const float B = 2.0f * dot_simd(W, ray.direction);
+	const float B = dot_simd(W, ray.direction);
 	const float C = dot_simd(W, W) - (radius * radius);
 	// Discriminant
-	float Delta = (B*B) - (4.0f * C);
+	float Delta = (B*B - C);
 
 	if (Delta < 0.0f) return INFINITY;
 
 	// First point
-	return (B + sqrtf(Delta)) * (-0.5f);
+	return -(B + sqrtf(Delta));
 }
 
 //TODO: Implement it

@@ -6,8 +6,8 @@
 class Object
 {
 	Geometry *geometry;
-	CRAB::Vector4Df color;
 public:
+	CRAB::Vector4Df color;
 
 	Object();
 	Object(Geometry *_geometry);
@@ -18,7 +18,6 @@ public:
 	float Collide(register const CRAB::Ray &ray) const;
 	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray) const;
 
-	CRAB::Vector4Df getColor() const;
 	Geometry* getGeometry() const;
 };
 

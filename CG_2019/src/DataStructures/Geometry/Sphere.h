@@ -7,7 +7,7 @@ class Sphere : public Geometry
 
 public:
 	Sphere();
-	Sphere(const CRAB::Vector4Df &C, float &R);
+	Sphere(const CRAB::Vector4Df &C, float R);
 	~Sphere();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);

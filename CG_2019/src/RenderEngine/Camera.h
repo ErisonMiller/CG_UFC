@@ -47,13 +47,13 @@ namespace CRAB {
 			position = m * position;
 		}
 
-		void Transform(const Matrix4 &m, const Vector4Df &reference)
+		void Transform(const Matrix4 &m, const Vector4Df reference)
 		{
-			Transform(translate(Vector4Df{ -reference.x, -reference.y, -reference.z }));
+			Transform(translate(Vector4Df{ -reference.x, -reference.y, -reference.z, 1.0f }));
 
 			Transform(m);
 
-			Transform(translate(Vector4Df{ reference.x, reference.y, reference.z }));
+			Transform(translate(Vector4Df{ reference.x, reference.y, reference.z, 1.0f }));
 		}
 
 	};

@@ -55,21 +55,20 @@ float Cone::CollideClosest(const CRAB::Ray &ray) const {
 
 	//Equantion Constants
 	const float a = (d_dot_n*d_dot_n) - (cos_alfa_2);
-	const float b = 2.0f * ((dot_simd(v, ray.direction)*cos_alfa_2) - (v_dot_n * d_dot_n));
+	const float b = ((dot_simd(v, ray.direction)*cos_alfa_2) - (v_dot_n * d_dot_n));
 	const float c = (v_dot_n*v_dot_n) - (dot_simd(v, v)*cos_alfa_2);
 	//Delta
-	const float delta = (b*b) - (4.0f * a*c);
+	const float delta = (b*b) - (a*c);
 
-	float distance_final = INFINITY;
 	if (a != 0.0f && delta >= 0.0f) {
-		const float distance = ((sqrtf(delta) + b)) / (-2.0f * a);
+		const float distance = (sqrtf(delta) - b) / a;
 		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 		const float p_projection = dot_simd((top_vertex - p), direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cone?
-			distance_final = distance;
+			return distance;
 		}
 	}
-
+	
 	//TODO: It must be implmented only if one of the cone interception is not valid or 'a' is less than 0.
 	//Base
 	const CRAB::Vector4Df &base_dir = this->direction * (-1.0f);
@@ -78,11 +77,11 @@ float Cone::CollideClosest(const CRAB::Ray &ray) const {
 	const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 	const float int_to_center = (p - this->base_center).lengthsq(); // Distance of the intersection point from the base center.
 
-	if (int_to_center <= r_2 && distance < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
-		distance_final = distance;
+	if (int_to_center <= r_2) {//The point intercept tha base iff its distance from the center is less than the radius.
+		return distance;
 	}
 
-	return distance_final;
+	return INFINITY;
 }
 
 CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)

@@ -73,19 +73,17 @@ namespace RenderAPI{
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	}
 
-	inline void MapBuffer(const CRAB::Vector4Df *color_buffer, int width, int height){
+	inline void MapBuffer(CRAB::Vector4Df *color_buffer, int width, int height){
 		//RayPathRender(triangles, cam, accumulatebuffer);
 
 		float *buffer = (float*) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+		CRAB::Vector4Df *c_buff = color_buffer;
 		
 		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				const CRAB::Vector4Df &cor = color_buffer[y*width + x];
+			for (int x = 0; x < width; x++, c_buff++) {
 				buffer[(y*width + x) * 5] = (float) x;
 				buffer[(y*width + x) * 5 + 1] = (float) y;
-				buffer[(y*width + x) * 5 + 2] = cor.x;
-				buffer[(y*width + x) * 5 + 3] = cor.y;
-				buffer[(y*width + x) * 5 + 4] = cor.z;
+				memcpy(&buffer[(y*width + x) * 5 + 2], c_buff, sizeof(float) * 3);
 			}
 		}
 		glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -98,6 +96,7 @@ namespace RenderAPI{
 		glDrawArrays(GL_POINTS, 0, width * height);
 		glDisableClientState(GL_VERTEX_ARRAY);
 	}
+
 
 	inline void SwapBuffers(){
 		glutSwapBuffers();

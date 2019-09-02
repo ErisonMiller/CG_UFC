@@ -1,17 +1,18 @@
 #pragma once
 #include "Geometry.h"
-class Quad :
+class Triangle :
 	public Geometry
 {
-	
 public:
-	CRAB::Vector4Df v1, e1, e2;
-	float size1, size2;
 
-	Quad();
+	union {
+		struct { CRAB::Vector4Df v1, n_e1, n_e2, normal; };
+		__m256 v[2];
+	};
 
-	Quad(const CRAB::Vector4Df &_v1, const CRAB::Vector4Df &_v2, const CRAB::Vector4Df &_v3, const CRAB::Vector4Df &_v4);
-	~Quad();
+	Triangle(const CRAB::Vector4Df &v1, const CRAB::Vector4Df &v2, const CRAB::Vector4Df &v3);
+	Triangle();
+	~Triangle();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);
 	float CollideClosest(register const CRAB::Ray &ray) const;

@@ -15,7 +15,7 @@
 
 #include <math.h>
 //vector instruction set include 
-#include <xmmintrin.h>
+//#include <xmmintrin.h>
 #include <immintrin.h>
 
 namespace CRAB {
@@ -66,18 +66,8 @@ namespace CRAB {
 	//normal cross product
 	inline Vector4Df cross(const Vector4Df& v1, const Vector4Df& v2) { return { v1.y*v2.z - v1.z*v2.y, v1.z*v2.x - v1.x*v2.z, v1.x*v2.y - v1.y*v2.x, 0.0f }; }
 	//cross product using vetorial instructions
-	__forceinline Vector4Df cross_simd(const __m128& v1, const __m128& v2) {
-		
-		const __m128 &v1_yzx = _mm_shuffle_ps(v1, v1, _MM_SHUFFLE(3, 0, 2, 1));
-		const __m128 &v2_yzx = _mm_shuffle_ps(v2, v2, _MM_SHUFFLE(3, 0, 2, 1));
-		const __m128 &mul1 = _mm_mul_ps(v1, v2_yzx);
-		const __m128 &mul2 = _mm_mul_ps(v1_yzx, v2);
-		const __m128 &c = _mm_sub_ps(mul1,mul2);
-		return *(Vector4Df*)&_mm_shuffle_ps(c, c, _MM_SHUFFLE(3, 0, 2, 1));
-	}
 
 	__forceinline __m128 cross_simd_mm128(const __m128& v1, const __m128& v2) {
-
 		const __m128 &v1_yzx = _mm_shuffle_ps(v1, v1, _MM_SHUFFLE(3, 0, 2, 1));
 		const __m128 &v2_yzx = _mm_shuffle_ps(v2, v2, _MM_SHUFFLE(3, 0, 2, 1));
 		const __m128 &mul1 = _mm_mul_ps(v1, v2_yzx);
@@ -85,6 +75,10 @@ namespace CRAB {
 		const __m128 &c = _mm_sub_ps(mul1, mul2);
 		return _mm_shuffle_ps(c, c, _MM_SHUFFLE(3, 0, 2, 1));
 	}
+	__forceinline Vector4Df cross_simd(const __m128& v1, const __m128& v2) {
+		return *(Vector4Df*)&cross_simd_mm128(v1,v2);
+	}
+
 
 	//normal dot product
 	inline float dot(const Vector4Df& v1, const Vector4Df& v2) { return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z; }

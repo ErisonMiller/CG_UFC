@@ -16,6 +16,8 @@
 #include "Quad.h"
 #include "Cube.h"
 #include "Cone.h"
+#include "Sphere.h"
+#include "Triangle.h"
 
 using namespace CRAB;
 
@@ -29,7 +31,7 @@ const int width = 512, height = 512;
 //main camera
 Camera cam = Camera(
 	Vector4Df{ 0.0f,0.0f,0.0f,1.0f },//position
-	Vector4Df{ 0.0f,0.0f,-4.0f,1.0f },//lookat
+	Vector4Df{ 0.0f,0.0f,-15.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{width*1.0f, height*1.0f}, //resolution
 	float2{ 4.0f, 4.0f },			//dimensions
@@ -76,8 +78,8 @@ void motion(int x, int y)
         if (theButtonState == GLUT_LEFT_BUTTON)  // Rotate
         {
             Vector4Df v = cross(cam.view - cam.position, cam.up);
-            cam.Transform(rotateArbitrary(deltaY, v));
-            cam.Transform(rotateY(deltaX));
+            cam.Transform(rotateArbitrary(deltaY, v), cam.view);
+            cam.Transform(rotateY(deltaX), cam.view);
         }
         else if (theButtonState == GLUT_MIDDLE_BUTTON) // Zoom
         {
@@ -87,7 +89,7 @@ void motion(int x, int y)
         if (theButtonState == GLUT_RIGHT_BUTTON) // camera move
         {
 
-            cam.position += cam.position*(deltaY*0.01f);
+            cam.position = cam.position + (cam.position-cam.view)*(deltaY*0.01f);
             //float2{ cam.fov.x * (1+deltaY*0.1f), cam.fov.y * (1 + (deltaY*0.1f)) };
         //interactiveCamera->changeRadius(-deltaY * 0.01);
         }
@@ -160,7 +162,6 @@ void Start_Window(int argc, char **argv) {
 	objs.push_back(Object(Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 0, 4, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	objs.push_back(Object(Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 0,10, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	
-
 
 	//start render loop
     RenderAPI::RenderLoop();

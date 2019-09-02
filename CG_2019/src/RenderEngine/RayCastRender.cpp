@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include <time.h>
+#include<omp.h>
 
 #define PRINT 0 //set if will print the colisions on terminal or not
 
@@ -21,7 +22,7 @@ RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
 }
 
 
-inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print)
+__forceinline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print)
 {
 	float dist = INFINITY;
 
@@ -31,12 +32,11 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	int id = 0;
 	#endif
 
-	for (const Object &obj : objects) {
-		
+	for (const Object &obj : objects) {		
 		const float o_dist = obj.Collide(ray);
 		if (o_dist < dist) {
 			dist = o_dist;
-			accucolor = obj.getColor();
+			accucolor = obj.color;
 		}
 		#if PRINT == 1
 		if (print) {
@@ -55,7 +55,7 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 }
 
 
-CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &objects) {
+CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Object> &objects) {
 	clock_t t;
 	t = clock();
 
@@ -70,13 +70,14 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 
 	bool print = false;
 	
-	Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
+	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-	#pragma omp parallel for
+	//Ray{ cam.position, posi_pix_0_0 };
+	#pragma omp parallel for num_threads(16) schedule(guided)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
-			Vector4Df direct = posi_pix_0_0 + up * (y) + left * (-x);
-			direct.normalize();
+			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
+			direction.normalize();
 
 #if PRINT == 1
 			if (x == X_PRINT && y == Y_PRINT) {
@@ -86,8 +87,8 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, std::vector<Object> &o
 				print = false;
 			}
 #endif
-
-			accumulateBuffer[y*width + x] = ray_cast(Ray{ cam.position, direct }, objects, print);
+			
+			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, print);
 
 		}
 	}

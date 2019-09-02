@@ -87,7 +87,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures;$(SolutionDir)\CG_2019\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -97,13 +97,14 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <SupportJustMyCode>false</SupportJustMyCode>
       <UseFullPaths>false</UseFullPaths>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -140,9 +141,10 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -166,6 +168,7 @@
     <ClInclude Include="src\RenderEngine\RayCastRender.h" />
     <ClInclude Include="src\RenderEngine\RenderAPI.h" />
     <ClInclude Include="src\WindowController\WindowController.h" />
+    <ClInclude Include="src\DataStructures\Geometry\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DataStructures\Geometry\Cube.cpp" />
@@ -179,6 +182,7 @@
     <ClCompile Include="src\RenderEngine\OpenGLRender.cpp" />
     <ClCompile Include="src\RenderEngine\RayCastRender.cpp" />
     <ClCompile Include="src\WindowController\WindowController.cpp" />
+    <ClCompile Include="src\DataStructures\Geometry\Triangle.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
