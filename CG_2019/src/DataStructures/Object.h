@@ -9,6 +9,8 @@ class Object
 public:
 	CRAB::Vector4Df color;
 
+	bool visible = false;
+
 	Object();
 	Object(Geometry *_geometry);
 	Object(const CRAB::Vector4Df &_color, Geometry *_geometry);
