@@ -108,6 +108,13 @@ void mouse(int button, int state, int x, int y)
     lastX = x;
     lastY = y;
 
+	if (theButtonState == GLUT_RIGHT_BUTTON) // camera move
+	{
+		Object *o = rc.RayPick(cam, objs, x, y);
+		if (o)o->visible = true;
+	}
+
+	glutPostRedisplay();
     motion(x, y);
 }
 
@@ -118,10 +125,9 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/) {
     case(27): exit(0);
     case(' '):
         break;
-    }
+	}
     glutPostRedisplay();
 }
-
 
 
 // Main.
@@ -161,7 +167,6 @@ void Start_Window(int argc, char **argv) {
 	objs.push_back(Object(Vector4Df{ 1.0f, 0.6f, 0.1f, 0 }, new Cube(Vector4Df{ 0,-2, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	objs.push_back(Object(Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 0, 4, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	objs.push_back(Object(Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 0,10, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	
 
 	//start render loop
     RenderAPI::RenderLoop();

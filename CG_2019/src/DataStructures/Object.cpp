@@ -8,7 +8,7 @@ Object::Object(Geometry *_geometry): geometry(_geometry)
 {
 }
 
-Object::Object(const CRAB::Vector4Df &_color, Geometry *_geometry) : geometry(_geometry), color(_color)
+Object::Object(const CRAB::Vector4Df &_color, Geometry *_geometry) : geometry(_geometry), color(_color), visible(false)
 {
 }
 
@@ -20,7 +20,6 @@ float Object::Collide(register const CRAB::Ray &ray) const {
 	//CRAB::RayCollisionList Coll = geometry->Collide(ray);
 	//if (Coll.collisions.size() == 0)return INFINITY;
 	//return Coll.collisions[0].distance;
-
 	return geometry->CollideClosest(ray);
 }
 
