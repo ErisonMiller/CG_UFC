@@ -60,10 +60,13 @@ namespace CRAB {
 
 
 	inline Matrix4 ToWorld(const Vector4Df &position, const Vector4Df &lookat, const Vector4Df &vup) {
-		const Vector4Df &z = (lookat - position).to_unitary();
-		const Vector4Df &x = cross(vup, z).to_unitary();
-		const Vector4Df &y = cross(z, x);
-		
+		//const Vector4Df &z = (lookat - position).to_unitary();
+		//const Vector4Df &x = cross(vup, z).to_unitary();
+		//const Vector4Df &y = cross(z, x);
+		const Vector4Df& z = (position - lookat).to_unitary();
+		const Vector4Df& x = cross(vup, z).to_unitary();
+		const Vector4Df& y = cross(z, x);
+
 		return Matrix4{
 			x.x, y.x, z.x, position.x,
 					  
@@ -78,10 +81,14 @@ namespace CRAB {
 		return ToWorld(cam.position, cam.view, cam.up);
 	}
 	inline Matrix4 ToCamera(const Vector4Df &position, const Vector4Df &lookat, const Vector4Df &vup) {
-		const Vector4Df &z = (lookat - position).to_unitary();
-		const Vector4Df &x = cross(vup, z).to_unitary();
-		const Vector4Df &y = cross(z, x);
+		//const Vector4Df &z = (lookat - position).to_unitary();
+		//const Vector4Df &x = cross(vup, z).to_unitary();
+		//const Vector4Df &y = cross(z, x);
 		
+		const Vector4Df& z = (position - lookat).to_unitary();
+		const Vector4Df& x = cross(vup, z).to_unitary();
+		const Vector4Df& y = cross(z, x);
+
 		return Matrix4{
 			x.x, x.y, x.z, -dot_simd(x, position),
 

@@ -22,7 +22,7 @@ RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
 }
 
 
-__forceinline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print)
+__forceinline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print, float cam_near)
 {
 	float dist = INFINITY;
 
@@ -33,7 +33,7 @@ __forceinline Vector4Df ray_cast(register const Ray &ray, const std::vector<Obje
 	#endif
 	for (const Object &obj : objects) {		
 		const float o_dist = obj.Collide(ray);
-		if (o_dist < dist) {
+		if (o_dist < dist && o_dist > cam_near) {
 			//TODO remove this visible after
 			if (obj.visible) { dist = o_dist; accucolor = obj.color; }
 		}
@@ -75,15 +75,17 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 	int id = 0;
 	Object *colidiu = nullptr;
 	float dist = INFINITY;
+	Matrix4 to_cam = CRAB::ToCamera(cam);
 	for (Object &obj : objects) {
 		const float o_dist = obj.Collide(ray);
-		if (o_dist < dist) {
+		if (o_dist < dist && o_dist > cam.n) {
 			dist = o_dist;
 			colidiu = &obj;
 		}
 		RayCollisionList cols = obj.CollideAll(ray);
 		std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
 		for (Collision c : cols.collisions) {
+			c.pint = to_cam * c.pint;
 			std::cout << "    t :" << c.distance << "; ";
 			std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
 		}
@@ -125,7 +127,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 			}
 #endif
 			
-			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, print);
+			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, print, cam.n);
 
 		}
 	}
