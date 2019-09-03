@@ -73,7 +73,7 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 	Ray ray{ cam.position, direction };
 	
 	int id = 0;
-	Object *colidiu = NULL;
+	Object *colidiu = nullptr;
 	float dist = INFINITY;
 	for (Object &obj : objects) {
 		const float o_dist = obj.Collide(ray);

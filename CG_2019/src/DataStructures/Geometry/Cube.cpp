@@ -149,7 +149,7 @@ CRAB::RayCollisionList Cube::Collide(const CRAB::Ray &ray)
 
 
 	for (int i = 0; i < 6; i++) {
-		RayCollisionList col_quad = quads[i].Collide(ray);
+		const RayCollisionList col_quad = quads[i].Collide(ray);
 		col.collisions.insert(col.collisions.end(), col_quad.collisions.begin(), col_quad.collisions.end());
 	}
 	

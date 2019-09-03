@@ -58,7 +58,7 @@ namespace CRAB {
 		//inline Vector4Df operator-(const Vector4Df& v) const { return Vector4Df{ x - v.x, y - v.y, z - v.z, w - v.w }; }
 		inline Vector4Df operator-(const Vector4Df& v) const { return *(Vector4Df*)&_mm_sub_ps(v128, v.v128); }
 		inline bool operator!=(const Vector4Df& v) const { return x != v.x || y != v.y || z != v.z; }
-		inline bool operator==(const Vector4Df& v) const { return fabs(x - v.x) < SMALL_NUMBER && fabs(y - v.y) < SMALL_NUMBER && fabs(z - v.z) < SMALL_NUMBER; }
+		inline bool operator==(const Vector4Df& v) const { return fabsf(x - v.x) < SMALL_NUMBER && fabsf(y - v.y) < SMALL_NUMBER && fabsf(z - v.z) < SMALL_NUMBER; }
 
 		inline operator __m128() const { return v128; }
 	};

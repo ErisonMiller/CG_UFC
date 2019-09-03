@@ -53,6 +53,7 @@ namespace RenderAPI{
 
 	inline void CreateVBO(VertexBuffer *_vbo, int width, int height)
 	{
+		if (!_vbo)return;
 		//Create vertex buffer object
 		glGenBuffers(1, _vbo);
 		glBindBuffer(GL_ARRAY_BUFFER, *_vbo);
@@ -77,6 +78,7 @@ namespace RenderAPI{
 		//RayPathRender(triangles, cam, accumulatebuffer);
 
 		float *buffer = (float*) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+		if (!buffer)return;
 		CRAB::Vector4Df *c_buff = color_buffer;
 		
 		for (int y = 0; y < height; y++) {

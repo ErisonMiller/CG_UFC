@@ -41,7 +41,7 @@ float Sphere::CollideClosest(const CRAB::Ray &ray) const
 	const float B = dot_simd(W, ray.direction);
 	const float C = dot_simd(W, W) - (radius * radius);
 	// Discriminant
-	float Delta = (B*B - C);
+	const float Delta = (B*B - C);
 
 	if (Delta < 0.0f) return INFINITY;
 
