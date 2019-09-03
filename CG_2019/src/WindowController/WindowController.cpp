@@ -30,8 +30,10 @@ const int width = 512, height = 512;
 
 //main camera
 Camera cam = Camera(
-	Vector4Df{ 0.0f,0.0f,0.0f,1.0f },//position
-	Vector4Df{ 0.0f,0.0f,-15.0f,1.0f },//lookat
+	//Vector4Df{ 15.0f,10.0f,30.0f,1.0f },//position
+	//Vector4Df{ 10.0f, 9.0f,10.0f,1.0f },//lookat
+	Vector4Df{ 10.0f,5.0f,50.0f,1.0f },//position
+	Vector4Df{ 10.0f, 5.0f,15.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{width*1.0f, height*1.0f}, //resolution
 	float2{ 4.0f, 4.0f },			//dimensions
@@ -125,6 +127,15 @@ void keyboard(unsigned char key, int /*x*/, int /*y*/) {
     case(27): exit(0);
     case(' '):
         break;
+	case('t'):
+		int x, y;
+		std::cout << "x\n";
+		std::cin >> x;
+		std::cout << "y\n";
+		std::cin >> y;
+		Object* o = rc.RayPick(cam, objs, x, y);
+		if (o)o->visible = true;
+		break;
 	}
     glutPostRedisplay();
 }
@@ -161,12 +172,15 @@ void Start_Window(int argc, char **argv) {
 	//objs.push_back(Object(Vector4Df{ 0.1f, 0.2f, 0.2f,0 }, new Quad({ 3.5f, 0.0f, -30.0f, 1.0f }, { -3.5f, 0.0f, -30.0f, 1.0f }, { -3.5f, 0.0f, 0.0f, 1.0f }, { 3.5f, 0.0f, 0.0f, 1.0f })));
 
 	//fill the object list
-	objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 0,-2,-10,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object(Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object(Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 5.0f,2,30,1 }, Vector4Df{ 0,1,0,0 })));
 	
-	objs.push_back(Object(Vector4Df{ 1.0f, 0.6f, 0.1f, 0 }, new Cube(Vector4Df{ 0,-2, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object(Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 0, 4, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object(Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 0,10, -20,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 15,0,30,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object(Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+
+	objs.push_back(Object(Vector4Df{ 1.0f, 0.6f, 0.1f, 0 }, new Cube(Vector4Df{ 10, 0, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	objs.push_back(Object(Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	objs.push_back(Object(Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 
 	//start render loop
     RenderAPI::RenderLoop();
