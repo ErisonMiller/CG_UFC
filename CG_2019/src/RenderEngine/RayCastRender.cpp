@@ -34,21 +34,23 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	for (const Object &obj : objects) {
 		
 		const float o_dist = obj.Collide(ray);
-		if (o_dist < dist) {
-			dist = o_dist;
-			accucolor = obj.getColor();
-		}
-		#if PRINT == 1
-		if (print) {
-			RayCollisionList cols = obj.CollideAll(ray);
-			std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
-			for (Collision c : cols.collisions) {
-				std::cout << "    t :" << c.distance << "; ";
-				std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
+		if (obj.visible){
+			if (o_dist < dist) {
+				dist = o_dist;
+				accucolor = obj.getColor();
 			}
+#if PRINT == 1
+			if (print) {
+				RayCollisionList cols = obj.CollideAll(ray);
+				std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
+				for (Collision c : cols.collisions) {
+					std::cout << "    t :" << c.distance << "; ";
+					std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
+				}
+			}
+			id++;
+#endif
 		}
-		id++;
-		#endif
 	}
 
 	return accucolor;
