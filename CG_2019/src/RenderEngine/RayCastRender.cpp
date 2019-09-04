@@ -83,7 +83,8 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 			colidiu = &obj;
 		}
 		RayCollisionList cols = obj.CollideAll(ray);
-		std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
+		//std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
+		std::cout << "-- Colisoes com: " << obj.getName() << " (" << typeid(*obj.getGeometry()).name() << ")\n";
 		for (Collision c : cols.collisions) {
 			c.pint = to_cam * c.pint;
 			std::cout << "    t :" << c.distance << "; ";
