@@ -14,18 +14,17 @@
 
 class Cone : public Geometry
 {
-	float height, radius;
 	CRAB::Vector4Df base_center; // Cone base center
 	CRAB::Vector4Df direction;   // Cone direction vector
 	CRAB::Vector4Df top_vertex;  // Cone top vertex
-
+	float height, radius, cos_alfa_2;
 public:
 	Cone();
 	Cone(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector4Df direction);
 	~Cone();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);//return all the colisions
-	float CollideClosest(const CRAB::Ray &ray) const;
+	float __fastcall CollideClosest(const CRAB::Ray &ray) const;
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);//return the closest collision 
 };
 

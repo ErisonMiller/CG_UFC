@@ -13,16 +13,23 @@
 
 using namespace CRAB;
 
+RayCast::RayCast(){
+}
+
 RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
-    accumulateBuffer = (CRAB::Vector4Df*)malloc(resolution.x * resolution.y * sizeof(CRAB::Vector4Df));
+
+	accumulateBuffer = new(nothrow) CRAB::Vector4Df[resolution.x * resolution.y * sizeof(CRAB::Vector4Df)];
 
 	for (unsigned y = 0, s = (unsigned)(resolution.x * resolution.y); y < s; y ++) {
 		accumulateBuffer[y] = CRAB::Vector4Df{ 0.5f, 0.5f, 0.5f, 0.5f };
 	}
 }
 
+RayCast::~RayCast() {
+	delete[]accumulateBuffer;
+}
 
-__forceinline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print, float cam_near)
+inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print, float cam_near)
 {
 	float dist = INFINITY;
 

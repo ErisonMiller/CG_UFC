@@ -242,6 +242,7 @@ int main(int argc, char** argv) {
 
 	//start the window and the rendering
 	Start_Window(argc, argv);
+
 	std::cin >> buff;
 
 	return 0;

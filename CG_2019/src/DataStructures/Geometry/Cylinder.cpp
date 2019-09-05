@@ -40,6 +40,7 @@ using namespace CRAB;
 float Cylinder::CollideClosest(const CRAB::Ray &ray) const {
 	//Aux Variables
 	const CRAB::Vector4Df &k = ray.origin - base_center; // Vector between the Cylinder base center and the ray origin.
+	
 	const CRAB::Vector4Df &k_dot_u = dot_simd_Vec(k, direction);
 	const CRAB::Vector4Df &d_dot_u = dot_simd_Vec(ray.direction, direction); // Dot product between ray direction and cylinder one.
 

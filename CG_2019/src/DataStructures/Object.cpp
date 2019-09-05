@@ -10,7 +10,7 @@ Object::Object(Geometry *_geometry): geometry(_geometry)
 	color = { 0.0f, 0.0f, 0.0f, 0 }; // default color
 }
 
-Object::Object(const string &_name, const CRAB::Vector4Df &_color, Geometry *_geometry) : name(_name), geometry(_geometry), color(_color), visible(false)
+Object::Object(const string &_name, const CRAB::Vector4Df &_color, Geometry *_geometry) : name(_name), geometry(_geometry), color(_color), visible(true)
 {
 }
 

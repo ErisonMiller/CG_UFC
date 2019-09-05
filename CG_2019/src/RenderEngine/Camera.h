@@ -25,6 +25,9 @@ namespace CRAB {
 
 		float n;//near plane
 
+		Camera() {
+
+		}
 
 		Camera(const Vector4Df &_position, const Vector4Df &_view, const Vector4Df &_up) : 
 			position(_position), view(_view), up(_up) {

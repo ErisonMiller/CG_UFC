@@ -90,7 +90,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <Optimization>Full</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures;$(SolutionDir)\CG_2019\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -149,7 +149,7 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <FloatingPointModel>Precise</FloatingPointModel>
       <EnablePREfast>false</EnablePREfast>
-      <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:twoPhase- /tune:skylake %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -159,6 +159,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataStructures\Lights\Light.h" />
+    <ClInclude Include="src\DataStructures\Octree.h" />
+    <ClInclude Include="src\DataIO\LoadObj.h" />
     <ClInclude Include="src\DataStructures\Geometry\Cube.h" />
     <ClInclude Include="src\DataStructures\Geometry\Quad.h" />
     <ClInclude Include="src\DataStructures\Geometry\Sphere.h" />
@@ -176,6 +179,8 @@
     <ClInclude Include="src\DataStructures\Geometry\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataStructures\Lights\Light.cpp" />
+    <ClCompile Include="src\DataStructures\Octree.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Cube.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Quad.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Sphere.cpp" />
