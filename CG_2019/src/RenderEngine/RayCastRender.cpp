@@ -29,7 +29,7 @@ RayCast::~RayCast() {
 	delete[]accumulateBuffer;
 }
 
-inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, bool print, float cam_near)
+inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, float cam_near)
 {
 	float dist = INFINITY;
 
@@ -41,8 +41,15 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	for (const Object &obj : objects) {		
 		const float o_dist = obj.Collide(ray);
 		if (o_dist < dist && o_dist > cam_near) {
+			accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 			//TODO remove this visible after
-			if (obj.visible) { dist = o_dist; accucolor = obj.color; }
+			//if (obj.visible) { dist = o_dist; /* accucolor = obj.getMaterial()->ka;*//*accucolor = Vector4Df{ 1.0f, 0.0f, 0.0f, 0.0f };*/ }
+			dist = o_dist;
+			for (Light * light : lights)
+			{
+				accucolor = light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f });
+			}
+		
 		}
 		#if PRINT == 1
 		if (print) {
@@ -103,7 +110,7 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 
 }
 
-CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Object> &objects) {
+CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Object> &objects, std::vector<Light*> lights) {
 	clock_t t;
 	t = clock();
 
@@ -135,7 +142,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 			}
 #endif
 			
-			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, print, cam.n);
+			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam.n);
 
 		}
 	}

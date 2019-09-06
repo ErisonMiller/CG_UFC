@@ -19,12 +19,17 @@
 #include "Sphere.h"
 #include "Triangle.h"
 
+#include "Light.h"
+#include "AmbientLight.h"
+
 using namespace CRAB;
 
 //pixel buffer
 RenderAPI::VertexBuffer vbo;
 //list of objects
 std::vector<Object> objs;
+//list of lights
+std::vector<Light *> lights;
 
 const int width = 512, height = 512;
 
@@ -55,7 +60,7 @@ void disp(void)
 
 	//Render using RayCast
 	RenderAPI::BufferBind(vbo);
-	Vector4Df* colorBuffer = rc.Render(cam, objs);
+	Vector4Df* colorBuffer = rc.Render(cam, objs, lights);
 	RenderAPI::MapBuffer(colorBuffer, width, height);
 	
 
@@ -155,6 +160,9 @@ void Start_Window(int argc, char **argv) {
 
 	//create the pixel buffer
 	RenderAPI::CreateVBO(&vbo, width, height);
+
+	//fill the light list
+	lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
 	
 	//fill the object list
 	//objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(4.0f, 0.5f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
@@ -172,15 +180,18 @@ void Start_Window(int argc, char **argv) {
 	//objs.push_back(Object(Vector4Df{ 0.1f, 0.2f, 0.2f,0 }, new Quad({ 3.5f, 0.0f, -30.0f, 1.0f }, { -3.5f, 0.0f, -30.0f, 1.0f }, { -3.5f, 0.0f, 0.0f, 1.0f }, { 3.5f, 0.0f, 0.0f, 1.0f })));
 
 	//fill the object list
-	objs.push_back(Object("Tronco da arvore 1", Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object("Copa da arvode 1", Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 5.0f,2,30,1 }, Vector4Df{ 0,1,0,0 })));
-	
-	objs.push_back(Object("Tronco da arvore 2", Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 15,0,30,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object("Copa da arvore 2", Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Tronco da arvore 1", Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Copa da arvode 1", Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 5.0f,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//
+	//objs.push_back(Object("Tronco da arvore 2", Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, new Cylinder(2.0f, 0.5f, Vector4Df{ 15,0,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Copa da arvore 2", Vector4Df{ 0.0f, 1.0f, 0.0f, 0 }, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//
+	//objs.push_back(Object("Cubo 1", Vector4Df{ 1.0f, 0.6f, 0.1f, 0 }, new Cube(Vector4Df{ 10, 0, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	//objs.push_back(Object("Cubo 2", Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	//objs.push_back(Object("Cubo 3", Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 
-	objs.push_back(Object("Cubo 1", Vector4Df{ 1.0f, 0.6f, 0.1f, 0 }, new Cube(Vector4Df{ 10, 0, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object("Cubo 2", Vector4Df{ 0.8f, 0.8f, 0.3f, 0 }, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object("Cubo 3", Vector4Df{ 0.6f, 0.4f, 0.5f, 0 }, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	//Fill the object list (With material)
+	objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
 
 	//start render loop
     RenderAPI::RenderLoop();

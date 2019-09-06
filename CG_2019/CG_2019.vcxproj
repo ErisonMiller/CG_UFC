@@ -93,7 +93,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures;$(SolutionDir)\CG_2019\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\CG_2019\src\DataStructures\Lights;$(SolutionDir)\CG_2019\src\DataStructures\Material;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures;$(SolutionDir)\CG_2019\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
