@@ -8,6 +8,7 @@ public:
 	CRAB::Vector4Df intensity;
 
 	Light();
+	Light(CRAB::Vector4Df intensity);
 	virtual ~Light() = 0;
 
 	//Return the collor after the interation with the light and material
