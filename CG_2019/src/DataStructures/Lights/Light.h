@@ -1,5 +1,6 @@
 #pragma once
 #include "Linear_Algebra.h"
+#include "Material.h"
 
 class Light
 {
