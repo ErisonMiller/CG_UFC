@@ -83,3 +83,10 @@ CRAB::RayCollisionList Quad::Collide(const CRAB::Ray &ray)
 	return col;
 
 }
+
+//TODO: Implement it
+Vector4Df Quad::getNormal(const Vector4Df &point)
+{
+	Vector4Df n{ 0.0f, 0.0f, 0.0f, 0.0f };
+	return n;
+}

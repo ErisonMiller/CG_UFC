@@ -48,7 +48,8 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 			Vector4Df pS = ray.origin + (ray.direction * dist); // Surface Point
 			for (Light * light : lights)
 			{
-				accucolor += light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, pS);
+				//accucolor += light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f });
+				accucolor += light->Illumination((*obj.getMaterial()), obj.getNormalVector(pS), ray.direction * (-1.0f), pS);
 			}
 		
 		}

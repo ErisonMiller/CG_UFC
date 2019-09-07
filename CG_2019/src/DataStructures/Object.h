@@ -27,5 +27,6 @@ public:
 	string getName() const;
 	Geometry* getGeometry() const;
 	Material* getMaterial() const;
+	CRAB::Vector4Df getNormalVector(const CRAB::Vector4Df &point) const;
 };
 
