@@ -21,6 +21,7 @@
 
 #include "Light.h"
 #include "AmbientLight.h"
+#include "Spotlights.h"
 
 using namespace CRAB;
 
@@ -163,6 +164,7 @@ void Start_Window(int argc, char **argv) {
 
 	//fill the light list
 	lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
+	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 10.0f, 5.0f, 30.0f, 1 }));
 	
 	//fill the object list
 	//objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(4.0f, 0.5f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
