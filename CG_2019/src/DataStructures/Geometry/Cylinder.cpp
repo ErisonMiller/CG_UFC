@@ -184,10 +184,10 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 
 }
 
-Vector4Df Cylinder::getNormal(const Vector4Df &point)
+CRAB::Vector4Df Cylinder::getNormal(const CRAB::Vector4Df &point)
 {
-	Vector4Df CP = point - base_center;
-	Vector4Df CP2 = CP - (direction * height);
+	CRAB::Vector4Df CP = point - base_center;
+	CRAB::Vector4Df CP2 = CP - (direction * height);
 
 	if (CP.length() <= radius) {
 		return direction * (-1.0f);
@@ -196,7 +196,7 @@ Vector4Df Cylinder::getNormal(const Vector4Df &point)
 		return direction;
 	}
 
-	Vector4Df n = CP - (direction * dot(CP, direction));
-	n.normalize();
+	CRAB::Vector4Df n = CP - (direction * dot(CP, direction));
+	n.to_unitary();
 	return n;
 }
