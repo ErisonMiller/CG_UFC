@@ -88,3 +88,10 @@ CRAB::RayCollisionList Sphere::Collide(const CRAB::Ray &ray)
 
 	return col;
 }
+
+CRAB::Vector4Df Sphere::getNormal(const CRAB::Vector4Df &point)
+{
+	Vector4Df n = point - center;
+	n.normalize();
+	return n;
+}
