@@ -30,8 +30,11 @@ CRAB::RayCollisionList Quad::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-float Quad::CollideClosest(register const CRAB::Ray &ray) const {
+CRAB::Collision Quad::CollideClosest(register const CRAB::Ray &ray) {
 	
+	CRAB::Collision col;
+	col.geometry = this;
+
 	const Vector4Df &normal = cross_simd(e1, e2);
 
 	const Vector4Df &t = dot_simd_Vec(v1 - ray.origin, normal) / dot_simd_Vec(ray.direction, normal);
@@ -42,7 +45,9 @@ float Quad::CollideClosest(register const CRAB::Ray &ray) const {
 	const float proj1 = dot_simd(p_plane - v1, e1);
 	
 	if (proj1 >= 0.000001f && proj1 <= size1 && proj2 >= 0.000001f && proj2 <= size2) {
-		return _mm_cvtss_f32(t);
+		col.distance = _mm_cvtss_f32(t);
+		col.pint = p_plane;
+		return col;
 	}
 	
 	
@@ -57,8 +62,8 @@ float Quad::CollideClosest(register const CRAB::Ray &ray) const {
 	//if (_mm_test_all_ones(_mm_castps_si128(_mm_cmpgt_ps(res, res_gt)))) {
 	//	return _mm_cvtss_f32(t);
 	//}
-
-	return INFINITY;
+	col.distance = INFINITY;
+	return col;
 }
 
 CRAB::RayCollisionList Quad::Collide(const CRAB::Ray &ray)
@@ -82,4 +87,11 @@ CRAB::RayCollisionList Quad::Collide(const CRAB::Ray &ray)
 
 	return col;
 
+}
+
+//TODO: Implement it
+Vector4Df Quad::getNormal(const Vector4Df &point)
+{
+	Vector4Df n{ 0.0f, 0.0f, 0.0f, 0.0f };
+	return n;
 }

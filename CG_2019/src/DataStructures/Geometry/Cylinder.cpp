@@ -37,7 +37,12 @@ CRAB::RayCollisionList Cylinder::CollideAll(const std::vector<CRAB::Ray> &ray)
 
 using namespace CRAB;
 //TODO: Implement it
-float Cylinder::CollideClosest(const CRAB::Ray &ray) const {
+CRAB::Collision Cylinder::CollideClosest(const CRAB::Ray &ray) {
+	
+	CRAB::Collision col;
+	
+	col.geometry = this;
+
 	//Aux Variables
 	const CRAB::Vector4Df &k = ray.origin - base_center; // Vector between the Cylinder base center and the ray origin.
 	
@@ -59,7 +64,9 @@ float Cylinder::CollideClosest(const CRAB::Ray &ray) const {
 		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 		float p_projection = dot_simd((p - base_center), direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0.0f && p_projection <= height) { // Does the ray hit the cylinder?
-			return distance;
+			col.distance = distance;
+			col.pint = p;
+			return col;
 		}
 	}
 
@@ -81,11 +88,17 @@ float Cylinder::CollideClosest(const CRAB::Ray &ray) const {
 	const float distance2 = dot_simd((ppi - ray.origin), direction) / (dot_simd(ray.direction, direction));
 	const CRAB::Vector4Df &p2 = ray.origin + (ray.direction * distance2); // Intersection Point
 	const float int_to_center2 = (p2 - ppi).lengthsq(); // Distance of the intersection point from the base center.
+	
 	if (int_to_center2 <= r_2 && distance2 < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
-		return distance2;
+		col.distance = distance2;
+		col.pint = p2;
+		return col;
 	}
 
-	return distance_final;
+	col.distance = distance_final;
+	col.pint = p2;
+
+	return col;
 }
 
 CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
@@ -169,4 +182,21 @@ CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
 
 	return col;
 
+}
+
+Vector4Df Cylinder::getNormal(const Vector4Df &point)
+{
+	Vector4Df CP = point - base_center;
+	Vector4Df CP2 = CP - (direction * height);
+
+	if (CP.length() <= radius) {
+		return direction * (-1.0f);
+	}
+	if (CP2.length() <= radius) {
+		return direction;
+	}
+
+	Vector4Df n = CP - (direction * dot(CP, direction));
+	n.normalize();
+	return n;
 }

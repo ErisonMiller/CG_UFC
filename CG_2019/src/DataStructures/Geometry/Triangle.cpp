@@ -35,19 +35,29 @@ CRAB::RayCollisionList Triangle::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 
-float Triangle::CollideClosest(register const CRAB::Ray &ray) const {
+CRAB::Collision Triangle::CollideClosest(register const CRAB::Ray &ray) {
 	
+	CRAB::Collision col;
+
+	col.geometry = this;
+
 	const Vector4Df &t = dot_simd_Vec(v1 - ray.origin, normal) / dot_simd_Vec(ray.direction, normal);
 	
 	const Vector4Df &p_plane = ray.origin + ray.direction*t;
+
+	col.pint = p_plane;
 	
 	const float proj1 = dot_simd(p_plane - v1, n_e1);
 	const float proj2 = dot_simd(p_plane - v1, n_e2);
 	
 	if (proj1 >= 0.000001f && proj2 >= 0.000001f && proj2 + proj1 <= normal.w) {
-		return _mm_cvtss_f32(t);
+		col.distance = _mm_cvtss_f32(t);
 	}
-	return INFINITY;
+	else
+	{
+		col.distance = INFINITY;
+	}
+	return col;
 
 }
 
