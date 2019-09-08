@@ -10,6 +10,7 @@ class Object
 public:
 	string name;
 	CRAB::Vector4Df color;
+	CRAB::Matrix4 transformation = CRAB::Identity();
 
 	bool visible = false;
 

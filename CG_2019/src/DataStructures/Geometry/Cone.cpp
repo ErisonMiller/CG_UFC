@@ -16,10 +16,6 @@ Cone::Cone(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector
 	this->base_center = base_center;
 	this->direction = direction.to_unitary();
 	this->top_vertex = this->base_center + (this->direction * this->height);
-
-	const float h_2 = this->height * this->height;
-	const float r_2 = this->radius * this->radius;
-	cos_alfa_2 = (h_2 / (h_2 + r_2));
 }
 
 Cone::~Cone()
@@ -53,7 +49,8 @@ float __fastcall Cone::CollideClosest(const CRAB::Ray &ray) const {
 	
 	//Aux Variables
 	const float r_2 = this->radius * this->radius;
-
+	const float h_2 = this->height * this->height;
+	const float cos_alfa_2 = (h_2 / (h_2 + r_2));
 
 	//Equantion Constants
 	const float a = (d_dot_n*d_dot_n) - (cos_alfa_2);
@@ -95,7 +92,9 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 	t.geometry = this;
 
 	//Aux Variables
-	float r_2 = this->radius * this->radius;
+	const float r_2 = this->radius * this->radius;
+	const float h_2 = this->height * this->height;
+	const float cos_alfa_2 = (h_2 / (h_2 + r_2));
 
 	float d_dot_n = dot(ray.direction, this->direction);
 	float d_dot_d = dot(ray.direction, ray.direction);
@@ -104,6 +103,7 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 
 	float v_dot_n = dot(v, this->direction);
 
+	m = d_dot_n - v_dot_n;
 	//Equantion Constants
 	float a = (d_dot_n*d_dot_n) - (d_dot_d * cos_alfa_2);
 	float b = 2 * ((dot(v, ray.direction)*cos_alfa_2) - (v_dot_n * d_dot_n));

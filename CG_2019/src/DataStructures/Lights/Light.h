@@ -10,5 +10,5 @@ public:
 	virtual ~Light() = 0;
 
 	//Return the collor after the interation with the light and material
-	virtual CRAB::Vector4Df Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view) = 0;
+	//virtual CRAB::Vector4Df Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view) = 0;
 };

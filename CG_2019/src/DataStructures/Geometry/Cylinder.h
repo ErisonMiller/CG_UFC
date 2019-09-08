@@ -14,11 +14,12 @@
 
 class Cylinder : public Geometry
 {
+	
+public:
 	float height, radius;
 	CRAB::Vector4Df base_center; // Cylinder base center
 	CRAB::Vector4Df direction;  // Cylinder direction vector
-
-public:
+	
 	Cylinder();
 	Cylinder(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector4Df direction);
 	~Cylinder();

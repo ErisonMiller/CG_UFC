@@ -14,11 +14,13 @@
 
 class Cone : public Geometry
 {
+	
+public:
 	CRAB::Vector4Df base_center; // Cone base center
 	CRAB::Vector4Df direction;   // Cone direction vector
 	CRAB::Vector4Df top_vertex;  // Cone top vertex
-	float height, radius, cos_alfa_2;
-public:
+	float height, radius;
+
 	Cone();
 	Cone(float height, float radius, CRAB::Vector4Df base_center, CRAB::Vector4Df direction);
 	~Cone();

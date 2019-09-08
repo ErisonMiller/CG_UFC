@@ -2,10 +2,11 @@
 #include "Geometry.h"
 class Sphere : public Geometry
 {
+	
+public:
 	CRAB::Vector4Df center; // Sphere center
 	float radius;			// Sphere radius
-
-public:
+	
 	Sphere();
 	Sphere(const CRAB::Vector4Df &C, float R);
 	~Sphere();

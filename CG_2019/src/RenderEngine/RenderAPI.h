@@ -8,6 +8,7 @@
 
 #include <GL/glew.h>
 #include <GL/glut.h>
+//#include <GL/freeglut.h>
 
 #include "Linear_Algebra.h"
 
@@ -20,8 +21,10 @@ namespace RenderAPI{
 	{
 		// init glut:
 		glutInit(&argc, argv);
+		
 		// specify the display mode to be RGB and single buffering:
-		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+		//glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 		// specify the initial window position:
 		glutInitWindowPosition(500, 100);
 		// specify the initial window size:
@@ -31,6 +34,8 @@ namespace RenderAPI{
 		
 		//glEnable(GL_DEPTH_TEST);
 		//glDisable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_LIGHTING);
 
 		glClearColor(0.0, 1.0, 0.0, 0.0);
 		glMatrixMode(GL_PROJECTION);
@@ -103,6 +108,11 @@ namespace RenderAPI{
 	inline void SwapBuffers(){
 		glutSwapBuffers();
 	}
+
+	inline void ReDisplay() {
+		glutPostRedisplay();
+	}
+
 
 	inline void KeyboardFunc(void(*callback)(unsigned char, int, int))		{ glutKeyboardFunc(callback); }
 	inline void ReshapeFunc(void(*callback)(int, int))						{ glutReshapeFunc(callback); }

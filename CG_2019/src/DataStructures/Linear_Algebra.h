@@ -50,7 +50,7 @@ namespace CRAB {
 		//inline Vector4Df operator/(const float a) const { return Vector4Df{ x / a, y / a, z / a, w }; }
 		inline Vector4Df operator/(const float a) const { return *(Vector4Df*)&_mm_div_ps(v128, _mm_set_ps1(a)); }
 		//inline Vector4Df operator*(const Vector4Df& v) const { return Vector4Df{ x * v.x, y * v.y, z * v.z, w * v.w }; }
-		inline Vector4Df operator*(const Vector4Df& v) const { return *(Vector4Df*)&_mm_mul_ps(v128, v.v128); }
+		__forceinline Vector4Df operator*(const Vector4Df& v) const { return *(Vector4Df*)&_mm_mul_ps(v128, v.v128); }
 		//inline Vector4Df operator/(const Vector4Df& v) const { return Vector4Df{ x / v.x, y / v.y, z / v.z, w / v.w }; }
 		inline Vector4Df operator/(const Vector4Df& v) const { return *(Vector4Df*)&_mm_div_ps(v128, v.v128); }
 		//inline Vector4Df operator+(const Vector4Df& v) const { return Vector4Df{ x + v.x, y + v.y, z + v.z, w + v.w }; }
@@ -163,6 +163,15 @@ namespace CRAB {
 	/*
 	----------------- Create the transformation matrices----------------------
 	*/
+	inline
+		Matrix4 Identity()
+	{
+		return Matrix4{
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			0, 0, 0, 1 };
+	}
 
 	inline
 		Matrix4 translate(const Vector4Df &v)

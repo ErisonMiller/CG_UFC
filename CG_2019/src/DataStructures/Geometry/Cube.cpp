@@ -59,7 +59,9 @@ __forceinline float CollideClosestQuad(register const CRAB::Ray &ray, register c
 	const float proj2 = dot_simd(p_plane - quad.v1, quad.e2);
 	const float proj1 = dot_simd(p_plane - quad.v1, quad.e1);
 
-	if (proj1 >= 0.000001f && proj1 <= quad.size1 && proj2 >= 0.000001f && proj2 <= quad.size2) {
+	//const bool hit = proj1 >= 0.000001f && proj1 <= quad.size1 && proj2 >= 0.000001f && proj2 <= quad.size2;
+	//if (hit) {
+	if(proj1 >= 0.000001f && proj2 >= 0.000001f && proj1 <= quad.size1 && proj2 <= quad.size2){
 	//if (proj1 >= 0.000001f && proj2 >= 0.000001f && proj2 + proj1 <= (quad.size2 + quad.size1)*0.5f) {//to be a triangle
 		return _mm_cvtss_f32(t);
 	}
