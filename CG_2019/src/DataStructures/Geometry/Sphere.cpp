@@ -48,8 +48,12 @@ CRAB::Collision Sphere::CollideClosest(const CRAB::Ray &ray)
 
 	if (Delta < 0.0f) { col.distance = INFINITY; return col; }
 
-	// First point
+	//Distance
 	col.distance = -(B + sqrtf(Delta));
+
+	//Intersection Point
+	col.pint = ray.origin + (ray.direction * col.distance); // Surface 
+
 	return col;
 }
 

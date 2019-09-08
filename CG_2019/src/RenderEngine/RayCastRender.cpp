@@ -38,18 +38,15 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	#if PRINT == 1
 	int id = 0;
 	#endif
-	for (const Object &obj : objects) {		
-		const float o_dist = obj.Collide(ray).distance;
+	for (const Object &obj : objects) {
+		const CRAB::Collision col = obj.Collide(ray);//Collision
+		const float o_dist = col.distance;
 		if (o_dist < dist && o_dist > cam.n) {
 			accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
-			//TODO remove this visible after
-			//if (obj.visible) { dist = o_dist; /* accucolor = obj.getMaterial()->ka;*//*accucolor = Vector4Df{ 1.0f, 0.0f, 0.0f, 0.0f };*/ }
 			dist = o_dist;
-			Vector4Df pS = ray.origin + (ray.direction * dist); // Surface Point
 			for (Light * light : lights)
 			{
-				//accucolor += light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f });
-				accucolor += light->Illumination((*obj.getMaterial()), obj.getNormalVector(pS), ray.direction * (-1.0f), pS);
+				accucolor += light->Illumination((*obj.getMaterial()), obj.getNormalVector(col.pint), ray.direction * (-1.0f), col.pint);
 			}
 		
 		}
