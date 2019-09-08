@@ -39,9 +39,9 @@ using namespace CRAB;
 //TODO: Implement it
 CRAB::Collision Cylinder::CollideClosest(const CRAB::Ray &ray) {
 	
-	CRAB::Collision t;
+	CRAB::Collision col;
 	
-	t.geometry = this;
+	col.geometry = this;
 
 	//Aux Variables
 	const CRAB::Vector4Df &k = ray.origin - base_center; // Vector between the Cylinder base center and the ray origin.
@@ -64,7 +64,9 @@ CRAB::Collision Cylinder::CollideClosest(const CRAB::Ray &ray) {
 		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 		float p_projection = dot_simd((p - base_center), direction); //Projection of the point P on the cylinder axis
 		if (p_projection >= 0.0f && p_projection <= height) { // Does the ray hit the cylinder?
-			t.distance = distance;
+			col.distance = distance;
+			col.pint = p;
+			return col;
 		}
 	}
 
@@ -87,16 +89,16 @@ CRAB::Collision Cylinder::CollideClosest(const CRAB::Ray &ray) {
 	const CRAB::Vector4Df &p2 = ray.origin + (ray.direction * distance2); // Intersection Point
 	const float int_to_center2 = (p2 - ppi).lengthsq(); // Distance of the intersection point from the base center.
 	
-	t.pint = p;
 	if (int_to_center2 <= r_2 && distance2 < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
-		t.distance = distance2;
-	}
-	else
-	{
-		t.distance = distance_final;
+		col.distance = distance2;
+		col.pint = p2;
+		return col;
 	}
 
-	return t;
+	col.distance = distance_final;
+	col.pint = p2;
+
+	return col;
 }
 
 CRAB::RayCollisionList Cylinder::Collide(const CRAB::Ray &ray)
