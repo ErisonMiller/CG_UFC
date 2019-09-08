@@ -86,7 +86,9 @@ namespace CRAB {
 	__forceinline float dot_simd(const __m128& v1, const __m128& v2) {return _mm_cvtss_f32(_mm_dp_ps(v1, v2, 0xff));}
 	__forceinline Vector4Df dot_simd_Vec(const __m128& v1, const __m128& v2) { return *(Vector4Df*)&_mm_dp_ps(v1, v2, 0xff); }
 
-	
+	//reflection vector
+	inline Vector4Df reflection(const Vector4Df& v, const Vector4Df& mirror) { return (mirror * dot(mirror, v))*(2.0f) - v; }
+
 	inline float distancesq(const Vector4Df& v1, const Vector4Df& v2) { return (v1-v2).lengthsq(); }
 	inline float distance(const Vector4Df& v1, const Vector4Df& v2) { return sqrtf(distancesq(v1,v2)); }
 

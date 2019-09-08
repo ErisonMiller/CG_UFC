@@ -45,10 +45,11 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 			//TODO remove this visible after
 			//if (obj.visible) { dist = o_dist; /* accucolor = obj.getMaterial()->ka;*//*accucolor = Vector4Df{ 1.0f, 0.0f, 0.0f, 0.0f };*/ }
 			dist = o_dist;
+			Vector4Df pS = ray.origin + (ray.direction * dist); // Surface Point
 			for (Light * light : lights)
 			{
-				Vector4Df view = cam.position - 
-				accucolor = light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, cam.position /*Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }*/);
+				//accucolor += light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f });
+				accucolor += light->Illumination((*obj.getMaterial()), obj.getNormalVector(pS), ray.direction * (-1.0f), pS);
 			}
 		
 		}
