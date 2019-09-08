@@ -21,7 +21,7 @@ public:
 
 	~Object();
 
-	float Collide(register const CRAB::Ray &ray) const;
+	CRAB::Collision Collide(register const CRAB::Ray &ray) const;
 	CRAB::RayCollisionList CollideAll(const CRAB::Ray &ray) const;
 
 	string getName() const;

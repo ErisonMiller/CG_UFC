@@ -31,9 +31,12 @@ CRAB::RayCollisionList Sphere::CollideAll(const std::vector<CRAB::Ray> &ray)
 	return col;
 }
 
-//TODO: Implement it
-float Sphere::CollideClosest(const CRAB::Ray &ray) const
+//TODO: Get the Intercept Point
+CRAB::Collision Sphere::CollideClosest(const CRAB::Ray &ray)
 {
+	CRAB::Collision col;
+	col.geometry = this;
+
 	const CRAB::Vector4Df &W = ray.origin - center;		// The difference of P0 - C
 
 	// Coefficients of the equation
@@ -43,10 +46,11 @@ float Sphere::CollideClosest(const CRAB::Ray &ray) const
 	// Discriminant
 	const float Delta = (B*B - C);
 
-	if (Delta < 0.0f) return INFINITY;
+	if (Delta < 0.0f) { col.distance = INFINITY; return col; }
 
 	// First point
-	return -(B + sqrtf(Delta));
+	col.distance = -(B + sqrtf(Delta));
+	return col;
 }
 
 //TODO: Implement it

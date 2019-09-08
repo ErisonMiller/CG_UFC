@@ -42,7 +42,12 @@ CRAB::RayCollisionList Cone::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 //TODO: Implement it
-float __fastcall Cone::CollideClosest(const CRAB::Ray &ray) const {
+CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
+
+	CRAB::Collision col;
+
+	col.geometry = this;
+
 	const float d_dot_n = dot_simd(ray.direction, direction);
 	//const float d_dot_d = dot_simd(ray.direction, ray.direction);
 	//const float d_dot_d = 1.0f; //changed to recieve 1.0f considering that ray.direction has lenght one
@@ -67,7 +72,9 @@ float __fastcall Cone::CollideClosest(const CRAB::Ray &ray) const {
 		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 		const float p_projection = dot_simd((top_vertex - p), direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cone?
-			return distance;
+			col.pint = p;
+			col.distance = distance;
+			return col;
 		}
 	}
 	
@@ -80,10 +87,14 @@ float __fastcall Cone::CollideClosest(const CRAB::Ray &ray) const {
 	const float int_to_center = (p - this->base_center).lengthsq(); // Distance of the intersection point from the base center.
 
 	if (int_to_center <= r_2) {//The point intercept tha base iff its distance from the center is less than the radius.
-		return distance;
+		col.pint = p;
+		col.distance = distance;
+		return col;
 	}
 
-	return INFINITY;
+	col.distance = INFINITY;
+
+	return col;
 }
 
 CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)

@@ -112,11 +112,14 @@ CRAB::RayCollisionList Cube::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 
-float Cube::CollideClosest(register const CRAB::Ray &ray) const {
+CRAB::Collision Cube::CollideClosest(register const CRAB::Ray &ray) {
+	CRAB::Collision col;
+	col.geometry = this;
+	
 	//Test if the ray collides with the sphere that sorrounds the cube 
 	
 	const Vector4Df &n = cross_simd(center - ray.origin, ray.direction);
-	if (dot_simd(n, n) > r2)return INFINITY;//don't collide
+	if (dot_simd(n, n) > r2)col.distance = INFINITY;//don't collide
 	
 	float final_distance = INFINITY;
 	float dist;
@@ -136,7 +139,9 @@ float Cube::CollideClosest(register const CRAB::Ray &ray) const {
 	//dist = quads[4].CollideClosest(ray); if (dist < final_distance)final_distance = dist;
 	//dist = quads[5].CollideClosest(ray); if (dist < final_distance)final_distance = dist;
 	
-	return final_distance;
+	col.distance = final_distance;
+
+	return col;
 }
 
 CRAB::RayCollisionList Cube::Collide(const CRAB::Ray &ray)

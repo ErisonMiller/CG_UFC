@@ -15,7 +15,7 @@ public:
 	~Cube();
 
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray> &ray);
-	float CollideClosest(register const CRAB::Ray &ray) const;
+	CRAB::Collision CollideClosest(register const CRAB::Ray &ray);
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);
 };
 

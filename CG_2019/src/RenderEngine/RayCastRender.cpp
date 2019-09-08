@@ -29,7 +29,7 @@ RayCast::~RayCast() {
 	delete[]accumulateBuffer;
 }
 
-inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, float cam_near)
+inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, CRAB::Camera cam)
 {
 	float dist = INFINITY;
 
@@ -39,15 +39,16 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	int id = 0;
 	#endif
 	for (const Object &obj : objects) {		
-		const float o_dist = obj.Collide(ray);
-		if (o_dist < dist && o_dist > cam_near) {
+		const float o_dist = obj.Collide(ray).distance;
+		if (o_dist < dist && o_dist > cam.n) {
 			accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 			//TODO remove this visible after
 			//if (obj.visible) { dist = o_dist; /* accucolor = obj.getMaterial()->ka;*//*accucolor = Vector4Df{ 1.0f, 0.0f, 0.0f, 0.0f };*/ }
 			dist = o_dist;
 			for (Light * light : lights)
 			{
-				accucolor = light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f });
+				Vector4Df view = cam.position - 
+				accucolor = light->Illumination((*obj.getMaterial()), Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, cam.position /*Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }*/);
 			}
 		
 		}
@@ -91,7 +92,7 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 	float dist = INFINITY;
 	Matrix4 to_cam = CRAB::ToCamera(cam);
 	for (Object &obj : objects) {
-		const float o_dist = obj.Collide(ray);
+		const float o_dist = obj.Collide(ray).distance;
 		if (o_dist < dist && o_dist > cam.n) {
 			dist = o_dist;
 			colidiu = &obj;
@@ -142,7 +143,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 			}
 #endif
 			
-			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam.n);
+			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam);
 
 		}
 	}
