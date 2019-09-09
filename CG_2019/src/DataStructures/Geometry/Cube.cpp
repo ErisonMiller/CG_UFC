@@ -125,15 +125,15 @@ CRAB::Collision Cube::CollideClosest(register const CRAB::Ray &ray) {
 	if (dot_simd(n, n) > r2)col.distance = INFINITY;//don't collide
 	
 	float final_distance = INFINITY;
-	float dist;
+	float dist, colide_quad = 0;
 
 
 	final_distance = CollideClosestQuad(ray, quads[0]);
-	dist = CollideClosestQuad(ray, quads[1]); if (dist < final_distance)final_distance = dist;
-	dist = CollideClosestQuad(ray, quads[2]); if (dist < final_distance)final_distance = dist;
-	dist = CollideClosestQuad(ray, quads[3]); if (dist < final_distance)final_distance = dist;
-	dist = CollideClosestQuad(ray, quads[4]); if (dist < final_distance)final_distance = dist;
-	dist = CollideClosestQuad(ray, quads[5]); if (dist < final_distance)final_distance = dist;
+	dist = CollideClosestQuad(ray, quads[1]); if (dist < final_distance){final_distance = dist;colide_quad = 1;}
+	dist = CollideClosestQuad(ray, quads[2]); if (dist < final_distance){final_distance = dist;colide_quad = 2;}
+	dist = CollideClosestQuad(ray, quads[3]); if (dist < final_distance){final_distance = dist;colide_quad = 3;}
+	dist = CollideClosestQuad(ray, quads[4]); if (dist < final_distance){final_distance = dist;colide_quad = 4;}
+	dist = CollideClosestQuad(ray, quads[5]); if (dist < final_distance){final_distance = dist;colide_quad = 5;}
 	
 	//final_distance = quads[0].CollideClosest(ray);
 	//dist = quads[1].CollideClosest(ray); if (dist < final_distance)final_distance = dist;
@@ -141,7 +141,9 @@ CRAB::Collision Cube::CollideClosest(register const CRAB::Ray &ray) {
 	//dist = quads[3].CollideClosest(ray); if (dist < final_distance)final_distance = dist;
 	//dist = quads[4].CollideClosest(ray); if (dist < final_distance)final_distance = dist;
 	//dist = quads[5].CollideClosest(ray); if (dist < final_distance)final_distance = dist;
-	
+
+	col.pint= ray.origin + ray.direction*final_distance;
+	col.pint.w = colide_quad;
 	col.distance = final_distance;
 
 	return col;
@@ -167,15 +169,15 @@ CRAB::RayCollisionList Cube::Collide(const CRAB::Ray &ray)
 
 CRAB::Vector4Df Cube::getNormal(const CRAB::Vector4Df& point)
 {
-	CRAB::Vector4Df n, n_[6], tmp{ 0.0f, 0.0f, 0.0f, 0 };
-	n = tmp;
+	//CRAB::Vector4Df n, n_[6], tmp{ 0.0f, 0.0f, 0.0f, 0 };
+	//n = tmp;
+	//
+	//for (int i = 0; i < 6; i++) {
+	//	n_[i] = 
+	//
+	//	if (n_[i] != tmp) 
+	//		n = n_[i];
+	//}
 
-	for (int i = 0; i < 6; i++) {
-		n_[i] = quads[i].getNormal(point);
-
-		if (n_[i] != tmp) 
-			n = n_[i];
-	}
-
-	return n;
+	return quads[(int)point.w].getNormal(point);
 }

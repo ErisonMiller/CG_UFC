@@ -41,6 +41,7 @@ CRAB::Collision Cylinder::CollideClosest(const CRAB::Ray &ray) {
 	
 	CRAB::Collision col;
 	
+	col.distance = INFINITY;
 	col.geometry = this;
 
 	//Aux Variables
@@ -66,37 +67,37 @@ CRAB::Collision Cylinder::CollideClosest(const CRAB::Ray &ray) {
 		if (p_projection >= 0.0f && p_projection <= height) { // Does the ray hit the cylinder?
 			col.distance = distance;
 			col.pint = p;
-			return col;
+			//return col;
 		}
 	}
 
-	float distance_final = INFINITY;
 	//TODO: It must be implmented only if one of the cylinder interception is not valid or 'a' is less than 0.
 	//Base
 	const CRAB::Vector4Df &base_dir = direction * (-1.0f);
 	//OBS.: Base Center is a point on the base plan.
 	const float distance = dot_simd((base_center - ray.origin), base_dir) / (dot_simd(ray.direction, base_dir));
-	const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
-	const float int_to_center = (p - base_center).lengthsq(); // Distance of the intersection point from the base center.
+	if(distance < col.distance){
+		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
+		const float int_to_center = (p - base_center).lengthsq(); // Distance of the intersection point from the base center.
 
-	if (int_to_center <= r_2 && distance < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
-		distance_final = distance;
+		if (int_to_center <= r_2) {//The point intercept tha base iff its distance from the center is less than the radius.
+			col.distance = distance;
+			col.pint = p;
+		}
 	}
 
 	//Top
 	const CRAB::Vector4Df &ppi = base_center + direction*height;
 	const float distance2 = dot_simd((ppi - ray.origin), direction) / (dot_simd(ray.direction, direction));
-	const CRAB::Vector4Df &p2 = ray.origin + (ray.direction * distance2); // Intersection Point
-	const float int_to_center2 = (p2 - ppi).lengthsq(); // Distance of the intersection point from the base center.
-	
-	if (int_to_center2 <= r_2 && distance2 < distance_final) {//The point intercept tha base iff its distance from the center is less than the radius.
-		col.distance = distance2;
-		col.pint = p2;
-		return col;
-	}
+	if (distance2 < col.distance) {
+		const CRAB::Vector4Df &p2 = ray.origin + (ray.direction * distance2); // Intersection Point
+		const float int_to_center2 = (p2 - ppi).lengthsq(); // Distance of the intersection point from the base center.
 
-	col.distance = distance_final;
-	col.pint = p2;
+		if (int_to_center2 <= r_2) {//The point intercept tha base iff its distance from the center is less than the radius.
+			col.distance = distance2;
+			col.pint = p2;
+		}
+	}
 
 	return col;
 }

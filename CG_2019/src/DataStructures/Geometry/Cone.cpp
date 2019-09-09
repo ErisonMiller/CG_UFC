@@ -87,6 +87,7 @@ CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
 	if (int_to_center <= r_2) {//The point intercept tha base iff its distance from the center is less than the radius.
 		col.pint = p;
 		col.distance = distance;
+		col.pint.w = 1;
 		return col;
 	}
 
@@ -174,9 +175,15 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 {
 	
-	CRAB::Vector4Df p = point;
-	p.w = 1.0f;
-	CRAB::Vector4Df n = ((p - top_vertex) - direction*point.w).to_unitary();
 	
+	CRAB::Vector4Df n;
+	if (point.w < 0.0f) {
+		CRAB::Vector4Df p = point;
+		p.w = 1.0f;
+		n = ((p - top_vertex) - direction * point.w).to_unitary();
+	}
+	else {
+		n = direction * (-1.0f);
+	}
 	return n;
 }

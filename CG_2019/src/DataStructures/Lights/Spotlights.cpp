@@ -25,18 +25,24 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 	float spotCos = dot(direction, L*(-1.0f)); // angle between the direction of the source and a vector 'L' to a point on the surface
 	float spotCosCutOff = cos(angle); // angular limit
 
-	if (spotCos >= spotCosCutOff && dot(L, normal) > 0.0f) {
+	float dot_L_n = dot(L, normal);
+	if (spotCos >= spotCosCutOff && dot_L_n > 0.0f) {
 		color = this->intensity / d2; //intensity from a point source located at 'position'
 		color = color * powf(spotCos, exponent);
 	}
 	else color = { 0.0f, 0.0f, 0.0f, 0 };
 
-	// the direction of a perfect reflector
-	CRAB::Vector4Df r = reflection(L, normal);
+	
+	CRAB::Vector4Df Ia = intensity * mat.ka; //ambient reflection
+	CRAB::Vector4Df Id = (color * mat.kd) * dot_L_n; //diffuse reflection
+	CRAB::Vector4Df Is = { 0.0f, 0.0f, 0.0f, 0.0f };					  // specular reflection
 
-	CRAB::Vector4Df Ia = color * mat.ka; //ambient reflection
-	CRAB::Vector4Df Id = (color * mat.kd) * dot(L, normal); //diffuse reflection
-	CRAB::Vector4Df Is = (color * mat.ks) * powf(dot(r, view), mat.alfa);//specular reflection
+	// the direction of a perfect reflector
+	const CRAB::Vector4Df r = reflection(L, normal);
+	float dot_r_v = dot(r, view);
+	if (dot_r_v > 0.0f) {
+		Is = (color * mat.ks) * powf(dot_r_v, mat.alfa);//specular reflection
+	}
 
 	return Ia + Id + Is;
 }

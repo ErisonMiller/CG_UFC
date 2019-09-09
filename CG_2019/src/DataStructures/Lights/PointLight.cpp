@@ -10,19 +10,19 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 	CRAB::Vector4Df L = position - P;
 	L.normalize();
 
-	// color
-	CRAB::Vector4Df color;
-	if (dot(L, normal) >= 0.0f)
-		color = this->intensity;
-	else
-		color = {0.0f, 0.0f, 0.0f, 0};
+	CRAB::Vector4Df Ia = intensity * mat.ka;                                   // ambient reflection
+	CRAB::Vector4Df Id = { 0.0f, 0.0f, 0.0f, 0.0f };			           // diffuse reflection
+	CRAB::Vector4Df Is = { 0.0f, 0.0f, 0.0f, 0.0f };					  // specular reflection
 
-	// reflection vector
-	CRAB::Vector4Df r = reflection(L, normal);
-
-	CRAB::Vector4Df Ia = color * mat.ka;                                   // ambient reflection
-	CRAB::Vector4Df Id = (color * mat.kd) * dot(L, normal);                // diffuse reflection
-	CRAB::Vector4Df Is = (color * mat.ks) * powf(dot(r, view), mat.alfa);  // specular reflection
-
+	float dot_d_n = dot(L, normal);
+	if (dot_d_n > 0.0f) {
+		Id = (intensity * mat.kd) * dot_d_n; //diffuse reflection
+	}
+	const CRAB::Vector4Df r = reflection(L, normal);
+	float dot_r_v = dot(r, view);
+	if (dot_r_v > 0.0f) {
+		Is = (intensity * mat.ks) * powf(dot_r_v, mat.alfa);//specular reflection
+	}
+	
 	return Ia + Id + Is;
 }

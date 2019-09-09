@@ -12,8 +12,9 @@ class Object
 	Material *material;
 public:
 	string name;
-	CRAB::Matrix4 transformation = CRAB::Identity();
-
+	//TODO:
+	//CRAB::Matrix4 transformation = CRAB::Identity();//transformation matrix that rotates, resize and translate the object
+	CRAB::Vector4Df position{0,0,0,0};
 
 	bool visible = false;
 

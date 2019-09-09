@@ -23,7 +23,7 @@ CRAB::Collision Object::Collide(register const CRAB::Ray &ray) const {
 	//if (Coll.collisions.size() == 0)return INFINITY;
 	//return Coll.collisions[0].distance;
 
-	return geometry->CollideClosest(CRAB::Ray{ transformation*ray.origin, transformation*ray.direction });
+	return geometry->CollideClosest(CRAB::Ray{ ray.origin - position, ray.direction });
 	//return geometry->CollideClosest(ray);
 }
 

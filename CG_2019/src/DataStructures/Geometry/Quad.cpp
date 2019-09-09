@@ -93,19 +93,18 @@ CRAB::RayCollisionList Quad::Collide(const CRAB::Ray &ray)
 //TODO: Implement it
 Vector4Df Quad::getNormal(const Vector4Df &point)
 {
-	Vector4Df n{ 0.0f, 0.0f, 0.0f, 0 };
-
-	Vector4Df W0 = point - v1;
-	W0.normalize();
-
-	Vector4Df W1 = cross(W0, e2);
-	Vector4Df W2 = cross(e1, W0);
-
-	W1.normalize();
-	W2.normalize();
-
-	if (dot(W1, W2) > 0)
-		n = point + W1;
-
-	return n;
+	//Vector4Df n{ 0.0f, 0.0f, 0.0f, 0 };
+	//
+	//Vector4Df W0 = point - v1;
+	//W0.normalize();
+	//
+	//Vector4Df W1 = cross(W0, e2);
+	//Vector4Df W2 = cross(e1, W0);
+	//
+	//W1.normalize();
+	//W2.normalize();
+	//
+	//if (dot(W1, W2) > 0)
+	//	n = point + W1;
+	return cross_simd(e1, e2);
 }

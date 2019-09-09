@@ -58,7 +58,8 @@ inline void RenderObject() {
 		if (ImGui::InputText("", object_name, 30, ImGuiInputTextFlags_EnterReturnsTrue)) {
 			selected_obj->name = object_name;
 		}
-		
+		ImGui::InputFloat3("Position", (float*)&selected_obj->position);
+
 		if(ImGui::CollapsingHeader("Material Properties:")){
 			ImGui::ColorEdit4("Color Ambient", (float*)&selected_obj->getMaterial()->ka, ImGuiColorEditFlags_NoInputs);
 			ImGui::ColorEdit4("Color Difuse", (float*)&selected_obj->getMaterial()->kd, ImGuiColorEditFlags_NoInputs);
