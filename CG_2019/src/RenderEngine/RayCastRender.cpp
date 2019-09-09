@@ -127,7 +127,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-	//#pragma omp parallel for num_threads(16) schedule(guided)
+	#pragma omp parallel for num_threads(16) schedule(guided)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
@@ -266,18 +266,21 @@ inline Vector4Df ray_cast(register const Vector4Df &origin, register const Vecto
 		if (_mm_ucomigt_ss(l_dir, _mm_setzero_ps())) {
 			final_color = *(Vector4Df*)&_mm_fmadd_ps(l_dir, accucolor, final_color);
 
-			//specular
-			Vector4Df spec = dot_simd_Vec(reflec_dir, light);
-			spec = spec * spec;
-			spec = spec * spec;
-			spec = spec * spec;
-			spec = spec * spec;
-			spec = spec * spec;
-			spec = spec * spec;
-			if (_mm_ucomigt_ss(spec, _mm_setzero_ps())) {
-				final_color = *(Vector4Df*)&_mm_fmadd_ps(spec, accucolor, final_color);
-			}
+			
 		}
+		//specular
+		Vector4Df spec = dot_simd_Vec(reflec_dir, light);
+		if (_mm_ucomigt_ss(spec, _mm_setzero_ps())) {
+			spec = spec * spec;
+			spec = spec * spec;
+			spec = spec * spec;
+			spec = spec * spec;
+			spec = spec * spec;
+			spec = spec * spec;
+			final_color = *(Vector4Df*)&_mm_fmadd_ps(spec, accucolor, final_color);
+			
+		}
+		
 	
 		
 	}

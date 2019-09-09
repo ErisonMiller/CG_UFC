@@ -26,8 +26,12 @@ CRAB::Vector4Df DirectionalLight::Illumination(const Material &mat, const CRAB::
 	float dot_d_n = dot(direction, normal);
 	if (dot_d_n > 0) {
 		Id = (intensity * mat.kd) * dot_d_n; //diffuse reflection
-		Id = Id + (intensity * mat.ks) * powf(dot(r, view), mat.alfa);//specular reflection
-	}
 
+		
+	}
+	float dot_r_v = dot(r, view);
+	if (dot_r_v > 0) {
+		Id = Id + (intensity * mat.ks) * powf(dot_r_v, mat.alfa);//specular reflection
+	}
 	return Ia + Id;
 }

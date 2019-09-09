@@ -59,16 +59,19 @@ inline void RenderObject() {
 			selected_obj->name = object_name;
 		}
 		
-		
-		ImGui::ColorEdit4("Color Ambient", (float*)&selected_obj->getMaterial()->ka, ImGuiColorEditFlags_NoInputs);
-		
-		ImGui::ColorEdit4("Color Difuse", (float*)&selected_obj->getMaterial()->kd, ImGuiColorEditFlags_NoInputs);
-
+		if(ImGui::CollapsingHeader("Material Properties:")){
+			ImGui::ColorEdit4("Color Ambient", (float*)&selected_obj->getMaterial()->ka, ImGuiColorEditFlags_NoInputs);
+			ImGui::ColorEdit4("Color Difuse", (float*)&selected_obj->getMaterial()->kd, ImGuiColorEditFlags_NoInputs);
+			ImGui::ColorEdit4("Color Specular", (float*)&selected_obj->getMaterial()->ks, ImGuiColorEditFlags_NoInputs);
+			ImGui::InputFloat("Alpha", &selected_obj->getMaterial()->alfa);
+		}
 
 		selected_geometry = selected_obj->getGeometry();
-		ImGui::Text("Geometry Properties:");
-		ImGui::Text(typeid(*selected_geometry).name());
-		RenderGeometry();
+
+		if (ImGui::CollapsingHeader("Geometry Properties:")) {
+			ImGui::Text(typeid(*selected_geometry).name());
+			RenderGeometry();
+		}
 
 		ImGui::End();
 	}
