@@ -127,7 +127,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-	#pragma omp parallel for num_threads(16) schedule(guided)
+	//#pragma omp parallel for num_threads(16) schedule(guided)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
@@ -157,7 +157,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 const Vector4Df colors[4] = { Vector4Df{1,0,0,0},Vector4Df{0.15, 0.87, 0.15},Vector4Df{0.9f,0.9f,0,0},Vector4Df{0,0.6f,1,0} };
 const Vector4Df light = Vector4Df{0.6f,-0.5f,0.1f, 0.0f}.to_unitary();
 const Vector4Df light_amb = Vector4Df{ 0.2f,0.2f,0.2f, 0.2f };
-const Vector4Df reflection = Vector4Df{ 0.3f,0.3f,0.3f, 0.0f };
+const Vector4Df reflectio = Vector4Df{ 0.3f,0.3f,0.3f, 0.0f };
 const Vector4Df vec2 = Vector4Df{ 2.0f,2.0f,2.0f, 2.0f };
 const Vector4Df sky_color = Vector4Df{ 0.8f, 0.8f, 0.8f, 1.0f };
 
@@ -285,7 +285,7 @@ inline Vector4Df ray_cast(register const Vector4Df &origin, register const Vecto
 	const Vector4Df reflec = ray_cast(p_colision, reflec_dir*(-1.0f), spheres, recs - 1);
 	//if(reflec != Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }){
 	if (dist < p_dist) {
-		final_color = *(Vector4Df*)&_mm_fmadd_ps(reflection, reflec, final_color);
+		final_color = *(Vector4Df*)&_mm_fmadd_ps(reflectio, reflec, final_color);
 	}
 	else {
 		final_color = *(Vector4Df*)&_mm_fmadd_ps(Vector4Df{ 0.3f,0.3f,0.3f,0.0f }, reflec, final_color);

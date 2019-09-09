@@ -159,6 +159,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataStructures\Lights\DirectionalLight.h" />
+    <ClInclude Include="Includes\imgui\imconfig.h" />
+    <ClInclude Include="Includes\imgui\imgui.h" />
+    <ClInclude Include="Includes\imgui\imgui_impl_glut.h" />
+    <ClInclude Include="Includes\imgui\imgui_impl_opengl2.h" />
+    <ClInclude Include="Includes\imgui\imgui_internal.h" />
+    <ClInclude Include="Includes\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Includes\imgui\imstb_textedit.h" />
+    <ClInclude Include="Includes\imgui\imstb_truetype.h" />
     <ClInclude Include="src\DataStructures\Lights\AmbientLight.h" />
     <ClInclude Include="src\DataStructures\Lights\Light.h" />
     <ClInclude Include="src\DataStructures\Lights\Spotlights.h" />
@@ -178,10 +187,18 @@
     <ClInclude Include="src\RenderEngine\OpenGLRender.h" />
     <ClInclude Include="src\RenderEngine\RayCastRender.h" />
     <ClInclude Include="src\RenderEngine\RenderAPI.h" />
+    <ClInclude Include="src\WindowController\ImGUI.h" />
+    <ClInclude Include="src\WindowController\ObjectController.h" />
     <ClInclude Include="src\WindowController\WindowController.h" />
     <ClInclude Include="src\DataStructures\Geometry\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataStructures\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="Includes\imgui\imgui.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_impl_glut.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="Includes\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\DataStructures\Lights\AmbientLight.cpp" />
     <ClCompile Include="src\DataStructures\Lights\Light.cpp" />
     <ClCompile Include="src\DataStructures\Lights\Spotlights.cpp" />

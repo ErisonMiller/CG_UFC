@@ -12,6 +12,8 @@ class Object
 	Material *material;
 public:
 	string name;
+	CRAB::Matrix4 transformation = CRAB::Identity();
+
 
 	bool visible = false;
 

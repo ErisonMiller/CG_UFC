@@ -115,7 +115,6 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 
 	float v_dot_n = dot(v, this->direction);
 
-	m = d_dot_n - v_dot_n;
 	//Equantion Constants
 	float a = (d_dot_n*d_dot_n) - (d_dot_d * cos_alfa_2);
 	float b = 2 * ((dot(v, ray.direction)*cos_alfa_2) - (v_dot_n * d_dot_n));
@@ -155,6 +154,7 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 			}
 		}
 	}
+	m = (d_dot_n * t.distance) - v_dot_n;
 
 	//TODO: It must be implmented only if one of the cone interception is not valid or 'a' is less than 0.
 	//Base
@@ -173,6 +173,7 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 }
 CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 {
-	CRAB::Vector4Df n = ((point - top_vertex) - direction*((1 + cos_alfa_2)*m)).to_unitary();
+	CRAB::Vector4Df n = ((point - top_vertex) - direction*m).to_unitary();
 	return n;
+	//return (point - base_center).to_unitary();
 }

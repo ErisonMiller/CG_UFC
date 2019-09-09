@@ -60,8 +60,10 @@ inline void RenderObject() {
 		}
 		
 		
-		ImGui::Text("Color button with Picker:"); ImGui::SameLine();
-		ImGui::ColorEdit4("Object Color", (float*)&selected_obj->color, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+		ImGui::ColorEdit4("Color Ambient", (float*)&selected_obj->getMaterial()->ka, ImGuiColorEditFlags_NoInputs);
+		
+		ImGui::ColorEdit4("Color Difuse", (float*)&selected_obj->getMaterial()->kd, ImGuiColorEditFlags_NoInputs);
+
 
 		selected_geometry = selected_obj->getGeometry();
 		ImGui::Text("Geometry Properties:");
