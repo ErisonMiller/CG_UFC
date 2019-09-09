@@ -12,7 +12,7 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 
 	// color
 	CRAB::Vector4Df color;
-	if (dot(L, normal) > 0.0f)
+	if (dot(L, normal) >= 0.0f)
 		color = this->intensity;
 	else
 		color = {0.0f, 0.0f, 0.0f, 0};

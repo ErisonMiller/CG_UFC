@@ -1,4 +1,5 @@
 #include "Cube.h"
+#include <iostream>
 
 using namespace CRAB;
 
@@ -162,4 +163,19 @@ CRAB::RayCollisionList Cube::Collide(const CRAB::Ray &ray)
 	
 	return col;
 
+}
+
+CRAB::Vector4Df Cube::getNormal(const CRAB::Vector4Df& point)
+{
+	CRAB::Vector4Df n, n_[6], tmp{ 0.0f, 0.0f, 0.0f, 0 };
+	n = tmp;
+
+	for (int i = 0; i < 6; i++) {
+		n_[i] = quads[i].getNormal(point);
+
+		if (n_[i] != tmp) 
+			n = n_[i];
+	}
+
+	return n;
 }
