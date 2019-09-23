@@ -253,5 +253,38 @@ namespace CRAB {
 		};
 	}
 
+	inline
+		Matrix4 reflection_yz()
+	{
+
+		return Matrix4{
+	   -1,	0,	0,	0,
+		0,	1,	0,	0,
+		0,	0,	1,	0,
+		0,	0,	0,	1 };
+	}
+
+	inline
+		Matrix4 reflection_xz()
+	{
+
+		return Matrix4{
+	    1,	0,	0,	0,
+		0, -1,	0,	0,
+		0,	0,	1,	0,
+		0,	0,	0,	1 };
+	}
+
+	inline
+		Matrix4 reflection_xy()
+	{
+
+		return Matrix4{
+		1,	0,	0,	0,
+		0,  1,	0,	0,
+		0,	0, -1,	0,
+		0,	0,	0,	1 };
+	}
+
 }
 #endif

@@ -187,3 +187,9 @@ CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 	}
 	return n;
 }
+
+void Cone::tranform(CRAB::Matrix4 m) {
+	base_center = m * base_center;
+	direction = m * direction;
+	top_vertex = m * top_vertex;
+}

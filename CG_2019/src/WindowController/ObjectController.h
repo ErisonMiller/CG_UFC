@@ -25,12 +25,20 @@ inline void RenderGeometry() {
 
 	if (typeid(*selected_geometry).name() == typeid(Cone).name()) {
 		Cone *geometry = (Cone*)selected_geometry;
-		ImGui::DragFloat3("Base", (float*)&geometry->base_center, 0.5f);
-		ImGui::DragFloat3("Direction", (float*)&geometry->direction, 0.5f);
+		CRAB::Vector4Df tranlate_vector;
+		CRAB::Vector4Df angle_vector;
+		CRAB::Matrix4 m;
+		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
+		m = CRAB::translate(tranlate_vector);
+		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
+		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+		
+
 		geometry->direction.normalize();
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
 		geometry->top_vertex = geometry->base_center + geometry->direction*geometry->height;
+		geometry->tranform(m);
 	}
 
 	if (typeid(*selected_geometry).name() == typeid(Cylinder).name()) {

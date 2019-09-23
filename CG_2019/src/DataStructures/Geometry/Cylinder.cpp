@@ -201,3 +201,7 @@ CRAB::Vector4Df Cylinder::getNormal(const CRAB::Vector4Df &point)
 	n.to_unitary();
 	return n;
 }
+
+void Cylinder::tranform(CRAB::Matrix4 m)
+{
+}

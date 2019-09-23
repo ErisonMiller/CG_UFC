@@ -77,3 +77,7 @@ CRAB::Vector4Df Triangle::getNormal(const CRAB::Vector4Df &point)
 	n.w = 0;
 	return n;
 }
+
+void Triangle::tranform(CRAB::Matrix4 m)
+{
+}

@@ -103,3 +103,7 @@ CRAB::Vector4Df Sphere::getNormal(const CRAB::Vector4Df &point)
 	n.normalize();
 	return n;
 }
+
+void Sphere::tranform(CRAB::Matrix4 m)
+{
+}

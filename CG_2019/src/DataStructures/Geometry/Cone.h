@@ -30,5 +30,7 @@ public:
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);//return the closest collision 
 
 	CRAB::Vector4Df getNormal(const CRAB::Vector4Df &point); // returns the normal vector at point on a surface
+
+	void tranform(CRAB::Matrix4 m);
 };
 
