@@ -30,12 +30,14 @@ RayCast::~RayCast() {
 	delete[]accumulateBuffer;
 }
 
-inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, CRAB::Camera cam)
+inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, const CRAB::Camera &cam)
 {
 	float dist = INFINITY;
 
 	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
 	
+	Collision closest_collision;
+	const Object *closest_obj = nullptr;
 	#if PRINT == 1
 	int id = 0;
 	#endif
@@ -43,13 +45,9 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 		const CRAB::Collision col = obj.Collide(ray);//Collision
 		const float o_dist = col.distance;
 		if (o_dist < dist && o_dist > cam.n) {
-			accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 			dist = o_dist;
-			for (Light * light : lights)
-			{
-				accucolor += light->Illumination((*obj.getMaterial()), obj.getNormalVector(col.pint), ray.direction * (-1.0f), col.pint);
-			}
-		
+			closest_collision = col;
+			closest_obj = &obj;
 		}
 		#if PRINT == 1
 		if (print) {
@@ -63,7 +61,13 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 		id++;
 		#endif
 	}
-
+	if (closest_obj) {
+		accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
+		for (Light * light : lights)
+		{
+			accucolor += light->Illumination((*closest_obj->getMaterial()), closest_obj->getNormalVector(closest_collision.pint), ray.direction * (-1.0f), closest_collision.pint);
+		}
+	}
 	return accucolor;
 }
 
@@ -110,9 +114,7 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 
 }
 
-CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Object> &objects, std::vector<Light*> lights) {
-	clock_t t;
-	t = clock();
+CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Object> &objects, std::vector<Light*> &lights) {
 
 	const Vector4Df base = (cam.view - cam.position).to_unitary();
 	const Vector4Df up = cam.up * (cam.dimensions.y / cam.resolution.y);
@@ -147,10 +149,6 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 		}
 	}
 
-	t = clock() - t;
-	//std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
-
-
     return accumulateBuffer;
 }
 
@@ -164,7 +162,7 @@ const Vector4Df sky_color = Vector4Df{ 0.8f, 0.8f, 0.8f, 1.0f };
 const Quad plane = Quad(Vector4Df{ -14.0f,-1.0f,-14.0f, 1.0f }, Vector4Df{ -14.0f,-1.0f,16.0f, 1.0f },
 	Vector4Df{ 16.0f,-1.0f,16.0f, 1.0f }, Vector4Df{ 16.0f,-1.0f,-14.0f, 1.0f });
 
-__forceinline float CollideClosestQuad(register const Vector4Df &origin, register const Vector4Df &direction,
+__forceinline float __fastcall CollideClosestQuad(register const Vector4Df &origin, register const Vector4Df &direction,
 	register const Quad &quad, Vector4Df &p_plane) {
 
 	//const Vector4Df &normal = cross_simd(_mm_castsi128_ps(_mm_stream_load_si128((__m128i*)&(quad.e1))),
@@ -192,7 +190,7 @@ __forceinline float CollideClosestQuad(register const Vector4Df &origin, registe
 	return INFINITY;
 }
 
-inline Vector4Df ray_cast(register const Vector4Df &origin, register const Vector4Df &direction, const std::vector<Sphere> &spheres, int recs)
+inline Vector4Df __fastcall ray_cast(register const Vector4Df &origin, register const Vector4Df &direction, const std::vector<Sphere> &spheres, int recs)
 {
 	if (!recs)return Vector4Df{ 0.0f,0.0f,0.0f,0.0f };
 	Vector4Df p_colision = {0,0,0,0};
@@ -209,35 +207,38 @@ inline Vector4Df ray_cast(register const Vector4Df &origin, register const Vecto
 		const Sphere &s3 = spheres.at(i+2);
 		const Sphere &s4 = spheres.at(i+3);
 
-		float o_dist = INFINITY;
-
-		const CRAB::Vector4Df &W = origin - s.center;		// The difference of P0 - C
-		const CRAB::Vector4Df &W2 = origin - s2.center;		// The difference of P0 - C
-		const CRAB::Vector4Df &W3 = origin - s3.center;		// The difference of P0 - C
-		const CRAB::Vector4Df &W4 = origin - s4.center;		// The difference of P0 - C
+		
+		const CRAB::Vector4Df W = origin - s.center;		// The difference of P0 - C
+		const CRAB::Vector4Df W2 = origin - s2.center;		// The difference of P0 - C
+		const CRAB::Vector4Df W3 = origin - s3.center;		// The difference of P0 - C
+		const CRAB::Vector4Df W4 = origin - s4.center;		// The difference of P0 - C
 
 		// Coefficients of the equation
 		//const float A = 1.0f;//considering that the direction is already normalized
 		
-		const Vector4Df B = { dot_simd(W, direction),dot_simd(W2, direction),dot_simd(W3, direction),dot_simd(W4, direction) };
+		const Vector4Df B{ dot_simd(W, direction),dot_simd(W2, direction),dot_simd(W3, direction),dot_simd(W4, direction) };
 		const Vector4Df C = Vector4Df{ dot_simd(W, W),dot_simd(W2, W2),dot_simd(W3, W3),dot_simd(W4, W4) } - Vector4Df{ s.radius, s2.radius, s3.radius, s4.radius };
 		// Discriminant	
 		const Vector4Df Delta = (B*B - C);
 
-		if (_mm_test_all_ones(_mm_cvtps_epi32(_mm_cmplt_ps(Delta, _mm_setzero_ps()))))continue;
+		//if (_mm_test_all_ones(_mm_cvtps_epi32(_mm_cmplt_ps(Delta, _mm_setzero_ps()))))continue;
+		const __m128 x = _mm_cmpgt_ps(Delta, _mm_setzero_ps());
+		if (_mm_testz_ps(x, x))continue;
 
-		const Vector4Df dists = (B + *(Vector4Df*)&_mm_sqrt_ps(Delta))*(-1.0f);
-		o_dist = dists._v[0];
+		float o_dist = INFINITY;
+		int j = 10;
+		const Vector4Df &dists = ((Vector4Df{ 0.0f,0.0f,0.0f,0.0f }-B) - *(Vector4Df*)&_mm_sqrt_ps(Delta));
+		o_dist = dists.x;
 		if (o_dist < dist && o_dist > 0.0001f) { dist = o_dist; accucolor = colors[0]; collide_sphere = &s; }
-		o_dist = dists._v[1];
+		o_dist = _mm_cvtss_f32(_mm_shuffle_ps(dists, dists, _MM_SHUFFLE(0, 0, 0, 1)));
 		if (o_dist < dist && o_dist > 0.0001f) { dist = o_dist; accucolor = colors[1]; collide_sphere = &s2;}
-		o_dist = dists._v[2];
+		o_dist = _mm_cvtss_f32(_mm_shuffle_ps(dists, dists, _MM_SHUFFLE(0, 0, 0, 2)));
 		if (o_dist < dist && o_dist > 0.0001f) { dist = o_dist; accucolor = colors[2]; collide_sphere = &s3;}
-		o_dist = dists._v[3];
+		o_dist = _mm_cvtss_f32(_mm_shuffle_ps(dists, dists, _MM_SHUFFLE(0, 0, 0, 3)));
 		if (o_dist < dist && o_dist > 0.0001f) { dist = o_dist; accucolor = colors[3]; collide_sphere = &s4;}
 	}
-	//if(collide_sphere == nullptr)return accucolor;
 	if (dist == INFINITY && p_dist == INFINITY)return accucolor;
+	if(recs == 1)return Vector4Df{ 0.0f,0.0f,0.0f,0.0f };
 	
 
 	Vector4Df n;
@@ -275,8 +276,6 @@ inline Vector4Df ray_cast(register const Vector4Df &origin, register const Vecto
 			spec = spec * spec;
 			spec = spec * spec;
 			spec = spec * spec;
-			spec = spec * spec;
-			spec = spec * spec;
 			final_color = *(Vector4Df*)&_mm_fmadd_ps(spec, accucolor, final_color);
 			
 		}
@@ -300,6 +299,10 @@ inline Vector4Df ray_cast(register const Vector4Df &origin, register const Vecto
 
 CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Sphere> &spheres)
 {
+	
+	//clock_t t;
+	//t = clock();
+
 	const Vector4Df base = (cam.view - cam.position).to_unitary();
 	const Vector4Df up = cam.up * (cam.dimensions.y / cam.resolution.y);
 	const Vector4Df left = cross_simd(cam.up, base) * (cam.dimensions.x / cam.resolution.x);
@@ -313,7 +316,8 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Sphe
 
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-#pragma omp parallel for num_threads(16) schedule(guided)
+//#pragma omp parallel for num_threads(16) schedule(guided)
+#pragma omp parallel for num_threads(16) schedule(dynamic, 1)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y)+left * (-x);
@@ -323,6 +327,8 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Sphe
 		}
 	}
 
+	//t = clock() - t;
+	//std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
 
 	return accumulateBuffer;
 }

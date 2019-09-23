@@ -23,28 +23,40 @@ namespace RenderAPI{
 		glutInit(&argc, argv);
 		
 		// specify the display mode to be RGB and single buffering:
-		//glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE);
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
+		//glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 		// specify the initial window position:
-		glutInitWindowPosition(500, 100);
+		glutInitWindowPosition(0, 0);
 		// specify the initial window size:
 		glutInitWindowSize(width, height);
 		// create the window and set title:
 		glutCreateWindow("CG");
 		
-		//glEnable(GL_DEPTH_TEST);
-		//glDisable(GL_CULL_FACE);
+		
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_LIGHTING);
 
 		glClearColor(0.0, 1.0, 0.0, 0.0);
+		
 		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		gluOrtho2D(0.0, width, 0.0, height);
+		
+		glViewport(0,0,width,height);
 
 		glewInit();
 		if (!glewIsSupported("GL_VERSION_2_0 ")) {
 			exit(0);
 		}
+	}
+
+	inline void Reshape(int width, int height) {
+		
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		gluOrtho2D(0.0, width, 0.0, height);
+
 	}
 
 	inline void BufferClear() {
@@ -79,24 +91,28 @@ namespace RenderAPI{
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	}
 
-	inline void MapBuffer(CRAB::Vector4Df *color_buffer, int width, int height){
-		//RayPathRender(triangles, cam, accumulatebuffer);
-
+	inline void MapBuffer(CRAB::Vector4Df *color_buffer, int width, int height, const VertexBuffer &vbo){
+		
 		float *buffer = (float*) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 		if (!buffer)return;
-		CRAB::Vector4Df *c_buff = color_buffer;
+		//CRAB::Vector4Df *c_buff = color_buffer;
 		
+#pragma omp parallel for num_threads(16) schedule(dynamic, 1)
 		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++, c_buff++) {
-				buffer[(y*width + x) * 5] = (float) x;
-				buffer[(y*width + x) * 5 + 1] = (float) y;
-				memcpy(&buffer[(y*width + x) * 5 + 2], c_buff, sizeof(float) * 3);
+			for (int x = 0; x < width; x++) {
+				buffer[(y*width + x) * 5 + 0] = 1.0f*x;
+				buffer[(y*width + x) * 5 + 1] = 1.0f*y;
+				//memcpy(&buffer[(y*width + x) * 5 + 2], c_buff, sizeof(float) * 3);
+				memcpy(&buffer[(y*width + x) * 5 + 2], &color_buffer[y*width + x], sizeof(float) * 3);
+				//buffer[(y*width + x) * 5 + 2] = 1.0f;
+				//buffer[(y*width + x) * 5 + 3] = 0.0f;
+				//buffer[(y*width + x) * 5 + 4] = 0.0f;
 			}
 		}
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
-		glVertexPointer(2, GL_FLOAT, 20, 0);
-		glColorPointer(4, GL_FLOAT, 20, (GLvoid*)8);
+		glVertexPointer(2, GL_FLOAT, 5 * sizeof(float), 0);
+		glColorPointer(3, GL_FLOAT, 5 * sizeof(float), (GLvoid*)8);
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);

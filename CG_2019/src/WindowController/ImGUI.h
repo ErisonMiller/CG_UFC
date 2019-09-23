@@ -13,7 +13,6 @@ namespace GUI_API {
 		glutKeyboardUpFunc(ImGui_ImplGLUT_KeyboardUpFunc);
 		glutSpecialFunc(ImGui_ImplGLUT_SpecialFunc);
 		glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
-		glutReshapeFunc(ImGui_ImplGLUT_ReshapeFunc);
 
 #ifdef __FREEGLUT_EXT_H__
 		glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
