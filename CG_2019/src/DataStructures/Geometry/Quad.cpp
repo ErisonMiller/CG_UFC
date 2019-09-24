@@ -108,3 +108,7 @@ Vector4Df Quad::getNormal(const Vector4Df &point)
 	//	n = point + W1;
 	return cross_simd(e1, e2);
 }
+
+void Quad::tranform(CRAB::Matrix4 m)
+{
+}

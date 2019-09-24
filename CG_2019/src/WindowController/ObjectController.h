@@ -33,12 +33,11 @@ inline void RenderGeometry() {
 		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
 		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
 		
-
-		geometry->direction.normalize();
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
 		geometry->top_vertex = geometry->base_center + geometry->direction*geometry->height;
 		geometry->tranform(m);
+		geometry->direction.normalize();
 	}
 
 	if (typeid(*selected_geometry).name() == typeid(Cylinder).name()) {

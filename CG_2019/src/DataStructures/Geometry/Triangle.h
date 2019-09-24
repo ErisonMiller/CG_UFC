@@ -19,5 +19,7 @@ public:
 	CRAB::RayCollisionList Collide(const CRAB::Ray &ray);
 
 	CRAB::Vector4Df getNormal(const CRAB::Vector4Df &point);
+
+	void tranform(CRAB::Matrix4 m);
 };
 

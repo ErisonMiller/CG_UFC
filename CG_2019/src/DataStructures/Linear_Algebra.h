@@ -254,7 +254,7 @@ namespace CRAB {
 	}
 
 	inline
-		Matrix4 reflection_yz()
+		Matrix4 reflection_YZ()
 	{
 
 		return Matrix4{
@@ -265,7 +265,7 @@ namespace CRAB {
 	}
 
 	inline
-		Matrix4 reflection_xz()
+		Matrix4 reflection_XZ()
 	{
 
 		return Matrix4{
@@ -276,7 +276,7 @@ namespace CRAB {
 	}
 
 	inline
-		Matrix4 reflection_xy()
+		Matrix4 reflection_XY()
 	{
 
 		return Matrix4{
@@ -284,6 +284,17 @@ namespace CRAB {
 		0,  1,	0,	0,
 		0,	0, -1,	0,
 		0,	0,	0,	1 };
+	}
+
+	inline
+		Matrix4 reflectionArbitrary(Vector4Df &n)
+	{
+
+		return Matrix4{
+		(1-(2*n.x*n.x)),    -2*n.x*n.y  ,    -2*n.x*n.z    ,	0,
+		   -2*n.y*n.x  , (1-(2*n.y*n.y)),    -2*n.y*n.z    ,	0,
+		   -2*n.z*n.x  ,    -2*n.z*n.y  , (1-(2 * n.z*n.z)),	0,
+		    0,	             0,	                 0,	            1 };
 	}
 
 }
