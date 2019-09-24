@@ -104,6 +104,6 @@ CRAB::Vector4Df Sphere::getNormal(const CRAB::Vector4Df &point)
 	return n;
 }
 
-void Sphere::tranform(CRAB::Matrix4 m)
+void Sphere::transform(CRAB::Matrix4 m)
 {
 }

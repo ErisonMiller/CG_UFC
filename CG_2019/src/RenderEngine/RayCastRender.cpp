@@ -92,13 +92,20 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 	
 	int id = 0;
 	Object *colidiu = nullptr;
+	CRAB::Collision *col = nullptr;
 	float dist = INFINITY;
+	Matrix4 m_reflection;
 	Matrix4 to_cam = CRAB::ToCamera(cam);
 	for (Object &obj : objects) {
-		const float o_dist = obj.Collide(ray).distance;
+		col = &obj.Collide(ray);//Collision
+		const float o_dist = col->distance;
 		if (o_dist < dist && o_dist > cam.n) {
 			dist = o_dist;
 			colidiu = &obj;
+	
+			//Tests
+			//m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
+			//colidiu->getGeometry()->transform(m_reflection);
 		}
 		RayCollisionList cols = obj.CollideAll(ray);
 		//std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
@@ -108,6 +115,9 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 			std::cout << "    t :" << c.distance << "; ";
 			std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
 		}
+
+
+
 		id++;
 	}
 	return colidiu;

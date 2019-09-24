@@ -19,6 +19,6 @@ public:
 
 	CRAB::Vector4Df getNormal(const CRAB::Vector4Df &point);
 
-	void tranform(CRAB::Matrix4 m);
+	void transform(CRAB::Matrix4 m);
 };
 

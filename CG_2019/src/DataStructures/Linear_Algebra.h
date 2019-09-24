@@ -287,13 +287,13 @@ namespace CRAB {
 	}
 
 	inline
-		Matrix4 reflectionArbitrary(Vector4Df &n)
+		Matrix4 reflectionArbitrary(Vector4Df n)
 	{
 
 		return Matrix4{
 		(1-(2*n.x*n.x)),    -2*n.x*n.y  ,    -2*n.x*n.z    ,	0,
 		   -2*n.y*n.x  , (1-(2*n.y*n.y)),    -2*n.y*n.z    ,	0,
-		   -2*n.z*n.x  ,    -2*n.z*n.y  , (1-(2 * n.z*n.z)),	0,
+		   -2*n.z*n.x  ,    -2*n.z*n.y  , (1-(2*n.z*n.z))  ,	0,
 		    0,	             0,	                 0,	            1 };
 	}
 

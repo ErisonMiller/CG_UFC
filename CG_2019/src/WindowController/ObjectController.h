@@ -36,7 +36,7 @@ inline void RenderGeometry() {
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
 		geometry->top_vertex = geometry->base_center + geometry->direction*geometry->height;
-		geometry->tranform(m);
+		geometry->transform(m);
 		geometry->direction.normalize();
 	}
 

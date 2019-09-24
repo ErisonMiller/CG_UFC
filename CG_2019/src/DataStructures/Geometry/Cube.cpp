@@ -182,6 +182,6 @@ CRAB::Vector4Df Cube::getNormal(const CRAB::Vector4Df& point)
 	return quads[(int)point.w].getNormal(point);
 }
 
-void Cube::tranform(CRAB::Matrix4 m)
+void Cube::transform(CRAB::Matrix4 m)
 {
 }

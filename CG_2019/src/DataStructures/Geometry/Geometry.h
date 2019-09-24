@@ -20,6 +20,6 @@ public:
 
 	virtual CRAB::Vector4Df getNormal(const CRAB::Vector4Df &point) = 0; // returns the normal vector at point on a surface
 
-	virtual void tranform(CRAB::Matrix4 m) = 0; // Applies the tranform matrix
+	virtual void transform(CRAB::Matrix4 m) = 0; // Applies the tranform matrix
 };
 
