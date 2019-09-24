@@ -204,4 +204,7 @@ CRAB::Vector4Df Cylinder::getNormal(const CRAB::Vector4Df &point)
 
 void Cylinder::transform(CRAB::Matrix4 m)
 {
+	base_center = m * base_center;
+	direction = m * direction;
+	direction = direction.to_unitary();
 }

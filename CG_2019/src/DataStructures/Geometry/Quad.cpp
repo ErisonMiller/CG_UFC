@@ -111,4 +111,5 @@ Vector4Df Quad::getNormal(const Vector4Df &point)
 
 void Quad::transform(CRAB::Matrix4 m)
 {
+	v1 = m * v1;
 }

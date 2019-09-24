@@ -107,7 +107,7 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 			dist = o_dist;
 			colidiu = &obj;
 	
-			//Tests
+			//Abitrary Plan Reflection
 			/*
 			if (typeid(*colidiu->getGeometry()).name() == typeid(Cone).name()) {
 				Cone *geometry = (Cone*)colidiu->getGeometry();
@@ -115,6 +115,15 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 				m_to_origin = translate((geometry->base_center) * -1);
 				m_back = translate(geometry->base_center);
 				m = m_back * m_reflection * m_to_origin;
+				colidiu->getGeometry()->transform(m);
+			}
+			
+			if (typeid(*colidiu->getGeometry()).name() == typeid(Cylinder).name()) {
+				Cylinder *geometry = (Cylinder*)colidiu->getGeometry();
+				m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
+				m_to_origin = translate((geometry->base_center) * -1);
+				m_back = translate(geometry->base_center);
+				m = m_back*m_reflection * m_to_origin;
 				colidiu->getGeometry()->transform(m);
 			}*/
 		}
