@@ -25,8 +25,8 @@ inline void RenderGeometry() {
 
 	if (typeid(*selected_geometry).name() == typeid(Cone).name()) {
 		Cone *geometry = (Cone*)selected_geometry;
-		CRAB::Vector4Df tranlate_vector;
-		CRAB::Vector4Df angle_vector;
+		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{0,0,0,0};
+		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Matrix4 m;
 		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
 		m = CRAB::translate(tranlate_vector);
@@ -35,7 +35,6 @@ inline void RenderGeometry() {
 		
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
-		geometry->top_vertex = geometry->base_center + geometry->direction*geometry->height;
 		geometry->transform(m);
 		geometry->direction.normalize();
 	}
@@ -53,6 +52,21 @@ inline void RenderGeometry() {
 		Sphere *geometry = (Sphere*)selected_geometry;
 		ImGui::DragFloat3("Base", (float*)&geometry->center, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
+	}
+
+	if (typeid(*selected_geometry).name() == typeid(Cube).name()) {
+		Cube *geometry = (Cube*)selected_geometry;
+		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Matrix4 m;
+		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
+		m = CRAB::translate(tranlate_vector);
+		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
+		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+		geometry->transform(m);
+		//geometry->direction.normalize();
+		// ImGui::DragFloat3("Base", (float*)&geometry->center, 0.5f);
+		//ImGui::DragFloat("Radius", &geometry->r2, 0.5f);
 	}
 
 }

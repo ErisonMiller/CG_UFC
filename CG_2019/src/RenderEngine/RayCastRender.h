@@ -3,6 +3,7 @@
 #include "Object.h"
 #include "Light.h"
 #include "Sphere.h"
+#include "Cone.h"
 //Class to render using raycast
 
 class RayCast{

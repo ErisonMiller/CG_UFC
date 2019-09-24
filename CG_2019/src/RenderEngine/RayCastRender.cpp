@@ -94,7 +94,11 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 	Object *colidiu = nullptr;
 	CRAB::Collision *col = nullptr;
 	float dist = INFINITY;
+	Matrix4 m;
+	Matrix4 m_to_origin;
+	Matrix4 m_back;
 	Matrix4 m_reflection;
+	Vector4Df to_origin;
 	Matrix4 to_cam = CRAB::ToCamera(cam);
 	for (Object &obj : objects) {
 		col = &obj.Collide(ray);//Collision
@@ -104,8 +108,15 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 			colidiu = &obj;
 	
 			//Tests
-			//m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
-			//colidiu->getGeometry()->transform(m_reflection);
+			/*
+			if (typeid(*colidiu->getGeometry()).name() == typeid(Cone).name()) {
+				Cone *geometry = (Cone*)colidiu->getGeometry();
+				m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
+				m_to_origin = translate((geometry->base_center) * -1);
+				m_back = translate(geometry->base_center);
+				m = m_back * m_reflection * m_to_origin;
+				colidiu->getGeometry()->transform(m);
+			}*/
 		}
 		RayCollisionList cols = obj.CollideAll(ray);
 		//std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
@@ -162,7 +173,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
     return accumulateBuffer;
 }
 
-const Vector4Df colors[4] = { Vector4Df{1,0,0,0},Vector4Df{0.15, 0.87, 0.15},Vector4Df{0.9f,0.9f,0,0},Vector4Df{0,0.6f,1,0} };
+const Vector4Df colors[4] = { Vector4Df{1,0,0,0},Vector4Df{0.15f, 0.87f, 0.15f},Vector4Df{0.9f,0.9f,0,0},Vector4Df{0,0.6f,1,0} };
 const Vector4Df light = Vector4Df{0.6f,-0.5f,0.1f, 0.0f}.to_unitary();
 const Vector4Df light_amb = Vector4Df{ 0.2f,0.2f,0.2f, 0.2f };
 const Vector4Df reflectio = Vector4Df{ 0.3f,0.3f,0.3f, 0.0f };
