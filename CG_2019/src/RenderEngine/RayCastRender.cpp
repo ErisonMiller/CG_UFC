@@ -109,23 +109,11 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 	
 			//Abitrary Plan Reflection
 			/*
-			if (typeid(*colidiu->getGeometry()).name() == typeid(Cone).name()) {
-				Cone *geometry = (Cone*)colidiu->getGeometry();
-				m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
-				m_to_origin = translate((geometry->base_center) * -1);
-				m_back = translate(geometry->base_center);
-				m = m_back * m_reflection * m_to_origin;
-				colidiu->getGeometry()->transform(m);
-			}
-			
-			if (typeid(*colidiu->getGeometry()).name() == typeid(Cylinder).name()) {
-				Cylinder *geometry = (Cylinder*)colidiu->getGeometry();
-				m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
-				m_to_origin = translate((geometry->base_center) * -1);
-				m_back = translate(geometry->base_center);
-				m = m_back*m_reflection * m_to_origin;
-				colidiu->getGeometry()->transform(m);
-			}*/
+			m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
+			m_to_origin = translate((col->pint) * -1);
+			m_back = translate(col->pint);
+			m = m_back * m_reflection * m_to_origin;
+			colidiu->getGeometry()->transform(m);*/
 		}
 		RayCollisionList cols = obj.CollideAll(ray);
 		//std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
