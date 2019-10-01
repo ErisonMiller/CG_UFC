@@ -149,7 +149,7 @@ void mouse(int button, int state, int x, int y)
 		lastX = x;
 		lastY = y;
 
-		if (theButtonState == GLUT_RIGHT_BUTTON) // camera move
+		if (theButtonState == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) // camera move
 		{
 			selected_obj = nullptr;
 			selected_obj = rc.RayPick(cam, objs, x, y);
@@ -158,6 +158,7 @@ void mouse(int button, int state, int x, int y)
 			}
 
 		}
+
 
 		motion(x, y);
 	}
@@ -180,6 +181,7 @@ void keyboard(unsigned char key, int x, int y) {
 		Object* o = rc.RayPick(cam, objs, x, y);
 		if (o)o->visible = true;
 		break;
+	
 	}
 }
 
@@ -225,11 +227,14 @@ void InitScene() {
 	objs.push_back(Object("Tronco da arvore 2", Tronco, new Cylinder(2.0f, 0.5f, Vector4Df{ 15,0,30,1 }, Vector4Df{ 0,1,0,0 })));
 	objs.push_back(Object("Copa da arvore 2", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
 	
+	//objs.push_back(Object("Copa da arvore 2.2", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+
+
 	objs.push_back(Object("Cubo 1", Parede, new Cube(Vector4Df{ 10, 0, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	objs.push_back(Object("Cubo 2", Parede2, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	objs.push_back(Object("Cubo 3", Parede3, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 
-	//objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -1,0, 0,1 }, Vector4Df{ 1,0,0,1 }, Vector4Df{ 0,1,0,1 })));
+	objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
 
 	//Fill the object list (With material)
 	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));*/

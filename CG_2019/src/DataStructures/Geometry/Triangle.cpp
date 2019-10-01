@@ -80,4 +80,24 @@ CRAB::Vector4Df Triangle::getNormal(const CRAB::Vector4Df &point)
 
 void Triangle::transform(CRAB::Matrix4 m)
 {
+
+	float n_size = normal.w;
+	normal.w = 0;
+	v1 = m * v1;
+	Vector4Df e1 = m * cross(n_e1, normal);
+	Vector4Df e2 = m * cross(normal, n_e2);
+
+
+
+	//n_e1 = cross_simd(normal, e1).to_unitary() * e1_size;
+	//n_e2 = cross_simd(e2, normal).to_unitary() * e2_size;
+
+	const Vector4Df n = cross_simd(e1, e2);
+	n_size = n.length();
+	float e1_size = e1.length();
+	float e2_size = e2.length();
+	normal = n.to_unitary();
+	n_e1 = cross_simd(normal, e1).to_unitary() * e1_size;
+	n_e2 = cross_simd(e2, normal).to_unitary() * e2_size;
+	normal.w = n_size;
 }

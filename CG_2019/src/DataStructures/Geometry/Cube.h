@@ -6,6 +6,7 @@ class Cube :
 	public Geometry
 {
 	Quad quads[6];
+	//bouding sopherecenter and radius 
 	CRAB::Vector4Df center;
 	float r2;
 public:

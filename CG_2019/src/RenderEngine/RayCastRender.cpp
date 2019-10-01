@@ -106,14 +106,15 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 		if (o_dist < dist && o_dist > cam.n) {
 			dist = o_dist;
 			colidiu = &obj;
-	
+
 			//Abitrary Plan Reflection
-			/*
-			m_reflection = reflectionArbitrary(colidiu->getNormalVector(col->pint));
+			Vector4Df n = colidiu->getNormalVector(col->pint);
+			m_reflection = reflectionArbitrary(n);
 			m_to_origin = translate((col->pint) * -1);
 			m_back = translate(col->pint);
 			m = m_back * m_reflection * m_to_origin;
-			colidiu->getGeometry()->transform(m);*/
+			colidiu->getGeometry()->transform(m);
+
 		}
 		RayCollisionList cols = obj.CollideAll(ray);
 		//std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
@@ -125,9 +126,10 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 		}
 
 
-
 		id++;
 	}
+
+
 	return colidiu;
 
 }

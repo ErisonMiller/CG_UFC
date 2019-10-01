@@ -71,7 +71,7 @@ CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
 		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cone?
 			col.pint = p;
 			col.distance = distance;
-			col.pint.w = d_dot_n * col.distance - v_dot_n;
+			col.pint.w = -1;
 			return col;
 		}
 	}
@@ -176,20 +176,29 @@ CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 {
 	
 	
-	CRAB::Vector4Df n;
+	CRAB::Vector4Df n, vg, vt;
 	if (point.w < 0.0f) {
-		CRAB::Vector4Df p = point;
-		p.w = 1.0f;
-		n = ((p - top_vertex) - direction * point.w).to_unitary();
+		//CRAB::Vector4Df p = point;
+		//p.w = 1.0f;
+		//CRAB::Vector4Df a = (p - top_vertex);
+		//CRAB::Vector4Df b = (direction * point.w);
+		//n = (a - b).to_unitary();
+		vg = top_vertex - point;
+		vt = CRAB::cross(vg, direction);
+
+		n = cross(vt, vg).to_unitary();
 	}
 	else {
 		n = direction * (-1.0f);
 	}
+
+
 	return n;
 }
 
 void Cone::transform(CRAB::Matrix4 m) {
 	base_center = m * base_center;
 	direction = m * direction;
+	direction.to_unitary();
 	top_vertex = base_center + (direction * height);
 }

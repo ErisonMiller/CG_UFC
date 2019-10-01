@@ -184,4 +184,9 @@ CRAB::Vector4Df Cube::getNormal(const CRAB::Vector4Df& point)
 
 void Cube::transform(CRAB::Matrix4 m)
 {
+	
+	for (Quad &quad : quads) {
+		quad.transform(m);
+	}
+	center = m * center;
 }

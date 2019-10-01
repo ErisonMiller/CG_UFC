@@ -19,8 +19,6 @@ static char object_name[30] = " ";
 static Geometry *selected_geometry = nullptr;
 static bool geometry_window_open = true;
 
-
-
 inline void RenderGeometry() {
 
 	if (typeid(*selected_geometry).name() == typeid(Cone).name()) {
@@ -33,6 +31,10 @@ inline void RenderGeometry() {
 		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
 		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
 		
+		ImGui::DragFloat3("Base", (float*)&geometry->base_center, 0.5f);
+		ImGui::DragFloat3("Direction", (float*)&geometry->direction, 0.5f);
+		geometry->direction.normalize();
+
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
 		geometry->transform(m);
@@ -93,6 +95,27 @@ inline void RenderGeometry() {
 		// ImGui::DragFloat3("Base", (float*)&geometry->center, 0.5f);
 		//ImGui::DragFloat("Radius", &geometry->r2, 0.5f);
 	}
+
+	if (typeid(*selected_geometry).name() == typeid(Triangle).name()) {
+		Triangle *geometry = (Triangle*)selected_geometry;
+
+		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		//CRAB::Vector4Df quartenio{ 0,1,0,0 };
+		CRAB::Matrix4 m;
+
+		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
+		m = CRAB::translate(tranlate_vector);
+		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
+		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+
+		//ImGui::DragFloat4("Quart", (float*)&quartenio, 0.5f);
+		//m = CRAB::rotateArbitrary(quartenio.w, quartenio)*m;
+		
+		geometry->transform(m);
+	}
+
+
 
 }
 

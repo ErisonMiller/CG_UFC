@@ -13,8 +13,9 @@ Quad::Quad(const CRAB::Vector4Df &_v1, const CRAB::Vector4Df &_v2, const CRAB::V
 	e2 = _v4 - _v1;
 	size1 = e1.length();
 	size2 = e2.length();
-	e1.normalize();
-	e2.normalize();
+	e1 = e1.to_unitary();
+	e2 = e2.to_unitary();
+	//e2.normalize();
 }
 
 Quad::~Quad()
@@ -112,4 +113,12 @@ Vector4Df Quad::getNormal(const Vector4Df &point)
 void Quad::transform(CRAB::Matrix4 m)
 {
 	v1 = m * v1;
+	e1.w = 0;
+	e2.w = 0; 
+	e1 = m * (e1*size1);
+	e2 = m * (e2*size2);
+	size1 = e1.length();
+	size2 = e2.length();
+	e1.normalize();
+	e2.normalize();
 }
