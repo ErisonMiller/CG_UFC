@@ -21,6 +21,8 @@
 #include "ImGUI.h"
 #include "ObjectController.h"
 
+#include "GlobalVariables.h"
+
 using namespace CRAB;
 
 //pixel buffer
@@ -166,7 +168,7 @@ void mouse(int button, int state, int x, int y)
 
 void keyboard(unsigned char key, int x, int y) {
 	ImGui_ImplGLUT_KeyboardFunc(key, x, y);
-
+	Object* o;
 	switch (key) {
 
 	case(27): exit(0);
@@ -178,8 +180,23 @@ void keyboard(unsigned char key, int x, int y) {
 		std::cin >> x;
 		std::cout << "y\n";
 		std::cin >> y;
-		Object* o = rc.RayPick(cam, objs, x, y);
+		o = rc.RayPick(cam, objs, x, y);
 		if (o)o->visible = true;
+		break;
+	
+	case('m'):
+		
+		if (reflection_en)
+		{
+			std::cout << "Reflection is disable now!\n";
+			reflection_en = 0;
+		}
+		else
+		{
+			std::cout << "Reflection is enable! Be careful.\n";
+			reflection_en = 1;
+		}
+		
 		break;
 	
 	}

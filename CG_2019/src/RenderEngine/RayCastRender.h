@@ -5,6 +5,9 @@
 #include "Sphere.h"
 #include "Cone.h"
 #include "Cylinder.h"
+
+#include "GlobalVariables.h"
+
 //Class to render using raycast
 
 class RayCast{

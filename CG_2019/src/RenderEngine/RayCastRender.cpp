@@ -108,12 +108,23 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 			colidiu = &obj;
 
 			//Abitrary Plan Reflection
-			Vector4Df n = colidiu->getNormalVector(col->pint);
-			m_reflection = reflectionArbitrary(n);
-			m_to_origin = translate((col->pint) * -1);
-			m_back = translate(col->pint);
-			m = m_back * m_reflection * m_to_origin;
-			colidiu->getGeometry()->transform(m);
+			if (reflection_en == 1)
+			{
+				Vector4Df n = colidiu->getNormalVector(col->pint);
+				m_reflection = reflectionArbitrary(n);
+				m_to_origin = translate((col->pint) * -1);
+				m_back = translate(col->pint);
+				m = m_back * m_reflection * m_to_origin;
+				//colidiu->getGeometry()->transform(m);
+				
+
+				for (Object &obj : objects) {
+					Object *scene_obj = &obj;
+					scene_obj->getGeometry()->transform(m);
+				}
+				reflection_en = 0;
+			}
+			
 
 		}
 		RayCollisionList cols = obj.CollideAll(ray);

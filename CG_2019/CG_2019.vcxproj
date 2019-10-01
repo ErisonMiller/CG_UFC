@@ -188,6 +188,7 @@
     <ClInclude Include="src\RenderEngine\OpenGLRender.h" />
     <ClInclude Include="src\RenderEngine\RayCastRender.h" />
     <ClInclude Include="src\RenderEngine\RenderAPI.h" />
+    <ClInclude Include="src\WindowController\GlobalVariables.h" />
     <ClInclude Include="src\WindowController\ImGUI.h" />
     <ClInclude Include="src\WindowController\ObjectController.h" />
     <ClInclude Include="src\WindowController\WindowController.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\RenderEngine\OpenGLRender.cpp" />
     <ClCompile Include="src\RenderEngine\RayCastRender.cpp" />
+    <ClCompile Include="src\WindowController\GlobalVariables.cpp" />
     <ClCompile Include="src\WindowController\WindowController.cpp" />
     <ClCompile Include="src\DataStructures\Geometry\Triangle.cpp" />
   </ItemGroup>
