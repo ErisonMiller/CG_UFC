@@ -34,6 +34,9 @@ namespace CRAB {
 			__m128 v128;
 		};
 
+
+		Vector4Df() = default;
+
 		//_mm_dp_ps is the vetorial instruction for dot product
 		__forceinline float lengthsq() const { return _mm_cvtss_f32(_mm_dp_ps(v128, v128, 0xff)); }
 		__forceinline float length() const { return sqrtf(lengthsq()); }
@@ -91,6 +94,15 @@ namespace CRAB {
 
 	inline float distancesq(const Vector4Df& v1, const Vector4Df& v2) { return (v1-v2).lengthsq(); }
 	inline float distance(const Vector4Df& v1, const Vector4Df& v2) { return sqrtf(distancesq(v1,v2)); }
+
+
+	inline Vector4Df min(const Vector4Df& v1, const Vector4Df& v2) {
+		return *(Vector4Df*)&_mm_min_ps(v1, v2);
+	}
+
+	inline Vector4Df max(const Vector4Df& v1, const Vector4Df& v2) {
+		return *(Vector4Df*)&_mm_max_ps(v1, v2);
+	}
 
 
 	__declspec(align(32))

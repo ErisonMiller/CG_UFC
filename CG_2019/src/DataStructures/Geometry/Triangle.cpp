@@ -39,7 +39,7 @@ CRAB::RayCollisionList Triangle::CollideAll(const std::vector<CRAB::Ray> &ray)
 }
 
 
-CRAB::Collision Triangle::CollideClosest(register const CRAB::Ray &ray) {
+CRAB::Collision Triangle::CollideClosest( const CRAB::Ray &ray) {
 	
 	CRAB::Collision col;
 

@@ -25,6 +25,8 @@
 
 #include "GlobalVariables.h"
 
+#include "Octree.h"
+
 using namespace CRAB;
 
 //pixel buffer
@@ -56,10 +58,10 @@ const int	width  = 512,
 Camera cam = Camera(
 	//Vector4Df{ 15.0f,10.0f,30.0f,1.0f },//position
 	//Vector4Df{ 10.0f, 9.0f,10.0f,1.0f },//lookat
-	Vector4Df{ 10.0f,5.0f,50.0f,1.0f },//position
-	Vector4Df{ 10.0f, 5.0f,15.0f,1.0f },//lookat
-	//Vector4Df{ 0.0f,0.0f,10.0f,1.0f },//position
-	//Vector4Df{ 0.0f, 0.0f,0.0f,1.0f },//lookat
+	//Vector4Df{ 10.0f,5.0f,50.0f,1.0f },//position
+	//Vector4Df{ 10.0f, 5.0f,15.0f,1.0f },//lookat
+	Vector4Df{ 0.0f,0.0f,10.0f,1.0f },//position
+	Vector4Df{ 0.0f, 0.0f,0.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{ width*1.0f, height*1.0f }, //resolution
 	float2{ 4.0f, 4.0f },			//dimensions
@@ -209,11 +211,15 @@ void keyboard(unsigned char key, int x, int y) {
 		std::cout << "Load OBJ File:" << std::endl;
 		std::string fileName;
 		std::cin >> fileName;
-		ObjList = CRAB::Load_Obj(fileName);
+		std::vector<FaceList> faceList = CRAB::Load_Obj(fileName);
 		objs.clear();
-		for (int i = 0; i < ObjList.size(); i++)
-			for (int j = 0; j < ObjList[i].size(); j++)
-				objs.push_back(Object("OBJ", Neutral, new Triangle(ObjList[i][j])));		
+		
+		for (int i = 0; i < faceList.size(); i++) {
+			objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));
+		}
+		//for (int i = 0; i < ObjList.size(); i++)
+		//	for (int j = 0; j < ObjList[i].size(); j++)
+		//		objs.push_back(Object("OBJ", Neutral, &ObjList[i][j]));
 		break;
 	}
 }
@@ -281,13 +287,13 @@ void InitScene() {
 
 // Main.
 void Start_Window(int argc, char **argv) {
-    // Create GLUT window
+	// Create GLUT window
 	RenderAPI::StartRenderAPI(argc, argv, width, height);
-    
+	
 	// functions for user interaction
-    RenderAPI::MouseFunc(mouse);
-    RenderAPI::MotionFunc(motion);
-    RenderAPI::KeyboardFunc(keyboard);
+	RenderAPI::MouseFunc(mouse);
+	RenderAPI::MotionFunc(motion);
+	RenderAPI::KeyboardFunc(keyboard);
 	RenderAPI::ReshapeFunc(resize);
 	
 	RenderAPI::DisplayFunc(disp);
@@ -300,8 +306,14 @@ void Start_Window(int argc, char **argv) {
 	//Fill the scene
 	InitScene();
 	
+	std::vector<FaceList> faceList = CRAB::Load_Obj("crab2.obj");
+	objs.clear();
+	for (int i = 0; i < faceList.size(); i++) {
+		objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));
+	}
+
 	//start render loop
-    RenderAPI::RenderLoop();
+	RenderAPI::RenderLoop();
 
 	GUI_API::EndImGUI();
 	//delete the pixel buffer

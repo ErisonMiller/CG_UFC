@@ -9,58 +9,63 @@
 #define TREE_SEMI_NODE		2
 
 
-class Octree
+
+struct Face
 {
-public:
-	Octree();
-	~Octree();
+	CRAB::Vector4Df v1, v2, v3;
 };
-
-
+#define FaceList std::vector<Face>
 
 struct TreeElement
 {
 	int state;
-
 	TreeElement(int _state) : state(_state) {}
-};
-
-
-struct Tree
-{
-	CRAB::Vector4Df position;
-	float size;
-	TreeElement *tree;
-};
-
-
-struct QuadElementNode : TreeElement
-{
-	TreeElement *sons[4];
-	QuadElementNode() : TreeElement(TREE_SEMI_NODE) {}
+	
+	void Free() {}
 };
 
 
 struct OcElementNode : TreeElement
 {
-	TreeElement *sons[8];
+	TreeElement* sons[8];
 	OcElementNode() : TreeElement(TREE_SEMI_NODE) {}
+	
+	void Free() { for (TreeElement* t : sons) { t->Free(); delete t; } }
 };
 
-struct Face {
-	CRAB::Vector4Df v1, v2, v3;
+
+struct OcElementLeaf : TreeElement
+{
+	std::vector<Triangle> faces;
+	OcElementLeaf() : TreeElement(TREE_FULL_NODE) {}
+	OcElementLeaf(const FaceList &_faces) : TreeElement(TREE_FULL_NODE){
+		for (const Face& f : _faces) {
+			faces.push_back(Triangle(f.v1, f.v2, f.v3));
+		}
+	}
+
 };
 
-class Ocject {
+
+class OcTree : public Geometry {
 public:
-	CRAB::Vector4Df min, max, center;
-	float r; int sons;
-	std::vector<Triangle> triangles;
-	std::vector<Ocject *> filhos;
+	CRAB::Vector4Df center;
+	float r;
+	TreeElement* tree;
 
-	Ocject();
-	Ocject(std::vector<Face> &fs);
-	Ocject(std::vector<Face> &fs, const CRAB::Vector4Df &cmin, const CRAB::Vector4Df &cmax, const CRAB::Vector4Df &ccenter);
 
-	inline void Subdivide(std::vector<Face> &faces);
+	OcTree(const FaceList& faceList);
+
+	CRAB::Collision CollideClosest(const CRAB::Ray& ray);//return the closest collision distance of a ray and the geometry
+	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray>& ray) { return CRAB::RayCollisionList(); };//return all the colisions of a set of rays
+	CRAB::RayCollisionList Collide(const CRAB::Ray& ray) { return CRAB::RayCollisionList(); };//return all collisions of a ray
+
+	CRAB::Vector4Df getNormal(const CRAB::Vector4Df& point) { return CRAB::Vector4Df{ 1,0,0,0 }; } // returns the normal vector at point on a surface
+
+	void transform(CRAB::Matrix4 m) {}; // Applies the tranform matrix
+
+
+
+	void Free() { tree->Free(); delete tree; }
+
 };

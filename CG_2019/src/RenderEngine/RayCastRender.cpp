@@ -63,9 +63,10 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	}
 	if (closest_obj) {
 		accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
+		//accucolor = closest_collision.geometry->getNormal(closest_collision.pint);
 		for (Light * light : lights)
 		{
-			accucolor += light->Illumination((*closest_obj->getMaterial()), closest_obj->getNormalVector(closest_collision.pint), ray.direction * (-1.0f), closest_collision.pint);
+			accucolor += light->Illumination(*(closest_obj->getMaterial()), closest_collision.geometry->getNormal(closest_collision.pint), ray.direction * (-1.0f), closest_collision.pint);
 		}
 	}
 	return accucolor;
@@ -147,6 +148,9 @@ Object* RayCast::RayPick(const CRAB::Camera &cam, std::vector<Object> &objects, 
 
 CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Object> &objects, std::vector<Light*> &lights) {
 
+	clock_t t;
+	t = clock();
+
 	const Vector4Df base = (cam.view - cam.position).to_unitary();
 	const Vector4Df up = cam.up * (cam.dimensions.y / cam.resolution.y);
 	const Vector4Df left = cross_simd(cam.up, base) * (cam.dimensions.x / cam.resolution.x);
@@ -179,8 +183,11 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 
 		}
 	}
-
-    return accumulateBuffer;
+	
+	t = clock() - t;	
+	std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
+	
+	return accumulateBuffer;
 }
 
 const Vector4Df colors[4] = { Vector4Df{1,0,0,0},Vector4Df{0.15f, 0.87f, 0.15f},Vector4Df{0.9f,0.9f,0,0},Vector4Df{0,0.6f,1,0} };

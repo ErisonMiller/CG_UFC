@@ -12,16 +12,24 @@
 
 #include "DataStructures/Linear_Algebra.h"
 #include "Geometry/Triangle.h"
-
+#include "Octree.h"
 // Namespace: OBJL
 //
 // Description: The namespace that holds eveyrthing that
 //	is needed and used for the OBJ Model Loader
 namespace CRAB
 {
-	#define FaceList std::vector<Triangle>
 
-	std::vector<FaceList> Load_Obj(std::string &name) {
+	//struct Face
+	//{
+	//	CRAB::Vector4Df v1, v2, v3;
+	//};
+	//
+	//#define FaceList std::vector<Face>
+
+	//#define FaceList std::vector<Triangle>
+
+	std::vector<FaceList> Load_Obj(const std::string &name) {
 		std::vector<FaceList> objs;
 		std::vector<Vector4Df> vertices;
 
@@ -53,7 +61,7 @@ namespace CRAB
 				infile >> f2;
 				infile >> f3;
 
-				objs[num_objs].push_back(Triangle(vertices[f1 - 1], vertices[f2 - 1], vertices[f3 - 1] ));
+				objs[num_objs].push_back(Face{ vertices[f1 - 1], vertices[f2 - 1], vertices[f3 - 1] });
 				continue;
 			}
 
