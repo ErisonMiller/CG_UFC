@@ -21,7 +21,7 @@ namespace CRAB
 {
 	#define FaceList std::vector<Triangle>
 
-	std::vector<FaceList>& Load_Obj(std::string &name) {
+	std::vector<FaceList> Load_Obj(std::string &name) {
 		std::vector<FaceList> objs;
 		std::vector<Vector4Df> vertices;
 
@@ -31,6 +31,7 @@ namespace CRAB
 		int num_objs = -1;
 		int f1, f2, f3;
 		float x, y, z;
+		float w = 1.0f;
 
 		while (infile >> tag) {
 			if (tag == "o") {
@@ -44,7 +45,7 @@ namespace CRAB
 				infile >> x;
 				infile >> y;
 				infile >> z;
-				vertices.push_back(Vector4Df{ x, y, z });
+				vertices.push_back(Vector4Df{ x, y, z, w });
 				continue;
 			}
 			if (tag == "f") {

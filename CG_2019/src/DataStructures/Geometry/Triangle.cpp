@@ -11,6 +11,10 @@ Triangle::~Triangle()
 {
 }
 
+Triangle::Triangle(const Triangle &tri) : v1(tri.v1), n_e1(tri.n_e1), n_e2(tri.n_e2), normal(tri.normal)
+{
+}
+
 Triangle::Triangle(const CRAB::Vector4Df &v1, const CRAB::Vector4Df &v2, const CRAB::Vector4Df &v3): v1(v1) {
 	const Vector4Df e1 = v2 - v1;
 	const Vector4Df e2 = v3 - v1;
@@ -46,7 +50,7 @@ CRAB::Collision Triangle::CollideClosest(register const CRAB::Ray &ray) {
 	const Vector4Df &p_plane = ray.origin - v1 + ray.direction*t;
 
 	col.pint = p_plane;
-	
+
 	const float proj1 = dot_simd(p_plane, n_e1);
 	const float proj2 = dot_simd(p_plane, n_e2);
 	
@@ -58,7 +62,6 @@ CRAB::Collision Triangle::CollideClosest(register const CRAB::Ray &ray) {
 		col.distance = INFINITY;
 	}
 	return col;
-
 }
 
 CRAB::RayCollisionList Triangle::Collide(const CRAB::Ray &ray)

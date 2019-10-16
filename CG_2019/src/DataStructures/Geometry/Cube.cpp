@@ -53,8 +53,8 @@ __forceinline float CollideClosestQuad(register const CRAB::Ray &ray, register c
 	if (_mm_cvtss_f32(dir) > 0.0f)return INFINITY;
 	const Vector4Df &t = dot_simd_Vec(quad.v1 - ray.origin, normal) / dir;
 
-	//const Vector4Df &p_plane = ray.origin + ray.direction*t;
-	const CRAB::Vector4Df &p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, ray.origin);
+	const Vector4Df &p_plane = ray.origin + ray.direction*t;
+	//const CRAB::Vector4Df &p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, ray.origin);
 
 
 	const float proj2 = dot_simd(p_plane - quad.v1, quad.e2);

@@ -144,7 +144,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)CG_2019\src\DataIO;$(SolutionDir)CG_2019\src\WindowController;$(SolutionDir)CG_2019\src\RenderEngine;$(SolutionDir)CG_2019\src\DataStructures\Material;$(SolutionDir)CG_2019\src\DataStructures\Geometry;$(SolutionDir)CG_2019\src\DataStructures\Lights;$(SolutionDir)\CG_2019\src\DataStructures\Material;$(SolutionDir)\CG_2019\src;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <FloatingPointModel>Precise</FloatingPointModel>

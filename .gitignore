@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/CG_2019/monkey.txt
+/CG_2019/tema.txt
+/CG_2019/torus.txt
+/CG_2019/obj.txt

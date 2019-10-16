@@ -11,6 +11,7 @@ public:
 	};
 
 	Triangle(const CRAB::Vector4Df &v1, const CRAB::Vector4Df &v2, const CRAB::Vector4Df &v3);
+	Triangle(const Triangle &tri);
 	Triangle();
 	~Triangle();
 

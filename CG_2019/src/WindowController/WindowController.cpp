@@ -12,6 +12,8 @@
 #include "RenderEngine/OpenGLRender.h"
 #include "RenderEngine/RayCastRender.h"
 
+#include "DataIO/LoadObj.h"
+
 #include "Light.h"
 #include "AmbientLight.h"
 #include "PointLight.h"
@@ -39,9 +41,13 @@ std::vector<Sphere> spheres = {
 	Sphere(Vector4Df{2.0f,0.0f,0.0f,1.0f},1.0f),//7
 	Sphere(Vector4Df{2.0f,1.5f,0.0f,1.0f},0.3f),//8
 };
+std::vector<std::vector<Triangle>> ObjList;
 
 //list of lights
 std::vector<Light *> lights;
+
+//list of materials
+Material *Neutral = new Material(Vector4Df{ 0.1f, 0.1f, 0.1f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000);
 
 const int	width  = 512,
 			height = 512;
@@ -198,7 +204,17 @@ void keyboard(unsigned char key, int x, int y) {
 		}
 		
 		break;
-	
+	case('l'):
+	case('L'):
+		std::cout << "Load OBJ File:" << std::endl;
+		std::string fileName;
+		std::cin >> fileName;
+		ObjList = CRAB::Load_Obj(fileName);
+		objs.clear();
+		for (int i = 0; i < ObjList.size(); i++)
+			for (int j = 0; j < ObjList[i].size(); j++)
+				objs.push_back(Object("OBJ", Neutral, new Triangle(ObjList[i][j])));		
+		break;
 	}
 }
 
@@ -210,7 +226,7 @@ void resize(int w, int h) {
 void InitScene() {
 	//fill the light list
 	lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
-	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 0, 0.0f, 1 }, Vector4Df{ -1.0f, 0.0f, 0.0f, 0 }, 20.0f, 50.0f));
+	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 0, 30.0f, 1 }, Vector4Df{ -1.0f, 0.0f, 0.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
 	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 7.0f, 1.5f, 30.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 7.0f, 33.0f, 1 }, Vector4Df{ 0.0f, -1.0f, -1.0f, 0 }, 30.0f, 30.0f));
