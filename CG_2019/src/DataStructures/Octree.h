@@ -19,9 +19,14 @@ struct Face
 struct TreeElement
 {
 	int state;
-	TreeElement(int _state) : state(_state) {}
+	TreeElement* next;
+
+	CRAB::Vector4Df center;
+	float r2;
+
+	TreeElement(int _state) : state(_state), next(nullptr) {}
 	
-	void Free() {}
+	void Free() { if (next) { next->Free(); } delete next; }
 };
 
 
@@ -31,6 +36,14 @@ struct OcElementNode : TreeElement
 	OcElementNode() : TreeElement(TREE_SEMI_NODE) {}
 	
 	void Free() { for (TreeElement* t : sons) { t->Free(); delete t; } }
+};
+
+struct OcElementNodeCache : TreeElement
+{
+	TreeElement* son;
+	OcElementNodeCache() : TreeElement(TREE_SEMI_NODE) {}
+
+	void Free() { son->Free(); delete son; next->Free(); delete next; }
 };
 
 

@@ -20,7 +20,7 @@
 
 namespace CRAB {
 
-#define M_PI 3.14156265f
+#define M_PI 3.1415926535897932384626433832795f
 #define SMALL_NUMBER 0.000001f
 
 
