@@ -6,6 +6,7 @@ class Light
 {
 public:
 	CRAB::Vector4Df intensity;
+	bool on = 1;
 
 	Light();
 	Light(CRAB::Vector4Df intensity);
@@ -15,4 +16,7 @@ public:
 	virtual CRAB::Vector4Df Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view, const CRAB::Vector4Df &P) const = 0;
 	virtual float LightDistance(const CRAB::Vector4Df &point) const = 0;
 	virtual CRAB::Vector4Df GetLightDirection(const CRAB::Vector4Df& point) const = 0;
+
+	void TurnOn();
+	void TurnOff();
 };

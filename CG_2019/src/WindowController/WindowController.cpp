@@ -82,6 +82,15 @@ void FPS_display()
 	ImGui::End();
 }
 
+//Main Menu Windows
+void Main_Menu()
+{
+	object_window_open = true;
+	ImGui::Begin("Main Menu");
+	ImGui::Text("I am the main menus.");
+	ImGui::End();
+}
+
 // display function called by MainLoop(), gets executed every frame 
 void disp(void)
 {
@@ -169,7 +178,6 @@ void mouse(int button, int state, int x, int y)
 			}
 
 		}
-
 
 		motion(x, y);
 	}
