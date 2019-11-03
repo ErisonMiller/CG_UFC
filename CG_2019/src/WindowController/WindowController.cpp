@@ -49,7 +49,8 @@ std::vector<std::vector<Triangle>> ObjList;
 std::vector<Light *> lights;
 
 //list of materials
-Material *Neutral = new Material(Vector4Df{ 0.1f, 0.1f, 0.1f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000);
+Material* Neutral = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000);
+Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
 
 const int	width  = 512,
 			height = 512;
@@ -231,10 +232,10 @@ void resize(int w, int h) {
 
 void InitScene() {
 	//fill the light list
-	lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
-	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 0, 30.0f, 1 }, Vector4Df{ -1.0f, 0.0f, 0.0f, 0 }, 20.0f, 50.0f));
+	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
+	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 0, 30.0f, 1 }, Vector4Df{ -1.0f, 0.0f, 0.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
-	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 7.0f, 1.5f, 30.0f, 0 }));
+	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 7.0f, 33.0f, 1 }, Vector4Df{ 0.0f, -1.0f, -1.0f, 0 }, 30.0f, 30.0f));
 	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0}, Vector4Df{ 5.0f, 7.0f, 30.0f, 1 }));
 
@@ -311,7 +312,11 @@ void Start_Window(int argc, char **argv) {
 	for (int i = 0; i < faceList.size(); i++) {
 		objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));
 	}
-
+	std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
+	for (int i = 0; i < faceList2.size(); i++) {
+		objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
+	}
+	
 	//start render loop
 	RenderAPI::RenderLoop();
 

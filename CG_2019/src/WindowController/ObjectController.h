@@ -133,7 +133,7 @@ inline void RenderObject() {
 			ImGui::ColorEdit4("Color Ambient", (float*)&selected_obj->getMaterial()->ka, ImGuiColorEditFlags_NoInputs);
 			ImGui::ColorEdit4("Color Difuse", (float*)&selected_obj->getMaterial()->kd, ImGuiColorEditFlags_NoInputs);
 			ImGui::ColorEdit4("Color Specular", (float*)&selected_obj->getMaterial()->ks, ImGuiColorEditFlags_NoInputs);
-			ImGui::DragFloat("Alpha", &selected_obj->getMaterial()->alfa);
+			ImGui::DragFloat("Alpha", &selected_obj->getMaterial()->shininess);
 		}
 
 		selected_geometry = selected_obj->getGeometry();

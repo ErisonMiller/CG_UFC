@@ -30,12 +30,21 @@ RayCast::~RayCast() {
 	delete[]accumulateBuffer;
 }
 
-inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, const CRAB::Camera &cam)
+inline bool InShadow(const Ray& ray, const std::vector<Object>& objects, const Light& light) {
+	const float dist = light.LightDistance(ray.origin);
+	for (const Object& obj : objects) {
+		const CRAB::Collision col = obj.Collide(ray);//Collision
+		if (col.distance < dist) {
+			return true;
+		}
+	}
+	return false;
+
+}
+
+inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, float near, int depth)
 {
 	float dist = INFINITY;
-
-	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
-	
 	Collision closest_collision;
 	const Object *closest_obj = nullptr;
 	#if PRINT == 1
@@ -44,7 +53,7 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 	for (const Object &obj : objects) {
 		const CRAB::Collision col = obj.Collide(ray);//Collision
 		const float o_dist = col.distance;
-		if (o_dist < dist && o_dist > cam.n) {
+		if (o_dist < dist && o_dist > near) {
 			dist = o_dist;
 			closest_collision = col;
 			closest_obj = &obj;
@@ -61,13 +70,32 @@ inline Vector4Df ray_cast(register const Ray &ray, const std::vector<Object> &ob
 		id++;
 		#endif
 	}
+	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
 	if (closest_obj) {
-		accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
-		//accucolor = closest_collision.geometry->getNormal(closest_collision.pint);
+		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
+		const Material mat = *closest_obj->getMaterial();
+
+		accucolor = mat.ka;
+		//accucolor = Vector4Df{ 1,1,1,1 } * (1.0f/ closest_collision.distance) ;
+		const CRAB::Vector4Df N = closest_collision.geometry->getNormal(closest_collision.pint);
+		//accucolor = N ;
 		for (Light * light : lights)
 		{
-			accucolor += light->Illumination(*(closest_obj->getMaterial()), closest_collision.geometry->getNormal(closest_collision.pint), ray.direction * (-1.0f), closest_collision.pint);
+			const CRAB::Vector4Df L = light->GetLightDirection(closest_collision.pint);
+			float dot_d_n = dot(L, N);
+			if (dot_d_n > 0.0f && !InShadow(CRAB::Ray{ closest_collision.pint, L }, objects, *light)) {
+				accucolor += light->Illumination(mat,
+					N, ray.direction * (-1.0f),
+					closest_collision.pint);
+			}
 		}
+
+		if (mat.reflection && depth < 1) {
+			const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
+			accucolor += ray_cast(CRAB::Ray{closest_collision.pint, R},objects,lights,false,SMALL_NUMBER,depth+1) * mat.reflection;
+		}
+		accucolor = accucolor * 0.5f;
+
 	}
 	return accucolor;
 }
@@ -164,7 +192,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-	#pragma omp parallel for num_threads(16) schedule(guided)
+	#pragma omp parallel for num_threads(16) schedule(dynamic) //default(shared)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
@@ -179,7 +207,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 			}
 #endif
 			
-			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam);
+			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam.n, 0);
 
 		}
 	}

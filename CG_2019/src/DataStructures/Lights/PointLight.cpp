@@ -4,7 +4,7 @@ PointLight::PointLight(CRAB::Vector4Df intensity, CRAB::Vector4Df _position) : L
 
 PointLight::~PointLight() {}
 
-CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector4Df& normal, const CRAB::Vector4Df& view, const CRAB::Vector4Df& P)
+CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector4Df& normal, const CRAB::Vector4Df& view, const CRAB::Vector4Df& P) const 
 {
 	// light vector
 	CRAB::Vector4Df L = position - P;
@@ -21,8 +21,12 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 	const CRAB::Vector4Df r = reflection(L, normal);
 	float dot_r_v = dot(r, view);
 	if (dot_r_v > 0.0f) {
-		Is = (intensity * mat.ks) * powf(dot_r_v, mat.alfa);//specular reflection
+		Is = (intensity * mat.ks) * powf(dot_r_v, mat.shininess);//specular reflection
 	}
 	
 	return Ia + Id + Is;
+}
+
+float PointLight::LightDistance(const CRAB::Vector4Df& point) const {
+	return (point - position).length();
 }

@@ -12,5 +12,7 @@ public:
 	virtual ~Light() = 0;
 
 	//Return the collor after the interation with the light and material
-	virtual CRAB::Vector4Df Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view, const CRAB::Vector4Df &P) = 0;
+	virtual CRAB::Vector4Df Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view, const CRAB::Vector4Df &P) const = 0;
+	virtual float LightDistance(const CRAB::Vector4Df &point) const = 0;
+	virtual CRAB::Vector4Df GetLightDirection(const CRAB::Vector4Df& point) const = 0;
 };
