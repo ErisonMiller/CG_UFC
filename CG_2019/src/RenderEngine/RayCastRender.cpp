@@ -81,9 +81,14 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		//accucolor = N ;
 		for (Light * light : lights)
 		{
-			const CRAB::Vector4Df L = light->GetLightDirection(closest_collision.pint);
-			float dot_d_n = dot(L, N);
-			if (dot_d_n > 0.0f && !InShadow(CRAB::Ray{ closest_collision.pint, L }, objects, *light)) {
+			float dot_d_n = 0.0f;
+			const CRAB::Vector4Df L = CRAB::Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f};
+			if (typeid(*light) == typeid(DirectionalLight)){
+				//DirectionalLight dir_light = 
+				const CRAB::Vector4Df L = ( (DirectionalLight *) light)->GetLightDirection(closest_collision.pint);
+				dot_d_n = dot(L, N);
+			}
+			if ((typeid(*light) == typeid(DirectionalLight) && dot_d_n > 0.0f) && !InShadow(CRAB::Ray{ closest_collision.pint, L }, objects, *light)) {
 				if (light->on){
 					accucolor += light->Illumination(mat,
 						N, ray.direction * (-1.0f),
