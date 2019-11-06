@@ -74,6 +74,9 @@ Camera cam = Camera(
 RayCast rc(cam);
 
 
+//Aux
+bool main_menu_enable = 0;
+
 //FPS couting window
 void FPS_display()
 {
@@ -98,78 +101,83 @@ void Main_Menu()
 
 	//Menu
 	//Menu MainMenu = Menu("Main Menu");
-	ImGui::Begin("Main Menu");
+	if (main_menu_enable)
+	{
 
-	if (ImGui::TreeNode("Lights")){
-		if (ImGui::BeginCombo("Lights", CurrentLightName.c_str()))
-		{
-			for (int i = 0; i < lights.size(); i++)
+	
+		ImGui::Begin("Main Menu");
+
+		if (ImGui::TreeNode("Lights")){
+			if (ImGui::BeginCombo("Lights", CurrentLightName.c_str()))
 			{
-				if (ImGui::Selectable(("Light " + to_string(i)).c_str(), &selected[i], ImGuiSelectableFlags_::ImGuiSelectableFlags_None)) {
-					CurrentLightName = ("Light " + to_string(i)).c_str();
-					CurrentLight = i;
+				for (int i = 0; i < lights.size(); i++)
+				{
+					if (ImGui::Selectable(("Light " + to_string(i)).c_str(), &selected[i], ImGuiSelectableFlags_::ImGuiSelectableFlags_None)) {
+						CurrentLightName = ("Light " + to_string(i)).c_str();
+						CurrentLight = i;
+					}
 				}
+				ImGui::EndCombo();
 			}
-			ImGui::EndCombo();
-		}
-		if (typeid(*lights[CurrentLight]) == typeid(AmbientLight))
-		{
-			CurrentLightType = "Ambient Light";
-			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
-			ImGui::Text(CurrentLightType.c_str());
-		}else if (typeid(*lights[CurrentLight]) == typeid(DirectionalLight))
-		{
-			CurrentLightType = "Directional Light";
-			ImGui::Text(CurrentLightType.c_str());
-			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
-			if (ImGui::DragFloat3("Direction", (float*)&((DirectionalLight *)lights[CurrentLight])->direction, 0.1f)) {
-				((DirectionalLight *)lights[CurrentLight])->direction.normalize();
-			}
-			ImGui::Text(CurrentLightType.c_str());
+			if (typeid(*lights[CurrentLight]) == typeid(AmbientLight))
+			{
+				CurrentLightType = "Ambient Light";
+				ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+				ImGui::Text(CurrentLightType.c_str());
+			}else if (typeid(*lights[CurrentLight]) == typeid(DirectionalLight))
+			{
+				CurrentLightType = "Directional Light";
+				ImGui::Text(CurrentLightType.c_str());
+				ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+				if (ImGui::DragFloat3("Direction", (float*)&((DirectionalLight *)lights[CurrentLight])->direction, 0.1f)) {
+					((DirectionalLight *)lights[CurrentLight])->direction.normalize();
+				}
+				ImGui::Text(CurrentLightType.c_str());
 
-		}
-		else if (typeid(*lights[CurrentLight]) == typeid(Spotlights))
-		{
-			CurrentLightType = "Spot Light";
-			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
-			ImGui::DragFloat3("Position", (float*)&((Spotlights *)lights[CurrentLight])->position, 0.5f);
-			if (ImGui::DragFloat3("Direction", (float*)&((Spotlights *)lights[CurrentLight])->direction, 0.1f)) {
-				((Spotlights *)lights[CurrentLight])->direction.normalize();
 			}
-			ImGui::DragFloat("Angle", (float*)&((Spotlights *)lights[CurrentLight])->angle, 0.5f, 0.0f, 180.0f);
-			ImGui::Text(CurrentLightType.c_str());
-		}
-		else if (typeid(*lights[CurrentLight]) == typeid(PointLight))
-		{
-			CurrentLightType = "Point Light";
-			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
-			ImGui::DragFloat3("Position", (float*)&((PointLight *)lights[CurrentLight])->position, 0.5f);
-			ImGui::Text(CurrentLightType.c_str());
-		}
-		else
-		{
-			CurrentLightType = "None";
-			ImGui::Text(CurrentLightType.c_str());
-		}
+			else if (typeid(*lights[CurrentLight]) == typeid(Spotlights))
+			{
+				CurrentLightType = "Spot Light";
+				ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+				ImGui::DragFloat3("Position", (float*)&((Spotlights *)lights[CurrentLight])->position, 0.5f);
+				if (ImGui::DragFloat3("Direction", (float*)&((Spotlights *)lights[CurrentLight])->direction, 0.1f)) {
+					((Spotlights *)lights[CurrentLight])->direction.normalize();
+				}
+				ImGui::DragFloat("Angle", (float*)&((Spotlights *)lights[CurrentLight])->angle, 0.5f, 0.0f, 180.0f);
+				ImGui::Text(CurrentLightType.c_str());
+			}
+			else if (typeid(*lights[CurrentLight]) == typeid(PointLight))
+			{
+				CurrentLightType = "Point Light";
+				ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+				ImGui::DragFloat3("Position", (float*)&((PointLight *)lights[CurrentLight])->position, 0.5f);
+				ImGui::Text(CurrentLightType.c_str());
+			}
+			else
+			{
+				CurrentLightType = "None";
+				ImGui::Text(CurrentLightType.c_str());
+			}
 		
-		ImGui::Checkbox("On", &(lights[CurrentLight]->on));
+			ImGui::Checkbox("On", &(lights[CurrentLight]->on));
 
 
-		ImGui::TreePop();
-	}
+			ImGui::TreePop();
+		}
 
 
-	if (ImGui::TreeNode("Camera")) {
+		if (ImGui::TreeNode("Camera")) {
 		
-		ImGui::DragFloat3("Eye Position", (float*)&(cam.position), 0.1f);
-		ImGui::DragFloat3("Look At", (float*)&(cam.view), 0.1f, 0.0f, 1.0f);
-		ImGui::DragFloat3("View Up", (float*)&(cam.up), 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat3("Eye Position", (float*)&(cam.position), 0.1f);
+			ImGui::DragFloat3("Look At", (float*)&(cam.view), 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat3("View Up", (float*)&(cam.up), 0.1f, 0.0f, 1.0f);
 
 
-		ImGui::TreePop();
+			ImGui::TreePop();
+		}
+
+		ImGui::End();
 	}
-
-	ImGui::End();
 	//MainMenu.CloseMenu();
 }
 
@@ -298,6 +306,18 @@ void keyboard(unsigned char key, int x, int y) {
 		}
 		
 		break;
+
+	case('s'):
+	case('S'):
+		if (main_menu_enable)
+		{
+			main_menu_enable = 0;
+		}
+		else {
+			main_menu_enable = 1;
+		}
+		break;
+
 	case('l'):
 	case('L'):
 		std::cout << "Load OBJ File:" << std::endl;
@@ -313,6 +333,7 @@ void keyboard(unsigned char key, int x, int y) {
 		//	for (int j = 0; j < ObjList[i].size(); j++)
 		//		objs.push_back(Object("OBJ", Neutral, &ObjList[i][j]));
 		break;
+	
 	}
 }
 
