@@ -99,8 +99,6 @@ void Main_Menu()
 	//Menu
 	//Menu MainMenu = Menu("Main Menu");
 	ImGui::Begin("Main Menu");
-	//MainMenu.OpenMenu();
-	ImGui::Text("I am the main menu.");
 
 	if (ImGui::TreeNode("Lights")){
 		if (ImGui::BeginCombo("Lights", CurrentLightName.c_str()))
@@ -124,7 +122,10 @@ void Main_Menu()
 			CurrentLightType = "Directional Light";
 			ImGui::Text(CurrentLightType.c_str());
 			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
-			ImGui::DragFloat3("Direction", (float*)&((DirectionalLight *)lights[CurrentLight])->direction, 0.5f);
+			if (ImGui::DragFloat3("Direction", (float*)&((DirectionalLight *)lights[CurrentLight])->direction, 0.1f)) {
+				((DirectionalLight *)lights[CurrentLight])->direction.normalize();
+			}
+			ImGui::Text(CurrentLightType.c_str());
 
 		}
 		else if (typeid(*lights[CurrentLight]) == typeid(Spotlights))
@@ -132,8 +133,10 @@ void Main_Menu()
 			CurrentLightType = "Spot Light";
 			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
 			ImGui::DragFloat3("Position", (float*)&((Spotlights *)lights[CurrentLight])->position, 0.5f);
-			ImGui::DragFloat3("Direction", (float*)&((Spotlights *)lights[CurrentLight])->direction, 0.5f);
-			ImGui::DragFloat("Angle", (float*)&((Spotlights *)lights[CurrentLight])->angle, 0.5f);
+			if (ImGui::DragFloat3("Direction", (float*)&((Spotlights *)lights[CurrentLight])->direction, 0.1f)) {
+				((Spotlights *)lights[CurrentLight])->direction.normalize();
+			}
+			ImGui::DragFloat("Angle", (float*)&((Spotlights *)lights[CurrentLight])->angle, 0.5f, 0.0f, 180.0f);
 			ImGui::Text(CurrentLightType.c_str());
 		}
 		else if (typeid(*lights[CurrentLight]) == typeid(PointLight))
@@ -350,20 +353,20 @@ void InitScene() {
 	Material *Parede3 = new Material(Vector4Df{ 0.04f, 0.03f, 0.02f, 0 }, Vector4Df{ 0.3f, 0.6f, 0.4f, 0 }, Vector4Df{ 0.3f, 0.6f, 0.4f, 0 }, 500);
 
 	//fill the object list
-	objs.push_back(Object("Tronco da arvore 1", Tronco, new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object("Copa da arvode 1", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 5.0f,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Tronco da arvore 1", Tronco, new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Copa da arvode 1", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 5.0f,2,30,1 }, Vector4Df{ 0,1,0,0 })));
 	
-	objs.push_back(Object("Tronco da arvore 2", Tronco, new Cylinder(2.0f, 0.5f, Vector4Df{ 15,0,30,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object("Copa da arvore 2", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Tronco da arvore 2", Tronco, new Cylinder(2.0f, 0.5f, Vector4Df{ 15,0,30,1 }, Vector4Df{ 0,1,0,0 })));
+	//objs.push_back(Object("Copa da arvore 2", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
 	
 	//objs.push_back(Object("Copa da arvore 2.2", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 15,2,30,1 }, Vector4Df{ 0,1,0,0 })));
 
 
-	objs.push_back(Object("Cubo 1", Parede, new Cube(Vector4Df{ 10, 0, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object("Cubo 2", Parede2, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
-	objs.push_back(Object("Cubo 3", Parede3, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	//objs.push_back(Object("Cubo 1", Parede, new Cube(Vector4Df{ 10, 0, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	//objs.push_back(Object("Cubo 2", Parede2, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
+	//objs.push_back(Object("Cubo 3", Parede3, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 
-	objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
+	//objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
 
 	//Fill the object list (With material)
 	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));*/
@@ -397,7 +400,7 @@ void Start_Window(int argc, char **argv) {
 	InitScene();
 	
 	std::vector<FaceList> faceList = CRAB::Load_Obj("crab2.obj");
-	objs.clear();
+	//objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
 		objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));
 	}
