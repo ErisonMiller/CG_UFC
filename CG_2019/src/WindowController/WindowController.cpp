@@ -22,6 +22,7 @@
 
 #include "ImGUI.h"
 #include "ObjectController.h"
+#include "Menu.h"
 
 #include "GlobalVariables.h"
 
@@ -82,13 +83,91 @@ void FPS_display()
 	ImGui::End();
 }
 
+
 //Main Menu Windows
 void Main_Menu()
 {
-	object_window_open = true;
+	//Light Menu Parameters
+	static bool * selected = new bool [lights.size()];
+	static string CurrentLightName = " ";
+	static string CurrentLightType = " ";
+	static int CurrentLight;
+
+	//Camera Parameters
+	//Vector4Df eye_pos = Vector4Df{ 0.0f,0.0f,10.0f,1.0f };
+
+	//Menu
+	//Menu MainMenu = Menu("Main Menu");
 	ImGui::Begin("Main Menu");
-	ImGui::Text("I am the main menus.");
+	//MainMenu.OpenMenu();
+	ImGui::Text("I am the main menu.");
+
+	if (ImGui::TreeNode("Lights")){
+		if (ImGui::BeginCombo("Lights", CurrentLightName.c_str()))
+		{
+			for (int i = 0; i < lights.size(); i++)
+			{
+				if (ImGui::Selectable(("Light " + to_string(i)).c_str(), &selected[i], ImGuiSelectableFlags_::ImGuiSelectableFlags_None)) {
+					CurrentLightName = ("Light " + to_string(i)).c_str();
+					CurrentLight = i;
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if (typeid(*lights[CurrentLight]) == typeid(AmbientLight))
+		{
+			CurrentLightType = "Ambient Light";
+			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+			ImGui::Text(CurrentLightType.c_str());
+		}else if (typeid(*lights[CurrentLight]) == typeid(DirectionalLight))
+		{
+			CurrentLightType = "Directional Light";
+			ImGui::Text(CurrentLightType.c_str());
+			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat3("Direction", (float*)&((DirectionalLight *)lights[CurrentLight])->direction, 0.5f);
+
+		}
+		else if (typeid(*lights[CurrentLight]) == typeid(Spotlights))
+		{
+			CurrentLightType = "Spot Light";
+			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat3("Position", (float*)&((Spotlights *)lights[CurrentLight])->position, 0.5f);
+			ImGui::DragFloat3("Direction", (float*)&((Spotlights *)lights[CurrentLight])->direction, 0.5f);
+			ImGui::DragFloat("Angle", (float*)&((Spotlights *)lights[CurrentLight])->angle, 0.5f);
+			ImGui::Text(CurrentLightType.c_str());
+		}
+		else if (typeid(*lights[CurrentLight]) == typeid(PointLight))
+		{
+			CurrentLightType = "Point Light";
+			ImGui::DragFloat3("Intensity", (float*)&lights[CurrentLight]->intensity, 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat3("Position", (float*)&((PointLight *)lights[CurrentLight])->position, 0.5f);
+			ImGui::Text(CurrentLightType.c_str());
+		}
+		else
+		{
+			CurrentLightType = "None";
+			ImGui::Text(CurrentLightType.c_str());
+		}
+		
+		ImGui::Checkbox("On", &(lights[CurrentLight]->on));
+
+
+		ImGui::TreePop();
+	}
+
+
+	if (ImGui::TreeNode("Camera")) {
+		
+		ImGui::DragFloat3("Eye Position", (float*)&(cam.position), 0.1f);
+		ImGui::DragFloat3("Look At", (float*)&(cam.view), 0.1f, 0.0f, 1.0f);
+		ImGui::DragFloat3("View Up", (float*)&(cam.up), 0.1f, 0.0f, 1.0f);
+
+
+		ImGui::TreePop();
+	}
+
 	ImGui::End();
+	//MainMenu.CloseMenu();
 }
 
 // display function called by MainLoop(), gets executed every frame 
@@ -108,6 +187,7 @@ void disp(void)
 
 	//GUI displays
 	FPS_display();
+	Main_Menu();
 	RenderObject();
 
 	//GUI rendering call
@@ -241,7 +321,8 @@ void resize(int w, int h) {
 void InitScene() {
 	//fill the light list
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
-	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 0, 30.0f, 1 }, Vector4Df{ -1.0f, 0.0f, 0.0f, 0 }, 20.0f, 50.0f));
+	lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
+	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
 	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 7.0f, 33.0f, 1 }, Vector4Df{ 0.0f, -1.0f, -1.0f, 0 }, 30.0f, 30.0f));
