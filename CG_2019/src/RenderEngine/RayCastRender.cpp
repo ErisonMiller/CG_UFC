@@ -149,7 +149,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		id++;
 		#endif
 	}
-	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
+	Vector4Df vec_offset = Vector4Df{ closest_collision.pint.x+0.001f, closest_collision.pint.y+ 0.001f, closest_collision.pint.z+ 0.001f, closest_collision.pint.w };
+	Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f };
 	if (closest_obj) {
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 		const Material mat = *closest_obj->getMaterial();
@@ -166,7 +167,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 				const CRAB::Vector4Df L = ( (DirectionalLight *) light)->GetLightDirection(closest_collision.pint);
 				dot_d_n = dot(L, N);
 			}
-			if ((typeid(*light) == typeid(DirectionalLight) && dot_d_n > 0.0f) && !InShadow(CRAB::Ray{ closest_collision.pint, L }, objects, *light)) {
+
+			if ((typeid(*light) == typeid(DirectionalLight) && dot_d_n > 0.0f) && !InShadow(CRAB::Ray{ vec_offset, L }, objects, *light)) {
 				if (light->on){
 					accucolor += light->Illumination(mat,
 						N, ray.direction * (-1.0f),
@@ -175,38 +177,55 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 			}
 		}
 
+		
 		/*
-
 		if (depth < 1)
 		{
-			if (mat.reflection && mat.ior)
+			if (mat.reflection && mat.ior>1)
 			{
 				Vector4Df refractionColor = Vector4Df{ 0,0,0,0 };
 				Vector4Df reflectionColor = Vector4Df{ 0,0,0,0 };
-				const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
-				refractionColor = ray_cast(CRAB::Ray{ closest_collision.pint, refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+
+				//const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+				//refractionColor = ray_cast(CRAB::Ray{ vec_offset, refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
 
 				const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
 				reflectionColor = ray_cast(CRAB::Ray{ closest_collision.pint, R }, objects, lights, false, SMALL_NUMBER, depth + 1) * mat.reflection;
-
+				
 				// Compute fresnel
 				float kr = fresnel(ray.direction, N, mat.ior, 1);
+				
+				if (kr < 1) {
+					const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+					refractionColor = ray_cast(CRAB::Ray{ vec_offset, refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+				}
 
-				accucolor += reflectionColor * kr + refractionColor * (1 - kr);
+				accucolor += (reflectionColor * kr + refractionColor * (1 - kr));
+			}
+			else if (mat.reflection) {
+				const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
+				accucolor += ray_cast(CRAB::Ray{ closest_collision.pint, R }, objects, lights, false, SMALL_NUMBER, depth + 1) * mat.reflection;
+			}
+
+
+			else if (mat.ior > 1) {
+				const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+				accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
 			}
 		}*/
 		
-
+		
 		if (mat.reflection && depth < 1) {
 			const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
-			accucolor += ray_cast(CRAB::Ray{closest_collision.pint, R},objects,lights,false,SMALL_NUMBER,depth+1) * mat.reflection;
+			accucolor += ray_cast(CRAB::Ray{ closest_collision.pint, R},objects,lights,false,SMALL_NUMBER,depth+1) * mat.reflection;
 		}
 
+		
 		if (mat.ior > 1 && depth < 1) {
 			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
-			accucolor += ray_cast(CRAB::Ray{ closest_collision.pint, refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
 		}
-
+		
 		accucolor = accucolor * 0.5f;
 
 	}

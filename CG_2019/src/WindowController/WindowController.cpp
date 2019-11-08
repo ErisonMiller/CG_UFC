@@ -52,6 +52,7 @@ std::vector<Light *> lights;
 //list of materials
 Material* Neutral = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000);
 Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
+Material* Refract = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f, 1.1f);
 
 const int	width  = 512,
 			height = 512;
@@ -390,15 +391,15 @@ void InitScene() {
 	//objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
 
 	//Fill the object list (With material)
-	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));*/
+	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }, 0.5f), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
 	//objs.push_back(Object("Cilindro", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,0,1 }, Vector4Df{ 0,1,0,0 })));
 	//objs.push_back(Object("Esfera", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Sphere(Vector4Df{ 0.0f, 0.0f, 0.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Cone", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Cone(6.0f, 2.0f, Vector4Df{ 0.0f,0,0,1 }, Vector4Df{ 0,1,0,0 })));
 	//objs.push_back(Object("Cubo 3", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Cube(Vector4Df{ 0, 0, 0,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
 	//objs.push_back(Object("Quad", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Quad(Vector4Df{ 0, 0, -3,1 }, Vector4Df{ 2,0,-3,0 }, Vector4Df{ 2,2,-3,0 }, Vector4Df{ 0,2,-3,0 })));
 	//objs.push_back(Object("Refract Cube", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 1000, 1, 0.8f, 1.33f), new Cube(Vector4Df{ 0, 0, 6,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
-	objs.push_back(Object("Refract Sphere", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5, 1.52f), new Sphere(Vector4Df{ 0.0f, 0.0f, 6.0f, 1 }, 2.0f)));
-	//objs.push_back(Object("Refract Cylinder", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 1000, 1, 0.8f, 1.33f), new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
+	objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 0.0f, 6.0f, 1 }, 2.0f)));
+	//objs.push_back(Object("Refract Cylinder", Refract, new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
 }
 
