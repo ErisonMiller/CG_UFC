@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <algorithm>
 #include "Quad.h"
 
 #include <time.h>
@@ -42,6 +43,84 @@ inline bool InShadow(const Ray& ray, const std::vector<Object>& objects, const L
 
 }
 
+
+//Refract Vector
+inline Vector4Df refract(const Vector4Df & incident, const Vector4Df & normal, const float & ior_t, const float & ior_i) {
+	//T = eta*I + (eta*C1 - C2)*N
+	//eta = etai/etat -> eta
+	//C1 = cos(theta) = N.I -> n_dot_i
+	//C2 = sqrt(1-eta²*(1-cos²(theta))) -> k
+	
+	Vector4Df Nrefr;
+	float n_dot_i = dot(normal, incident); //N.I = cos(theta)
+	float etai, etat, eta, k;
+
+	if (n_dot_i > 1){
+		n_dot_i = 1;
+	}
+	else if(n_dot_i < -1){
+		n_dot_i = -1;
+	}
+
+	if (n_dot_i < 0){//Entering the surface (cos(theta)<0)
+		n_dot_i = -n_dot_i;
+		Nrefr = normal;
+		etai = ior_i;
+		etat = ior_t;
+	}
+	else{//Leaving the surface (Reverse Normal)
+		Nrefr = normal*(-1);
+		etai = ior_t;
+		etat = ior_i;
+	}
+	eta = etai / etat; //eta
+	k = 1 - (eta * eta * (1 - n_dot_i * n_dot_i));
+
+	if (k < 0) {// Total internal reflection (There is no refraction in this case)
+		return Vector4Df{0.0f, 0.0f, 0.0f, 0.0f};
+	}
+
+	return ((incident*eta) + Nrefr*(eta*n_dot_i - sqrtf(k))).to_unitary();
+
+}
+
+float fresnel(const Vector4Df & incident, const Vector4Df & normal, const float & ior_t, const float & ior_i) {
+	float n_dot_i = dot(normal, incident); //N.I = cos(theta)
+	float etai, etat, sint, kr;
+
+	if (n_dot_i > 1) {
+		n_dot_i = 1;
+	}
+	else if (n_dot_i < -1) {
+		n_dot_i = -1;
+	}
+
+	if (n_dot_i < 0) {//Entering the surface (cos(theta)<0)
+		etai = ior_i;
+		etat = ior_t;
+	}
+	else {//Leaving the surface (Reverse Normal)
+		etai = ior_t;
+		etat = ior_i;
+	}
+	// Compute sini using Snell's law
+	sint = etai / etat * sqrtf(std::max(0.0f, 1 - n_dot_i * n_dot_i));
+	// Total internal reflection
+	if (sint >= 1) {
+		kr = 1;
+	}
+	else {
+		float cost = sqrtf(std::max(0.f, 1 - sint * sint));
+		n_dot_i = fabsf(n_dot_i);
+		float Rs = ((etat * n_dot_i) - (etai * cost)) / ((etat * n_dot_i) + (etai * cost));
+		float Rp = ((etai * n_dot_i) - (etat * cost)) / ((etai * n_dot_i) + (etat * cost));
+		kr = (Rs * Rs + Rp * Rp) / 2;
+	}
+
+
+	return kr;
+}
+
 inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, const std::vector<Light *> &lights, bool print, float near, int depth)
 {
 	float dist = INFINITY;
@@ -70,7 +149,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		id++;
 		#endif
 	}
-	Vector4Df accucolor = Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f };
+	Vector4Df vec_offset = Vector4Df{ closest_collision.pint.x+0.001f, closest_collision.pint.y+ 0.001f, closest_collision.pint.z+ 0.001f, closest_collision.pint.w };
+	Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f };
 	if (closest_obj) {
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 		const Material mat = *closest_obj->getMaterial();
@@ -81,19 +161,71 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		//accucolor = N ;
 		for (Light * light : lights)
 		{
-			const CRAB::Vector4Df L = light->GetLightDirection(closest_collision.pint);
-			float dot_d_n = dot(L, N);
-			if (dot_d_n > 0.0f && !InShadow(CRAB::Ray{ closest_collision.pint, L }, objects, *light)) {
-				accucolor += light->Illumination(mat,
-					N, ray.direction * (-1.0f),
-					closest_collision.pint);
+			float dot_d_n = 0.0f;
+			const CRAB::Vector4Df L = CRAB::Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f};
+			if (typeid(*light) == typeid(DirectionalLight)){
+				const CRAB::Vector4Df L = ( (DirectionalLight *) light)->GetLightDirection(closest_collision.pint);
+				dot_d_n = dot(L, N);
+			}
+
+			if ((typeid(*light) == typeid(DirectionalLight) && dot_d_n > 0.0f) && !InShadow(CRAB::Ray{ vec_offset, L }, objects, *light)) {
+				if (light->on){
+					accucolor += light->Illumination(mat,
+						N, ray.direction * (-1.0f),
+						closest_collision.pint);
+				}
 			}
 		}
 
+		
+		/*
+		if (depth < 1)
+		{
+			if (mat.reflection && mat.ior>1)
+			{
+				Vector4Df refractionColor = Vector4Df{ 0,0,0,0 };
+				Vector4Df reflectionColor = Vector4Df{ 0,0,0,0 };
+
+				//const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+				//refractionColor = ray_cast(CRAB::Ray{ vec_offset, refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+
+				const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
+				reflectionColor = ray_cast(CRAB::Ray{ closest_collision.pint, R }, objects, lights, false, SMALL_NUMBER, depth + 1) * mat.reflection;
+				
+				// Compute fresnel
+				float kr = fresnel(ray.direction, N, mat.ior, 1);
+				
+				if (kr < 1) {
+					const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+					refractionColor = ray_cast(CRAB::Ray{ vec_offset, refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+				}
+
+				accucolor += (reflectionColor * kr + refractionColor * (1 - kr));
+			}
+			else if (mat.reflection) {
+				const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
+				accucolor += ray_cast(CRAB::Ray{ closest_collision.pint, R }, objects, lights, false, SMALL_NUMBER, depth + 1) * mat.reflection;
+			}
+
+
+			else if (mat.ior > 1) {
+				const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+				accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+			}
+		}*/
+		
+		
 		if (mat.reflection && depth < 1) {
 			const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
-			accucolor += ray_cast(CRAB::Ray{closest_collision.pint, R},objects,lights,false,SMALL_NUMBER,depth+1) * mat.reflection;
+			accucolor += ray_cast(CRAB::Ray{ closest_collision.pint, R},objects,lights,false,SMALL_NUMBER,depth+1) * mat.reflection;
 		}
+
+		
+		if (mat.ior > 1 && depth < 1) {
+			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
+			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+		}
+		
 		accucolor = accucolor * 0.5f;
 
 	}
@@ -213,7 +345,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	}
 	
 	t = clock() - t;	
-	std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
+	//std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
 	
 	return accumulateBuffer;
 }

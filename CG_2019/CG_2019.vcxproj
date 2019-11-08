@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D1542773-A014-4D7A-AFED-4594613ACCA7}</ProjectGuid>
     <RootNamespace>CG2019</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,15 +41,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -109,6 +109,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <FloatingPointModel>Precise</FloatingPointModel>
       <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalUsingDirectories>$(SolutionDir)CG_2019\Includes\imgui;$(SolutionDir)CG_2019\Includes\GL;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\WindowController;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\RenderEngine;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Material;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Lights;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Geometry;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataIO;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\CG_2019\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -136,7 +137,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -145,13 +146,13 @@
       <AdditionalIncludeDirectories>$(SolutionDir)CG_2019\src\DataIO;$(SolutionDir)CG_2019\src\WindowController;$(SolutionDir)CG_2019\src\RenderEngine;$(SolutionDir)CG_2019\src\DataStructures\Material;$(SolutionDir)CG_2019\src\DataStructures\Geometry;$(SolutionDir)CG_2019\src\DataStructures\Lights;$(SolutionDir)\CG_2019\src\DataStructures\Material;$(SolutionDir)\CG_2019\src;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <FloatingPointModel>Precise</FloatingPointModel>
       <EnablePREfast>false</EnablePREfast>
       <AdditionalOptions>/Zc:twoPhase- /tune:skylake %(AdditionalOptions)</AdditionalOptions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalUsingDirectories>$(SolutionDir)CG_2019\Includes\imgui;$(SolutionDir)CG_2019\Includes\GL;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\WindowController;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\RenderEngine;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Material;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Lights;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Geometry;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataIO;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -161,6 +162,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataIO\Menu.h" />
+    <ClInclude Include="src\DataIO\ObjFile.h" />
     <ClInclude Include="src\DataStructures\Lights\PointLight.h" />
     <ClInclude Include="src\DataStructures\Lights\DirectionalLight.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />
@@ -197,6 +200,8 @@
     <ClInclude Include="src\DataStructures\Geometry\Triangle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataIO\Menu.cpp" />
+    <ClCompile Include="src\DataIO\ObjFile.cpp" />
     <ClCompile Include="src\DataStructures\Lights\PointLight.cpp" />
     <ClCompile Include="src\DataStructures\Lights\DirectionalLight.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />

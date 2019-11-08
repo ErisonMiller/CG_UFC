@@ -59,6 +59,13 @@ namespace CRAB {
 			Transform(translate(Vector4Df{ reference.x, reference.y, reference.z, 1.0f }));
 		}
 
+		void NewViewUp()
+		{
+			Vector4Df lookAt = view - position;
+			Vector4Df right = cross(lookAt, up);
+			up = cross(right, lookAt).to_unitary();
+		}
+
 	};
 
 

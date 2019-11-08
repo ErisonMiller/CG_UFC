@@ -5,6 +5,7 @@
 #include "Sphere.h"
 #include "Cone.h"
 #include "Cylinder.h"
+#include "DirectionalLight.h"
 
 #include "GlobalVariables.h"
 

@@ -4,8 +4,8 @@
 
 class PointLight : public Light
 {
-	CRAB::Vector4Df position;  // light position
 public:
+	CRAB::Vector4Df position;  // light position
 	PointLight(CRAB::Vector4Df intensity, CRAB::Vector4Df _position);
 	~PointLight();
 
