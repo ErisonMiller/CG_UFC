@@ -4,9 +4,9 @@
 #include "Triangle.h"
 #include <vector>
 
-#define TREE_EMPTY_NODE		0
-#define TREE_FULL_NODE		1
-#define TREE_SEMI_NODE		2
+#define TREE_EMPTY_NODE		2
+#define TREE_FULL_NODE		0
+#define TREE_SEMI_NODE		1
 
 
 
@@ -21,8 +21,9 @@ struct TreeElement
 	int state;
 	TreeElement* next;
 
-	CRAB::Vector4Df center;
-	float r2;
+	//CRAB::Vector4Df center;
+	//float r2;
+	CRAB::Vector4Df min,max;
 
 	TreeElement(int _state) : state(_state), next(nullptr) {}
 	

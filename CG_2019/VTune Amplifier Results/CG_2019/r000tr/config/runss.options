@@ -1,0 +1,19 @@
+-r
+C:\Users\Erison Miller\source\repos\ErisonMiller\CG_UFC\CG_2019\VTune Amplifier Results\CG_2019\r000tr
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet,python
+--itt-config=openmp
+--itt-config=frame
+--itt-config=task,event,counter
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:counters:nostack
+--type=cpu:stack
+--interval=10
+--type=threading:stack
+--type=waiting:stack
+--type=io:stack
+--
+C:\Users\Erison Miller\source\repos\ErisonMiller\CG_UFC\x64\Release\CG_2019.exe

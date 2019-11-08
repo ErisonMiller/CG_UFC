@@ -65,8 +65,8 @@ Camera cam = Camera(
 	Vector4Df{ 0.0f, 0.0f,0.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{ width*1.0f, height*1.0f }, //resolution
-	float2{ 4.0f, 4.0f },			//dimensions
-	4.0f							//near
+	float2{ 2.0f, 2.0f },			//dimensions
+	2.0f							//near
 );
 
 //raycast class for renderization 
