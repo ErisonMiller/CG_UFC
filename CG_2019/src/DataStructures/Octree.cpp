@@ -317,8 +317,8 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 
 				const Vector4Df t = dot_simd_Vec(v1_r, tri.normal) / dot_simd_Vec(ray.direction, tri.normal);
 				if (_mm_cvtss_f32(t) < 0.1f)continue;
-				const Vector4Df p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, r_v1);
-				//const Vector4Df p_plane = ray.direction * t + r_v1;
+				//const Vector4Df p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, r_v1);
+				const Vector4Df p_plane = ray.direction * t + r_v1;
 
 				const float proj1 = dot_simd(p_plane, tri.n_e1);
 				const float proj2 = dot_simd(p_plane, tri.n_e2);
@@ -330,7 +330,8 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 					_mm_cvtss_f32(_mm_shuffle_ps(tri.normal, tri.normal, _MM_SHUFFLE(4, 4, 4, 3)))
 				};
 				const Vector4Df l{
-					_mm_cvtss_f32(t),
+					//_mm_cvtss_f32(t),
+					0.2f,
 					0.000001f,
 					0.000001f,
 					proj2 + proj1

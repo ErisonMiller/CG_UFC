@@ -42,7 +42,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\DataIO\Menu.h" />
+    <ClInclude Include="src\DataIO\ObjFile.h" />
     <ClInclude Include="src\DataStructures\Lights\PointLight.h" />
     <ClInclude Include="src\DataStructures\Lights\DirectionalLight.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />
@@ -200,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DataIO\Menu.cpp" />
+    <ClCompile Include="src\DataIO\ObjFile.cpp" />
     <ClCompile Include="src\DataStructures\Lights\PointLight.cpp" />
     <ClCompile Include="src\DataStructures\Lights\DirectionalLight.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />
