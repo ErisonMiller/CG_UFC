@@ -345,7 +345,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	}
 	
 	t = clock() - t;	
-	std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
+	//std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
 	
 	return accumulateBuffer;
 }

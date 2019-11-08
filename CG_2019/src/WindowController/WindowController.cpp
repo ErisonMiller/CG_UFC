@@ -170,9 +170,9 @@ void Main_Menu()
 		if (ImGui::TreeNode("Camera")) {
 		
 			ImGui::DragFloat3("Eye Position", (float*)&(cam.position), 0.1f);
-			ImGui::DragFloat3("Look At", (float*)&(cam.view), 0.1f, 0.0f, 1.0f);
+			ImGui::DragFloat3("Look At", (float*)&(cam.view), 0.1f);
+			cam.NewViewUp();
 			ImGui::DragFloat3("View Up", (float*)&(cam.up), 0.1f, 0.0f, 1.0f);
-
 
 			ImGui::TreePop();
 		}
