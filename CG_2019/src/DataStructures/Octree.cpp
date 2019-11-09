@@ -5,7 +5,7 @@
 using namespace CRAB;
 
 
-#define MAX_TREE_SIZE 16
+#define MAX_TREE_SIZE 32
 #define ONE_OVER_SQRT3 0.577350269189625764509148780f
 
 const CRAB::Vector4Df cube_points[8] = {
@@ -44,11 +44,15 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 
 	FaceList faceList;
 	if (depth) {
-		for (const Face& f : fatherFaceList) {
+
+		for (int i = 0, s = fatherFaceList.size(); i < s; i+=2) {
+			const Face& f = fatherFaceList[i];
+		//for (const Face& f : fatherFaceList) {
 			if ((f.v1 - center).lengthsq() <= r * r ||
 				(f.v2 - center).lengthsq() <= r * r ||
 				(f.v3 - center).lengthsq() <= r * r) {
 				faceList.push_back(f);
+				faceList.push_back(fatherFaceList[i+1]);
 				continue;
 			}
 
@@ -65,7 +69,10 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 			const CRAB::Vector4Df v0v2 = f.v3 - f.v1;
 
 			if (Line_Sphere(f.v1, v0v1, center, r) || Line_Sphere(f.v1, v0v2, center, r) || Line_Sphere(f.v2, f.v3 - f.v2, center, r)) {
+				//faceList.push_back(f);
+
 				faceList.push_back(f);
+				faceList.push_back(fatherFaceList[i + 1]);
 				continue;
 			}
 
@@ -86,7 +93,10 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 			float t = CRAB::dot(v0v2, qvec) * invDet;
 			if (t < -r || t > r) continue;
 
+			//faceList.push_back(f);
+
 			faceList.push_back(f);
+			faceList.push_back(fatherFaceList[i + 1]);
 		}
 	}
 	else {
@@ -107,7 +117,7 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 			}
 		}
 		else {
-			#pragma omp parallel for num_threads(4) schedule(dynamic)
+			#pragma omp parallel for schedule(dynamic)
 			for (int i = 0; i < 8; i++) {
 				ocn->sons[i] = PovoateTree(faceList, center + cube_points[i] * r, r, depth + 1);
 			}
@@ -280,8 +290,10 @@ OcTree::OcTree(const FaceList &faceList) {
 	CRAB::Vector4Df min{ INFINITY,INFINITY,INFINITY ,INFINITY };
 	CRAB::Vector4Df max{ -INFINITY,-INFINITY,-INFINITY,-INFINITY };
 
+
 	std::cout << "Carregando faces\n";
-	for (const Face& f : faceList) {
+	for (int i = 0, s = faceList.size(); i < s; i+=2) {
+		const Face& f = faceList[i];
 		min = CRAB::min(min, f.v1);
 		max = CRAB::max(max, f.v1);
 

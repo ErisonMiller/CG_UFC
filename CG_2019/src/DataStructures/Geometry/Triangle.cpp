@@ -11,11 +11,12 @@ Triangle::~Triangle()
 {
 }
 
-Triangle::Triangle(const Triangle &tri) : v1(tri.v1), n_e1(tri.n_e1), n_e2(tri.n_e2), normal(tri.normal)
+Triangle::Triangle(const Triangle &tri) : v1(tri.v1), n_e1(tri.n_e1), n_e2(tri.n_e2), normal(tri.normal),
+	v_n1(tri.v_n1), v_n2(tri.v_n2), v_n3(tri.v_n3)
 {
 }
 
-Triangle::Triangle(const CRAB::Vector4Df &v1, const CRAB::Vector4Df &v2, const CRAB::Vector4Df &v3): v1(v1) {
+Triangle::Triangle(const CRAB::Vector4Df& v1, const CRAB::Vector4Df& v2, const CRAB::Vector4Df& v3) : v1(v1) {
 	const Vector4Df e1 = v2 - v1;
 	const Vector4Df e2 = v3 - v1;
 	const Vector4Df n = cross_simd(e1, e2);
@@ -26,9 +27,23 @@ Triangle::Triangle(const CRAB::Vector4Df &v1, const CRAB::Vector4Df &v2, const C
 	n_e1 = cross_simd(normal, e1).to_unitary() * e1_size;
 	n_e2 = cross_simd(e2, normal).to_unitary() * e2_size;
 	normal.w = n_size;
-
 }
 
+Triangle::Triangle(const CRAB::Vector4Df& v1, const CRAB::Vector4Df& v2, const CRAB::Vector4Df& v3,
+	const CRAB::Vector4Df _vn1, const CRAB::Vector4Df _vn2, const CRAB::Vector4Df _vn3)
+	: v1(v1), v_n1(_vn1), v_n2(_vn2), v_n3(_vn3) {
+	
+	const Vector4Df e1 = v2 - v1;
+	const Vector4Df e2 = v3 - v1;
+	const Vector4Df n = cross_simd(e1, e2);
+	float n_size = n.length();
+	float e1_size = e1.length();
+	float e2_size = e2.length();
+	normal = n.to_unitary();
+	n_e1 = cross_simd(normal, e1).to_unitary() * e1_size;
+	n_e2 = cross_simd(e2, normal).to_unitary() * e2_size;
+	normal.w = n_size;
+}
 
 CRAB::RayCollisionList Triangle::CollideAll(const std::vector<CRAB::Ray> &ray)
 {
@@ -76,9 +91,12 @@ CRAB::RayCollisionList Triangle::Collide(const CRAB::Ray &ray)
 
 CRAB::Vector4Df Triangle::getNormal(const CRAB::Vector4Df &point)
 {
-	Vector4Df n = normal;
-	n.w = 0;
-	return n;
+	const float proj1 = (dot_simd(point - v1, n_e1));
+	const float proj2 = (dot_simd(point - v1, n_e2));
+
+	Vector4Df n = v_n1*(normal.w - (proj1 + proj2)) + v_n2 * proj2 + v_n3 * proj1;
+	
+	return n.to_unitary();
 }
 
 void Triangle::transform(CRAB::Matrix4 m)

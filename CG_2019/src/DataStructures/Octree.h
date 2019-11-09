@@ -10,12 +10,6 @@
 
 
 
-struct Face
-{
-	CRAB::Vector4Df v1, v2, v3;
-};
-#define FaceList std::vector<Face>
-
 struct TreeElement
 {
 	int state;
@@ -51,10 +45,21 @@ struct OcElementNodeCache : TreeElement
 struct OcElementLeaf : TreeElement
 {
 	std::vector<Triangle> faces;
+
 	OcElementLeaf() : TreeElement(TREE_FULL_NODE) {}
 	OcElementLeaf(const FaceList &_faces) : TreeElement(TREE_FULL_NODE){
-		for (const Face& f : _faces) {
-			faces.push_back(Triangle(f.v1, f.v2, f.v3));
+		faces.reserve(_faces.size() * 0.5f);
+		int j = 0;
+		for (int i = 0, s = _faces.size(); i < s; i+=2) {
+			const Face& f = _faces[i];
+			const Face& n = _faces[i+1];
+			//faces[j] = (Triangle(f.v1, f.v2, f.v3, &vertice_normals[j]));
+			faces.push_back(Triangle(f.v1, f.v2, f.v3, n.v1, n.v2, n.v3));
+			//faces[j] = (Triangle(f.v1, f.v2, f.v3));
+			//faces[j].v_n1 = _faces[i + 1].v1;
+			//faces[j].v_n2 = _faces[i + 1].v2;
+			//faces[j].v_n3 = _faces[i + 1].v3;
+			//
 		}
 	}
 
@@ -66,6 +71,7 @@ public:
 	CRAB::Vector4Df center;
 	float r;
 	TreeElement* tree;
+	std::vector<Face> vertices_normals;
 
 
 	OcTree(const FaceList& faceList);

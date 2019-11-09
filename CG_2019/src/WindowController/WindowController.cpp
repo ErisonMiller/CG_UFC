@@ -52,7 +52,7 @@ std::vector<Light *> lights;
 //list of materials
 Material* Neutral = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000);
 Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
-Material* Refract = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f, 1.1f);
+Material* Refract = new Material(Vector4Df{ 0.5f, 0.5f, 0.5f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.2f, 0.2f, 0.2f, 0 }, 2, 0.5, 0.5f, 1.1f);
 
 const int	width  = 512,
 			height = 512;
@@ -346,8 +346,8 @@ void resize(int w, int h) {
 void InitScene() {
 	//fill the light list
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f,0 }));
-	lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
-	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
+	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
+	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
 	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 5.0f, 7.0f, 33.0f, 1 }, Vector4Df{ 0.0f, -1.0f, -1.0f, 0 }, 30.0f, 30.0f));
@@ -424,7 +424,7 @@ void Start_Window(int argc, char **argv) {
 	//Fill the scene
 	InitScene();
 	
-	std::vector<FaceList> faceList = CRAB::Load_Obj("crab2.obj");
+	std::vector<FaceList> faceList = CRAB::Load_Obj("crab3.obj");
 	//objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
 		objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));

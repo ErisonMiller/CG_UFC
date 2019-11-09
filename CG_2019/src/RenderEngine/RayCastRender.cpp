@@ -34,9 +34,12 @@ RayCast::~RayCast() {
 inline bool InShadow(const Ray& ray, const std::vector<Object>& objects, const Light& light) {
 	const float dist = light.LightDistance(ray.origin);
 	for (const Object& obj : objects) {
-		const CRAB::Collision col = obj.Collide(ray);//Collision
-		if (col.distance < dist) {
-			return true;
+		//if alfa == 1 them the material cast a full shadow
+		if (obj.getMaterial()->alfa == 1) {//TODO: change this to light interaction with trasnparence
+			const CRAB::Collision col = obj.Collide(ray);//Collision
+			if (col.distance > 0.01f && col.distance < dist) {
+				return true;
+			}
 		}
 	}
 	return false;
@@ -149,7 +152,7 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		id++;
 		#endif
 	}
-	Vector4Df vec_offset = Vector4Df{ closest_collision.pint.x+0.001f, closest_collision.pint.y+ 0.001f, closest_collision.pint.z+ 0.001f, closest_collision.pint.w };
+	Vector4Df vec_offset = closest_collision.pint + ray.direction*0.001f;
 	Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f };
 	if (closest_obj) {
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -162,17 +165,17 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		for (Light * light : lights)
 		{
 			float dot_d_n = 0.0f;
-			const CRAB::Vector4Df L = CRAB::Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f};
-			if (typeid(*light) == typeid(DirectionalLight)){
-				const CRAB::Vector4Df L = ( (DirectionalLight *) light)->GetLightDirection(closest_collision.pint);
-				dot_d_n = dot(L, N);
-			}
+			//const CRAB::Vector4Df L = CRAB::Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f};
+			//if (typeid(*light) == typeid(DirectionalLight)){
+			const CRAB::Vector4Df L = light->GetLightDirection(closest_collision.pint);
+			dot_d_n = dot(L, N);
+			//}
 
-			if ((typeid(*light) == typeid(DirectionalLight) && dot_d_n > 0.0f) && !InShadow(CRAB::Ray{ vec_offset, L }, objects, *light)) {
+			if ((dot_d_n > 0) && !InShadow(CRAB::Ray{ closest_collision.pint, L }, objects, *light)) {
 				if (light->on){
 					accucolor += light->Illumination(mat,
 						N, ray.direction * (-1.0f),
-						closest_collision.pint);
+						closest_collision.pint)*mat.alfa;
 				}
 			}
 		}
@@ -223,7 +226,7 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		
 		if (mat.ior > 1 && depth < 1) {
 			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
-			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1);
+			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1)*(1-mat.alfa);
 		}
 		
 		accucolor = accucolor * 0.5f;
