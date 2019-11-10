@@ -1,4 +1,4 @@
-//
+﻿//
 //	Main Window class
 //	Call the Graphic API to cerate the window
 //	Call the events to recieve user input
@@ -97,15 +97,16 @@ void Main_Menu()
 	static string CurrentLightType = " ";
 	static int CurrentLight;
 
-	//Camera Parameters
+	//Camera Menu Parameters
+	static const char* current_viewpoint = NULL;
+	const char* items[] = { "Top", "Front", "Right", "ISO" };
+	static const char* current_item = NULL;
 	//Vector4Df eye_pos = Vector4Df{ 0.0f,0.0f,10.0f,1.0f };
 
 	//Menu
 	//Menu MainMenu = Menu("Main Menu");
 	if (main_menu_enable)
 	{
-
-	
 		ImGui::Begin("Main Menu");
 
 		if (ImGui::TreeNode("Lights")){
@@ -134,7 +135,6 @@ void Main_Menu()
 					((DirectionalLight *)lights[CurrentLight])->direction.normalize();
 				}
 				ImGui::Text(CurrentLightType.c_str());
-
 			}
 			else if (typeid(*lights[CurrentLight]) == typeid(Spotlights))
 			{
@@ -166,8 +166,63 @@ void Main_Menu()
 			ImGui::TreePop();
 		}
 
+		if (ImGui::TreeNode("Projections")) {
+
+			ImGui::RadioButton("Perspective", &graphicalProjection, 1);
+			ImGui::RadioButton("Orthographic", &graphicalProjection, 2);
+			ImGui::DragFloat2("Screen size", (float*) & (cam.dimensions), 1.0f, 2.0f, 100.0f, "%.1f");
+			ImGui::RadioButton("Oblique", &graphicalProjection, 3);
+			ImGui::SliderFloat("Angle-X (degree)", &obliqueAngleX, 15.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Angle-Y (degree)", &obliqueAngleY, 15.0f, 60.0f, "%.1f");
+
+			ImGui::TreePop();
+		}
 
 		if (ImGui::TreeNode("Camera")) {
+
+			if (ImGui::BeginCombo("Viewpoint", current_viewpoint))
+			{
+				for (int i = 0; i < IM_ARRAYSIZE(items); i++)
+				{
+					bool is_selected = (current_item == items[i]);
+					if (ImGui::Selectable(items[i], is_selected)) {
+						current_item = items[i];
+						current_viewpoint = items[i];
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			if (current_item == items[0]) // Top view
+			{
+				cam.position = { 0.0f, 30.0f, 0.0f, 1.0f };
+				cam.view = { 0.0f, 0.0f, 0.0f, 1.0f };
+				cam.up = { 0.0f, 0.0f, -1.0f, 0.0f };
+				current_item = NULL;
+			}
+			else if (current_item == items[1]) // Front view
+			{
+				cam.position = { 0.0f, 0.0f, 30.0f, 1.0f };
+				cam.view = { 0.0f, 0.0f, 0.0f, 1.0f };
+				cam.up = { 0.0f, 1.0f, 0.0f, 0.0f };
+				current_item = NULL;
+			}
+			else if (current_item == items[2]) // Right view
+			{
+				cam.position = { 30.0f, 0.0f, 0.0f, 1.0f };
+				cam.view = { 0.0f, 0.0f, 0.0f, 1.0f };
+				cam.up = { 0.0f, 1.0f, 0.0f, 0.0f };
+				current_item = NULL;
+			}
+			else if (current_item == items[3]) // ISO view
+			{
+				cam.position = { 20.0f, 20.0f, 20.0f, 1.0f };
+				cam.view = { 0.0f, 0.0f, 0.0f, 1.0f };
+				cam.up = { 0.0f, 1.0f, 0.0f, 0.0f };
+				cam.NewViewUp();
+				current_item = NULL;
+			}
 		
 			ImGui::DragFloat3("Eye Position", (float*)&(cam.position), 0.1f);
 			ImGui::DragFloat3("Look At", (float*)&(cam.view), 0.1f);
@@ -401,6 +456,7 @@ void InitScene() {
 	objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 0.0f, 6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Refract Cylinder", Refract, new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
+	objs.push_back(Object("Cube", Neutral, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
 }
 
 // Main.

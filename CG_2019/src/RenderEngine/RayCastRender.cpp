@@ -1,5 +1,5 @@
 #include "RayCastRender.h"
-
+#include "GlobalVariables.h"
 
 #include <iostream>
 #include <algorithm>
@@ -45,7 +45,6 @@ inline bool InShadow(const Ray& ray, const std::vector<Object>& objects, const L
 	return false;
 
 }
-
 
 //Refract Vector
 inline Vector4Df refract(const Vector4Df & incident, const Vector4Df & normal, const float & ior_t, const float & ior_i) {
@@ -331,7 +330,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
-			direction.normalize();
+			//direction.normalize();
 
 #if PRINT == 1
 			if (x == X_PRINT && y == Y_PRINT) {
@@ -341,8 +340,40 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 				print = false;
 			}
 #endif
-			
-			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam.n, 0);
+
+			//projection
+			Vector4Df origin, current_pixel;
+			switch (graphicalProjection)
+			{
+			case 1:
+				origin = cam.position;
+				break;
+			case 2:
+				current_pixel = cam.position + direction;
+				origin = current_pixel - base * cam.n;
+				direction = base;
+				break;
+			case 3:
+			{
+				current_pixel = cam.position + direction;
+				float tg_x = tanf((obliqueAngleX * M_PI / 180));
+				float tg_y = tanf((obliqueAngleY * M_PI / 180));
+				Matrix4 mm_teste2{
+					1.0f, 0.0f, tg_x, 0.0f,
+					0.0f, 1.0f, tg_y, 0.0f,
+					0.0f, 0.0f, 1.0f, 0.0f,
+					0.0f, 0.0f, 0.0f, 1.0f };
+				direction = mm_teste2 * (base * cam.n);
+				origin = current_pixel - direction;
+				break;
+			}
+			default:
+				origin = cam.position;
+				break;
+			}
+
+			direction.normalize();
+			accumulateBuffer[y*width + x] = ray_cast(Ray { origin, direction }, objects, lights, print, cam.n, 0);
 
 		}
 	}
@@ -523,6 +554,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Sphe
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y)+left * (-x);
 			direction.normalize();
+
 			accumulateBuffer[y*width + x] = ray_cast(cam.position, direction, spheres, 4);
 
 		}
