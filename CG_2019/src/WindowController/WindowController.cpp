@@ -443,7 +443,7 @@ void InitScene() {
 	//objs.push_back(Object("Cubo 2", Parede2, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	//objs.push_back(Object("Cubo 3", Parede3, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 
-	//objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
+	objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
 
 	//Fill the object list (With material)
 	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }, 0.5f), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
@@ -479,7 +479,7 @@ void Start_Window(int argc, char **argv) {
 
 	//Fill the scene
 	InitScene();
-	
+	/*
 	std::vector<FaceList> faceList = CRAB::Load_Obj("crab3.obj");
 	//objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
@@ -488,7 +488,7 @@ void Start_Window(int argc, char **argv) {
 	std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
 	for (int i = 0; i < faceList2.size(); i++) {
 		objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
-	}
+	}*/
 	
 	//start render loop
 	RenderAPI::RenderLoop();

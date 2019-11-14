@@ -5,11 +5,14 @@
 class Cube :
 	public Geometry
 {
+	
+public:
+
 	Quad quads[6];
 	//bouding sopherecenter and radius 
 	CRAB::Vector4Df center;
 	float r2;
-public:
+
 	Cube();
 	Cube(const CRAB::Vector4Df &base, const CRAB::Vector4Df &up, const CRAB::Vector4Df &front, float size);
 
