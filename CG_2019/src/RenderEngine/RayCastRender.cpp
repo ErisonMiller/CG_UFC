@@ -152,7 +152,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		#endif
 	}
 	Vector4Df vec_offset = closest_collision.pint + ray.direction*0.001f;
-	Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f };
+	//Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f }; //blue sky
+	Vector4Df accucolor = Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }; //white room
 	if (closest_obj) {
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 		const Material mat = *closest_obj->getMaterial();
@@ -223,7 +224,7 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		}
 
 		
-		if (mat.ior > 1 && depth < 1) {
+		if (mat.ior >= 1 && depth < 1) {
 			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
 			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1)*(1-mat.alfa);
 		}
@@ -332,7 +333,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 #pragma omp parallel for collapse(2) num_threads(16) schedule(dynamic)
 #endif
 
-	//#pragma omp parallel for collapse(2) num_threads(16) schedule(dynamic) //default(shared)
+	// #pragma omp parallel for collapse(2) num_threads(16) schedule(dynamic) //default(shared)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
