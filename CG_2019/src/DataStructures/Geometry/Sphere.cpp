@@ -106,4 +106,5 @@ CRAB::Vector4Df Sphere::getNormal(const CRAB::Vector4Df &point)
 
 void Sphere::transform(CRAB::Matrix4 m)
 {
+	center = m * center;
 }

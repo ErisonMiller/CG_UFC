@@ -21,19 +21,29 @@ static bool geometry_window_open = true;
 
 inline void RenderGeometry() {
 
-	if (typeid(*selected_geometry).name() == typeid(Cone).name()) {
+	if (typeid(*selected_geometry) == typeid(Cone)) {
 		Cone *geometry = (Cone*)selected_geometry;
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{0,0,0,0};
-		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Matrix4 m;
-		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
-		m = CRAB::translate(tranlate_vector);
-		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
-		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Matrix4 m = CRAB::Identity();
+		if (ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f)); {
+			m = CRAB::translate(tranlate_vector);
+		}
 		
-		ImGui::DragFloat3("Base", (float*)&geometry->base_center, 0.5f);
+		if (ImGui::DragFloat3("Angle (Origin)", (float*)&angle_origin_vector, 0.5f)) {
+			m = CRAB::rotateZ(angle_origin_vector.z)*CRAB::rotateY(angle_origin_vector.y)*CRAB::rotateX(angle_origin_vector.x)*m;
+		}
+
+		if (ImGui::DragFloat3("Angle (Base Center)", (float*)&angle_object_vector, 0.5f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->base_center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->base_center));
+			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
+		}
+		
+		/*ImGui::DragFloat3("Base", (float*)&geometry->base_center, 0.5f);
 		ImGui::DragFloat3("Direction", (float*)&geometry->direction, 0.5f);
-		geometry->direction.normalize();
+		geometry->direction.normalize();*/
 
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
@@ -41,54 +51,106 @@ inline void RenderGeometry() {
 		geometry->direction.normalize();
 	}
 
-	if (typeid(*selected_geometry).name() == typeid(Cylinder).name()) {
+	if (typeid(*selected_geometry) == typeid(Cylinder)) {
 		Cylinder *geometry = (Cylinder*)selected_geometry;
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Matrix4 m;
-		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
-		m = CRAB::translate(tranlate_vector);
-		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
-		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Matrix4 m = CRAB::Identity();
+		
+		if (ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f)) {
+			m = CRAB::translate(tranlate_vector);
+		}
+		
+		if (ImGui::DragFloat3("Angle (Origin)", (float*)&angle_origin_vector, 0.5f)) {
+			m = CRAB::rotateZ(angle_origin_vector.z)*CRAB::rotateY(angle_origin_vector.y)*CRAB::rotateX(angle_origin_vector.x)*m;
+		}
 
-
-		//ImGui::DragFloat3("Base", (float*)&geometry->base_center, 0.5f);
-		//ImGui::DragFloat3("Direction", (float*)&geometry->direction, 0.5f);
-		//geometry->direction.normalize();
+		if (ImGui::DragFloat3("Angle (Base Center)", (float*)&angle_object_vector, 0.5f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->base_center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->base_center));
+			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
+		}
+		
 		ImGui::DragFloat("Height", &geometry->height, 0.5f);
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
 		geometry->transform(m);
+		geometry->direction.normalize();
 	}
 
-	if (typeid(*selected_geometry).name() == typeid(Sphere).name()) {
+	if (typeid(*selected_geometry) == typeid(Sphere)) {
 		Sphere *geometry = (Sphere*)selected_geometry;
-		ImGui::DragFloat3("Base", (float*)&geometry->center, 0.5f);
+		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Matrix4 m = CRAB::Identity();
+
+		//ImGui::DragFloat3("Base", (float*)&geometry->center, 0.5f);
+		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
+		m = CRAB::translate(tranlate_vector);
+
+		if (ImGui::DragFloat3("Angle (Origin)", (float*)&angle_origin_vector, 0.5f)) {
+			m = CRAB::rotateZ(angle_origin_vector.z)*CRAB::rotateY(angle_origin_vector.y)*CRAB::rotateX(angle_origin_vector.x)*m;
+		}
+
+		if (ImGui::DragFloat3("Angle (Base Center)", (float*)&angle_object_vector, 0.5f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->center));
+			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
+		}
+
 		ImGui::DragFloat("Radius", &geometry->radius, 0.5f);
+		geometry->transform(m);
 	}
 
-	if (typeid(*selected_geometry).name() == typeid(Cube).name()) {
+	if (typeid(*selected_geometry) == typeid(Cube)) {
 		Cube *geometry = (Cube*)selected_geometry;
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Matrix4 m;
-		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
-		m = CRAB::translate(tranlate_vector);
-		//ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
-		//m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Matrix4 m = CRAB::Identity();
+		if (ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f)) {
+			m = CRAB::translate(tranlate_vector)*m;
+		}
+		if (ImGui::DragFloat3("Angle (Origin)", (float*)&angle_origin_vector, 0.5f)) {
+			m = CRAB::rotateZ(angle_origin_vector.z)*CRAB::rotateY(angle_origin_vector.y)*CRAB::rotateX(angle_origin_vector.x)*m;
+		}
+
+		if (ImGui::DragFloat3("Angle (Base Center)", (float*)&angle_object_vector, 0.5f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->center));
+			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
+		}
+		/*
+		if (ImGui::DragFloat3("Sacale", (float*)&scale_vector, 0.05f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->center));
+			m = m_back * CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z) * m_to_origin;
+			//m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z)*m;
+		}*/
 		geometry->transform(m);
-		//geometry->direction.normalize();
-		// ImGui::DragFloat3("Base", (float*)&geometry->center, 0.5f);
-		//ImGui::DragFloat("Radius", &geometry->r2, 0.5f);
 	}
 
-	if (typeid(*selected_geometry).name() == typeid(Quad).name()) {
+	if (typeid(*selected_geometry) == typeid(Quad)) {
 		Quad *geometry = (Quad*)selected_geometry;
-		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Matrix4 m;
-		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
-		m = CRAB::translate(tranlate_vector);
-		//ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
+		CRAB::Vector4Df translate_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Matrix4 m = CRAB::Identity();
+
+		if (ImGui::DragFloat3("Translate", (float*)&translate_vector, 0.5f)) {
+			m = CRAB::translate(translate_vector);
+		}
+		if (ImGui::DragFloat3("Angle (Origin)", (float*)&angle_origin_vector, 0.5f)) {
+			m = CRAB::rotateZ(angle_origin_vector.z)*CRAB::rotateY(angle_origin_vector.y)*CRAB::rotateX(angle_origin_vector.x)*m;
+		}
+
+		if (ImGui::DragFloat3("Angle (Base Vertex)", (float*)&angle_object_vector, 0.5f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
+		}
 		//m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
 		geometry->transform(m);
 		//geometry->direction.normalize();
@@ -96,18 +158,32 @@ inline void RenderGeometry() {
 		//ImGui::DragFloat("Radius", &geometry->r2, 0.5f);
 	}
 
-	if (typeid(*selected_geometry).name() == typeid(Triangle).name()) {
+	if (typeid(*selected_geometry) == typeid(Triangle)) {
 		Triangle *geometry = (Triangle*)selected_geometry;
 
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Vector4Df angle_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		static CRAB::Vector4Df quartenio{ 0,1,0,0 };
-		CRAB::Matrix4 m;
+		CRAB::Matrix4 m = CRAB::Identity();
 
 		ImGui::DragFloat3("Translate", (float*)&tranlate_vector, 0.5f);
 		m = CRAB::translate(tranlate_vector);
-		ImGui::DragFloat3("Angle", (float*)&angle_vector, 0.5f);
-		m = CRAB::rotateZ(angle_vector.z)*CRAB::rotateY(angle_vector.y)*CRAB::rotateX(angle_vector.x)*m;
+
+		if (ImGui::DragFloat3("Angle (Origin)", (float*)&angle_origin_vector, 0.5f)) {
+			m = CRAB::rotateZ(angle_origin_vector.z)*CRAB::rotateY(angle_origin_vector.y)*CRAB::rotateX(angle_origin_vector.x)*m;
+		}
+
+		if (ImGui::DragFloat3("Angle (Base Vertex)", (float*)&angle_object_vector, 0.5f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
+		}
+		/*
+		if (ImGui::DragFloat3("Sacale", (float*)&scale_vector, 0.5f)) {
+			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z)*m;
+		}*/
 
 		if (ImGui::DragFloat4("Quart", (float*)&quartenio, 0.5f)) {
 			m = CRAB::rotateArbitrary(quartenio.w, quartenio)*m;
