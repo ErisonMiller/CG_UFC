@@ -249,9 +249,24 @@ namespace CRAB {
 		Matrix4 rotateArbitrary(float ang, Vector4Df &u)
 	{
 		u.normalize();
-
 		ang = (ang* M_PI) / 180.0f;
-		return Matrix4{
+
+		float wq = cosf(ang/2);
+		u = u*sinf(ang / 2);
+
+		Matrix4 ml{
+		wq  , u.z , -u.y, -u.x,
+		-u.z, wq  , u.x , -u.y,
+		u.y , -u.x, wq  , -u.z,
+		u.x , u.y , u.z , wq };
+
+		Matrix4 mr{
+		wq   , u.z  , -u.y , 0,
+		-u.z , wq   , u.x  , 0,
+		-u.y , -u.x , wq   , 0,
+		-u.x , -u.y , -u.z , 0 };
+
+		/*return Matrix4{
 			cosf(ang) + u.x*u.x*(1 - cosf(ang)), u.y*u.x*(1 - cosf(ang)) - u.z*sinf(ang),
 				   u.z*u.x*(1 - cosf(ang)) + u.y*sinf(ang),	0,
 
@@ -262,7 +277,8 @@ namespace CRAB {
 				   cosf(ang) + u.z*u.z*(1 - cosf(ang)),	0,
 
 			0,0,0,1
-		};
+		};*/
+		return ml * mr;
 	}
 
 	inline
