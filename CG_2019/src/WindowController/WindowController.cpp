@@ -189,10 +189,12 @@ void Main_Menu()
 
 			ImGui::RadioButton("Perspective", &graphicalProjection, 1);
 			ImGui::RadioButton("Orthographic", &graphicalProjection, 2);
-			ImGui::DragFloat2("Screen size", (float*) & (cam.dimensions), 1.0f, 2.0f, 100.0f, "%.1f");
+			ImGui::DragFloat2("Screen size", (float*) & (cam.dimensions), 1.0f, 2.0f, 50.0f, "%0.1f");
+			/*ImGui::DragFloat("Screen size", (float*) & (cam.dimensions.x), 1.0f, 2.0f, 50.0f, "%0.1f");
+			cam.dimensions.y = cam.dimensions.x;*/
 			ImGui::RadioButton("Oblique", &graphicalProjection, 3);
-			ImGui::SliderFloat("Angle-X (degree)", &obliqueAngleX, 15.0f, 60.0f, "%.1f");
-			ImGui::SliderFloat("Angle-Y (degree)", &obliqueAngleY, 15.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Angle-X (degree)", &obliqueAngleX, -60.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Angle-Y (degree)", &obliqueAngleY, -60.0f, 60.0f, "%.1f");
 
 			ImGui::TreePop();
 		}
@@ -322,6 +324,19 @@ void motion(int x, int y)
 			lastX = x;
 			lastY = y;
 		}
+	}
+}
+
+/* ZOOM: change the screen size */
+void mouseWheel(int button, int dir, int x, int y)
+{
+	ImGui_ImplGLUT_MouseWheelFunc(button, dir, x, y);
+
+	if (!(ImGui::GetIO().WantCaptureMouse))
+	{
+		cam.dimensions.x += cam.dimensions.x * (dir * 0.1f);
+		cam.dimensions.y += cam.dimensions.y * (dir * 0.1f);
+		glutPostRedisplay();
 	}
 }
 
@@ -489,6 +504,7 @@ void Start_Window(int argc, char **argv) {
 	
 	// functions for user interaction
 	RenderAPI::MouseFunc(mouse);
+	RenderAPI::MouseWheelFunc(mouseWheel);
 	RenderAPI::MotionFunc(motion);
 	RenderAPI::KeyboardFunc(keyboard);
 	RenderAPI::ReshapeFunc(resize);
