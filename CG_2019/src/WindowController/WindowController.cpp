@@ -53,10 +53,27 @@ std::vector<Light *> lights;
 Material* Neutral = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 10);
 Material* Mirror = new Material(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 200.0f, 1.0f, 0.8f);
 Material* Refract = new Material(Vector4Df{ 0.5f, 0.5f, 0.5f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.2f, 0.2f, 0.2f, 0 }, 2, 0.5f, 0.5f, 1.1f); //Shininess, alpha, reflection, ior
-//new materials
+//transparent
 Material* Window_Glass = new Material(Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, 2.0f, 0.1f, 1.0f, 1.1f);
-Material* Gold = new Material(Vector4Df{ 0.24725f, 0.1995f, 0.0745f, 0.0f }, Vector4Df{ 0.75164f, 0.60648f, 0.22648f, 0.0f }, Vector4Df{ 0.628281f, 0.555802f, 0.366065f, 0.0f }, 4.0f);
-Material* Silver = new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0.0f }, 6.0f, 1.0f, 0.2f);
+//Material* Gold = new Material(Vector4Df{ 0.24725f, 0.1995f, 0.0745f, 0.0f }, Vector4Df{ 0.75164f, 0.60648f, 0.22648f, 0.0f }, Vector4Df{ 0.628281f, 0.555802f, 0.366065f, 0.0f }, 4.0f);
+//Material* Silver = new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0.0f }, 6.0f, 1.0f, 0.2f);
+//metals
+Material* Bronze = new Material(Vector4Df{ 0.2125f, 0.1275f, 0.054f, 0.0f }, Vector4Df{ 0.714f, 0.4284f, 0.18144f, 0.0f }, Vector4Df{ 0.393548f, 0.271906f, 0.166721f, 0.0f }, 25.6f);
+Material* Polished_Bronze = new Material(Vector4Df{ 0.25f, 0.148f, 0.06475f, 0.0f }, Vector4Df{ 0.4f, 0.2368f, 0.1036f, 0.0f }, Vector4Df{ 0.774597f, 0.458561f, 0.200621f, 0.0f }, 76.8f, 1.0f, 0.5f);
+Material* Gold = new Material(Vector4Df{ 0.24725f, 0.1995f, 0.0745f, 0.0f }, Vector4Df{ 0.75164f, 0.60648f, 0.22648f, 0.0f }, Vector4Df{ 0.628281f, 0.555802f, 0.366065f, 0.0f }, 51.2f);
+Material* Polished_Gold = new Material(Vector4Df{ 0.24725f, 0.2245f, 0.0645f, 0.0f }, Vector4Df{ 0.34615f, 0.3143f, 0.0903f, 0.0f }, Vector4Df{ 0.797357f, 0.723991f, 0.208006f, 0.0f }, 83.2f, 1.0f, 0.5f);
+Material* Silver = new Material(Vector4Df{ 0.5f, 0.5f, 0.5f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0.0f }, 51.2f, 1.0f, 0.5f);
+//jewel
+Material* Jade = new Material(Vector4Df{ 0.135f, 0.2225f, 0.1575f, 0.0f }, Vector4Df{ 0.54f, 0.89f, 0.63f, 0.0f }, Vector4Df{ 0.316228f, 0.316228f, 0.316228f, 0.0f }, 12.8f, 0.95f, 0.1f);
+Material* Ruby = new Material(Vector4Df{ 0.1745f, 0.01175f, 0.01175f, 0.0f }, Vector4Df{ 0.61424f, 0.04136f, 0.04136f, 0.0f }, Vector4Df{ 0.727811f, 0.626959f, 0.626959f, 0.0f }, 76.8f, 0.55f, 0.1f, 1.77f);
+Material* Emerald = new Material(Vector4Df{ 0.0215f, 0.1745f, 0.0215f, 0.0f }, Vector4Df{ 0.07568f, 0.61424f, 0.07568f, 0.0f }, Vector4Df{ 0.633f, 0.727811f, 0.633f, 0.0f }, 76.8f, 0.55f, 0.1f, 1.57f);
+//plastic
+Material* Black_Plastic = new Material(Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.01f, 0.01f, 0.01f, 0.0f }, Vector4Df{ 0.5f, 0.5f, 0.5f, 0.0f }, 32.0f);
+Material* Cyan_Plastic = new Material(Vector4Df{ 0.0f, 0.1f, 0.06f, 0.0f }, Vector4Df{ 0.0f, 0.50980392f, 0.50980392f, 0.0f }, Vector4Df{ 0.50196078f, 0.50196078f, 0.50196078f, 0.0f }, 32.0f);
+Material* Green_Plastic = new Material(Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.1f, 0.35f, 0.1f, 0.0f }, Vector4Df{ 0.45f, 0.55f, 0.45f, 0.0f }, 32.0f);
+Material* Red_Plastic = new Material(Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.5f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.7f, 0.6f, 0.6f, 0.0f }, 32.0f);
+Material* White_Plastic = new Material(Vector4Df{ 0.4f, 0.4f, 0.4f, 0.0f }, Vector4Df{ 0.6f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 0.7f, 0.7f, 0.7f, 0.0f }, 32.0f);
+Material* Yellow_Plastic = new Material(Vector4Df{ 0.2f, 0.2f, 0.2f, 0.0f }, Vector4Df{ 0.6f, 0.6f, 0.0f, 0.0f }, Vector4Df{ 0.7f, 0.7f, 0.6f, 0.0f }, 32.0f);
 
 const int	width  = 512,
 			height = 512;
@@ -174,10 +191,12 @@ void Main_Menu()
 
 			ImGui::RadioButton("Perspective", &graphicalProjection, 1);
 			ImGui::RadioButton("Orthographic", &graphicalProjection, 2);
-			ImGui::DragFloat2("Screen size", (float*) & (cam.dimensions), 1.0f, 2.0f, 100.0f, "%.1f");
+			ImGui::DragFloat2("Screen size", (float*) & (cam.dimensions), 1.0f, 2.0f, 50.0f, "%0.1f");
+			/*ImGui::DragFloat("Screen size", (float*) & (cam.dimensions.x), 1.0f, 2.0f, 50.0f, "%0.1f");
+			cam.dimensions.y = cam.dimensions.x;*/
 			ImGui::RadioButton("Oblique", &graphicalProjection, 3);
-			ImGui::SliderFloat("Angle-X (degree)", &obliqueAngleX, 15.0f, 60.0f, "%.1f");
-			ImGui::SliderFloat("Angle-Y (degree)", &obliqueAngleY, 15.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Angle-X (degree)", &obliqueAngleX, -60.0f, 60.0f, "%.1f");
+			ImGui::SliderFloat("Angle-Y (degree)", &obliqueAngleY, -60.0f, 60.0f, "%.1f");
 
 			ImGui::TreePop();
 		}
@@ -288,7 +307,7 @@ void motion(int x, int y)
 			if (theButtonState == GLUT_LEFT_BUTTON)  // Rotate
 			{
 				Vector4Df v = cross(cam.view - cam.position, cam.up);
-				cam.Transform(rotateArbitrary(deltaY, v), cam.view);
+				cam.Transform(rotateArbitrary(-deltaY, v), cam.view);
 				cam.Transform(rotateY(deltaX), cam.view);
 			}
 			else if (theButtonState == GLUT_MIDDLE_BUTTON) // Zoom
@@ -307,6 +326,19 @@ void motion(int x, int y)
 			lastX = x;
 			lastY = y;
 		}
+	}
+}
+
+/* ZOOM: change the screen size */
+void mouseWheel(int button, int dir, int x, int y)
+{
+	ImGui_ImplGLUT_MouseWheelFunc(button, dir, x, y);
+
+	if (!(ImGui::GetIO().WantCaptureMouse))
+	{
+		cam.dimensions.x += cam.dimensions.x * (dir * 0.1f);
+		cam.dimensions.y += cam.dimensions.y * (dir * 0.1f);
+		glutPostRedisplay();
 	}
 }
 
@@ -409,7 +441,7 @@ void InitScene() {
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
 	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.2f, 0.2f, 1.0f, 0.0f }));
 	lights.push_back(new DirectionalLight(Vector4Df{ 0.6f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
-	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 2.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, 30.0f, 10.0f));
+	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 3.0f, 1.0f, -4.5f, 1.0f }, Vector4Df{ 1.0f, 0.0f, 1.0f, 0.0f }, 5.0f, 50.0f));
 	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0}, Vector4Df{ 5.0f, 7.0f, 30.0f, 1 }));
 
 	//fill the object list
@@ -478,6 +510,8 @@ void InitScene() {
 	//objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 250.0f, 0.0f, 1 }, 250.0f)));
 	//objs.push_back(Object("Globe Base", DarkWood, new Cylinder(50.0f, 50.0f, Vector4Df{ 0.0f,0.0f,0.0f,1 }, Vector4Df{ 0,1,0,0 })));
 
+	objs.push_back(Object("Sphere", Yellow_Plastic, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1.0f }, 2.0f)));
+	objs.push_back(Object("Sphere", Cyan_Plastic, new Sphere(Vector4Df{ 3.0f, 1.0f, -6.0f, 1.0f }, 1.5f)));
 }
 
 // Main.
@@ -487,6 +521,7 @@ void Start_Window(int argc, char **argv) {
 	
 	// functions for user interaction
 	RenderAPI::MouseFunc(mouse);
+	RenderAPI::MouseWheelFunc(mouseWheel);
 	RenderAPI::MotionFunc(motion);
 	RenderAPI::KeyboardFunc(keyboard);
 	RenderAPI::ReshapeFunc(resize);
