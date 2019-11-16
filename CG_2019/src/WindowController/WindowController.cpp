@@ -56,7 +56,7 @@ Material* Refract = new Material(Vector4Df{ 0.5f, 0.5f, 0.5f, 0 }, Vector4Df{ 1.
 //new materials
 Material* Window_Glass = new Material(Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, 2.0f, 0.1f, 1.0f, 1.1f);
 Material* Gold = new Material(Vector4Df{ 0.24725f, 0.1995f, 0.0745f, 0.0f }, Vector4Df{ 0.75164f, 0.60648f, 0.22648f, 0.0f }, Vector4Df{ 0.628281f, 0.555802f, 0.366065f, 0.0f }, 4.0f);
-Material* Silver = new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273, 0.508273f, 0.0f }, 6.0f, 1.0f, 0.2f);
+Material* Silver = new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0.0f }, 6.0f, 1.0f, 0.2f);
 
 const int	width  = 512,
 			height = 512;
@@ -447,8 +447,8 @@ void InitScene() {
 	//objs.push_back(Object("Cubo 2", Parede2, new Cube(Vector4Df{ 10, 6, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 	//objs.push_back(Object("Cubo 3", Parede3, new Cube(Vector4Df{ 10,12, 10,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 6.0f)));
 
-	objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, -20,1 }, Vector4Df{ 10,0,-20,1 }, Vector4Df{ 0,10,-20,1 })));
-	objs.push_back(Object("plane2", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
+	//objs.push_back(Object("plane", Parede3, new Triangle(Vector4Df{ -10,0, -20,1 }, Vector4Df{ 10,0,-20,1 }, Vector4Df{ 0,10,-20,1 })));
+	//objs.push_back(Object("plane2", Parede3, new Triangle(Vector4Df{ -10,0, 0,1 }, Vector4Df{ 10,0,0,1 }, Vector4Df{ 0,10,0,1 })));
 
 	//Fill the object list (With material)
 	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }, 0.5f), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));

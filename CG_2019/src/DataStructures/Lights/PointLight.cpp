@@ -30,3 +30,7 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 float PointLight::LightDistance(const CRAB::Vector4Df& point) const {
 	return (point - position).length();
 }
+
+CRAB::Vector4Df PointLight::GetLightDirection(const CRAB::Vector4Df& point) const {
+	return (point - position);
+}
