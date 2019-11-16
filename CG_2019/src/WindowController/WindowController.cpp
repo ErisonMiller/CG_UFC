@@ -190,8 +190,6 @@ void Main_Menu()
 			ImGui::RadioButton("Perspective", &graphicalProjection, 1);
 			ImGui::RadioButton("Orthographic", &graphicalProjection, 2);
 			ImGui::DragFloat2("Screen size", (float*) & (cam.dimensions), 1.0f, 2.0f, 50.0f, "%0.1f");
-			/*ImGui::DragFloat("Screen size", (float*) & (cam.dimensions.x), 1.0f, 2.0f, 50.0f, "%0.1f");
-			cam.dimensions.y = cam.dimensions.x;*/
 			ImGui::RadioButton("Oblique", &graphicalProjection, 3);
 			ImGui::SliderFloat("Angle-X (degree)", &obliqueAngleX, -60.0f, 60.0f, "%.1f");
 			ImGui::SliderFloat("Angle-Y (degree)", &obliqueAngleY, -60.0f, 60.0f, "%.1f");
@@ -334,8 +332,8 @@ void mouseWheel(int button, int dir, int x, int y)
 
 	if (!(ImGui::GetIO().WantCaptureMouse))
 	{
-		cam.dimensions.x += cam.dimensions.x * (dir * 0.1f);
-		cam.dimensions.y += cam.dimensions.y * (dir * 0.1f);
+		cam.dimensions.x -= cam.dimensions.x * (dir * 0.1f);
+		cam.dimensions.y -= cam.dimensions.y * (dir * 0.1f);
 		glutPostRedisplay();
 	}
 }

@@ -327,6 +327,14 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
+	float tg_x = tanf((obliqueAngleX * M_PI / 180));
+	float tg_y = tanf((obliqueAngleY * M_PI / 180));
+	Matrix4 mSH{
+		1.0f, 0.0f, tg_x, 0.0f,
+		0.0f, 1.0f, tg_y, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f};
+
 #ifdef _WIN32
 #pragma omp parallel for num_threads(16) schedule(dynamic)
 #else
@@ -363,14 +371,9 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 			case 3:
 			{
 				current_pixel = cam.position + direction;
-				float tg_x = tanf((obliqueAngleX * M_PI / 180));
-				float tg_y = tanf((obliqueAngleY * M_PI / 180));
-				Matrix4 mm_teste2{
-					1.0f, 0.0f, tg_x, 0.0f,
-					0.0f, 1.0f, tg_y, 0.0f,
-					0.0f, 0.0f, 1.0f, 0.0f,
-					0.0f, 0.0f, 0.0f, 1.0f };
-				direction = mm_teste2 * (base * cam.n);
+				direction = ToCamera(cam) * ((cam.view - cam.position).to_unitary() * cam.n);
+				direction = mSH * direction;
+				direction = ToWorld(cam) * direction;
 				origin = current_pixel - direction;
 				break;
 			}
