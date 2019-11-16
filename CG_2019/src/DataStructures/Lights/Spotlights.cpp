@@ -51,3 +51,7 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 float Spotlights::LightDistance(const CRAB::Vector4Df& point) const {
 	return (point - position).length();
 }
+
+CRAB::Vector4Df Spotlights::GetLightDirection(const CRAB::Vector4Df& point) const {
+	return (point - position);
+}

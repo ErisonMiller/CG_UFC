@@ -55,11 +55,13 @@ Material* Mirror = new Material(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0
 Material* Refract = new Material(Vector4Df{ 0.5f, 0.5f, 0.5f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.2f, 0.2f, 0.2f, 0 }, 2, 0.5f, 0.5f, 1.1f); //Shininess, alpha, reflection, ior
 //transparent
 Material* Window_Glass = new Material(Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f }, 2.0f, 0.1f, 1.0f, 1.1f);
+//Material* Gold = new Material(Vector4Df{ 0.24725f, 0.1995f, 0.0745f, 0.0f }, Vector4Df{ 0.75164f, 0.60648f, 0.22648f, 0.0f }, Vector4Df{ 0.628281f, 0.555802f, 0.366065f, 0.0f }, 4.0f);
+//Material* Silver = new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0.0f }, 6.0f, 1.0f, 0.2f);
 //metals
 Material* Bronze = new Material(Vector4Df{ 0.2125f, 0.1275f, 0.054f, 0.0f }, Vector4Df{ 0.714f, 0.4284f, 0.18144f, 0.0f }, Vector4Df{ 0.393548f, 0.271906f, 0.166721f, 0.0f }, 25.6f);
 Material* Polished_Bronze = new Material(Vector4Df{ 0.25f, 0.148f, 0.06475f, 0.0f }, Vector4Df{ 0.4f, 0.2368f, 0.1036f, 0.0f }, Vector4Df{ 0.774597f, 0.458561f, 0.200621f, 0.0f }, 76.8f, 1.0f, 0.5f);
 Material* Gold = new Material(Vector4Df{ 0.24725f, 0.1995f, 0.0745f, 0.0f }, Vector4Df{ 0.75164f, 0.60648f, 0.22648f, 0.0f }, Vector4Df{ 0.628281f, 0.555802f, 0.366065f, 0.0f }, 51.2f);
-Material* Polished_Gold = new Material(Vector4Df{ 0.24725f, 0.2245f, 0.0645f, 0.0f }, Vector4Df{ 0.34615f, 0.3143f, 0.0903f, 0.0f }, Vector4Df{ 0.797357f, 0.723991f, 0.208006, 0.0f }, 83.2f, 1.0f, 0.5f);
+Material* Polished_Gold = new Material(Vector4Df{ 0.24725f, 0.2245f, 0.0645f, 0.0f }, Vector4Df{ 0.34615f, 0.3143f, 0.0903f, 0.0f }, Vector4Df{ 0.797357f, 0.723991f, 0.208006f, 0.0f }, 83.2f, 1.0f, 0.5f);
 Material* Silver = new Material(Vector4Df{ 0.5f, 0.5f, 0.5f, 0.0f }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0.0f }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0.0f }, 51.2f, 1.0f, 0.5f);
 //jewel
 Material* Jade = new Material(Vector4Df{ 0.135f, 0.2225f, 0.1575f, 0.0f }, Vector4Df{ 0.54f, 0.89f, 0.63f, 0.0f }, Vector4Df{ 0.316228f, 0.316228f, 0.316228f, 0.0f }, 12.8f, 0.95f, 0.1f);
@@ -461,6 +463,9 @@ void InitScene() {
 	Material *Parede2 = new Material(Vector4Df{ 0.04f, 0.03f, 0.02f, 0 }, Vector4Df{ 0.6f, 0.8f, 0.1f, 0 }, Vector4Df{ 0.6f, 0.8f, 0.1f, 0 }, 500);
 	Material *Parede3 = new Material(Vector4Df{ 0.04f, 0.03f, 0.02f, 0 }, Vector4Df{ 0.3f, 0.6f, 0.4f, 0 }, Vector4Df{ 0.3f, 0.6f, 0.4f, 0 }, 500);
 
+	Material *DarkWood = new Material(Vector4Df{ 0.04f, 0.02f, 0.01f, 0 }, Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, 0);
+	Material *WhiteWood = new Material(Vector4Df{ 0.835294f, 0.69019f, 0.51764f, 0 }, Vector4Df{ 0.8f, 0.6f, 0.4f, 0 }, Vector4Df{ 0.2f, 0.1f, 0.08f, 0 }, 1000);
+
 	//fill the object list
 	//objs.push_back(Object("Tronco da arvore 1", Tronco, new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
 	//objs.push_back(Object("Copa da arvode 1", Verde, new Cone(8.0f, 3.0f, Vector4Df{ 5.0f,2,30,1 }, Vector4Df{ 0,1,0,0 })));
@@ -491,6 +496,18 @@ void InitScene() {
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
 	objs.push_back(Object("Cube", Neutral, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
 	objs.push_back(Object("silver tray", Silver, new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
+	objs.push_back(Object("Sphere", Gold, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1 }, 2.0f)));
+	//objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
+
+	/**********************/
+	/****Final Scenario****/
+	/**********************/
+	//Globe:
+	//objs.push_back(Object("Quad", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Quad(Vector4Df{ 0, 0, -3,1 }, Vector4Df{ 2,0,-3,0 }, Vector4Df{ 2,2,-3,0 }, Vector4Df{ 0,2,-3,0 })));
+	//objs.push_back(Object("Table", WhiteWood, new Quad(Vector4Df{ 500.0f, -2.0f, 500.0f, 1.0f }, Vector4Df{ 500.0f, -1.0f, -500.0f, 1.0f }, Vector4Df{ -500.0f, -1.0f, -500.0f, 1.0f }, Vector4Df{ -500.0f, -1.0f, 500.0f, 1.0f })));
+	//objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 250.0f, 0.0f, 1 }, 250.0f)));
+	//objs.push_back(Object("Globe Base", DarkWood, new Cylinder(50.0f, 50.0f, Vector4Df{ 0.0f,0.0f,0.0f,1 }, Vector4Df{ 0,1,0,0 })));
+
 	objs.push_back(Object("Sphere", Yellow_Plastic, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1.0f }, 2.0f)));
 	objs.push_back(Object("Sphere", Cyan_Plastic, new Sphere(Vector4Df{ 3.0f, 1.0f, -6.0f, 1.0f }, 1.5f)));
 }
