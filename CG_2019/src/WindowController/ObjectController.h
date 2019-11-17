@@ -97,7 +97,7 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat("Angle (Quaternion)", (float*)&angle_quat_vector, 0.5f)) {
+		if (ImGui::DragFloat("Quaternion Angle (W)", (float*)&angle_quat_vector, 0.5f)) {
 			CRAB::Matrix4 m_to_origin = translate((geometry->base_center) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->base_center));
 			CRAB::Vector4Df quaternio_final = quaternion.to_unitary();
@@ -105,7 +105,7 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quaternio_final) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat3("Quart", (float*)&quaternion, 0.1f)) {
+		if (ImGui::DragFloat3("Quaternion Vector (V)", (float*)&quaternion, 0.1f)) {
 			//
 		}
 		
@@ -150,7 +150,7 @@ inline void RenderGeometry() {
 			//
 		}
 
-		if (ImGui::DragFloat("Angle (Quaternion)", (float*)&angle_quat_vector, 0.5f)) {
+		if (ImGui::DragFloat("Quaternion Angle (W)", (float*)&angle_quat_vector, 0.5f)) {
 			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->center));
 			CRAB::Vector4Df quaternio_final = quaternion.to_unitary();
@@ -158,7 +158,7 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quaternio_final) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat3("Quart", (float*)&quaternion, 0.1f)) {
+		if (ImGui::DragFloat3("Quaternion Vector (V)", (float*)&quaternion, 0.1f)) {
 			//
 		}
 
@@ -171,7 +171,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 1,1,1,0 };
 
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -191,7 +191,7 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat("Angle (Quaternion)", (float*)&angle_quat_vector, 0.5f)) {
+		if (ImGui::DragFloat("Quaternion Angle (W)", (float*)&angle_quat_vector, 0.5f)) {
 			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->center));
 			CRAB::Vector4Df quaternio_final = quaternion.to_unitary();
@@ -199,8 +199,14 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quaternio_final) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat3("Quart", (float*)&quaternion, 0.1f)) {
+		if (ImGui::DragFloat3("Quaternion Vector (V)", (float*)&quaternion, 0.1f)) {
 			//
+		}
+
+		if (ImGui::DragFloat3("Scale", (float*)&scale_vector, 0.1f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->center));
+			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z);
 		}
 
 		geometry->transform(m);
@@ -212,6 +218,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df translate_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 1,1,1,0 };
 		
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -231,7 +238,7 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat("Angle (Quaternion)", (float*)&angle_quat_vector, 0.5f)){
+		if (ImGui::DragFloat("Quaternion Angle (W)", (float*)&angle_quat_vector, 0.5f)){
 			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->v1));
 			CRAB::Vector4Df quaternio_final = quaternion.to_unitary();
@@ -239,8 +246,14 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quaternio_final) * m_to_origin;
 		}
 		
-		if (ImGui::DragFloat3("Quart", (float*)&quaternion, 0.1f)) {
+		if (ImGui::DragFloat3("Quaternion Vector (V)", (float*)&quaternion, 0.1f)) {
 			//
+		}
+
+		if (ImGui::DragFloat3("Scale", (float*)&scale_vector, 0.1f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z) ;
 		}
 
 		geometry->transform(m);
@@ -253,7 +266,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
-		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 1,1,1,0 };
 		
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -273,7 +286,7 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateZ(angle_object_vector.z)*CRAB::rotateY(angle_object_vector.y)*CRAB::rotateX(angle_object_vector.x) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat("Angle (Quaternion)", (float*)&angle_quat_vector, 0.5f)) {
+		if (ImGui::DragFloat("Quaternion Angle (W)", (float*)&angle_quat_vector, 0.5f)) {
 			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->v1));
 			CRAB::Vector4Df quaternio_final = quaternion.to_unitary();
@@ -281,8 +294,14 @@ inline void RenderGeometry() {
 			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quaternio_final) * m_to_origin;
 		}
 
-		if (ImGui::DragFloat3("Quart", (float*)&quaternion, 0.1f)) {
+		if (ImGui::DragFloat3("Quatertion Vector (V)", (float*)&quaternion, 0.1f)) {
 			//
+		}
+
+		if (ImGui::DragFloat3("Scale", (float*)&scale_vector, 0.1f)) {
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z);
 		}
 
 		geometry->transform(m);
