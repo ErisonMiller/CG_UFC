@@ -327,7 +327,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-	#pragma omp parallel for collapse(2) num_threads(16) schedule(dynamic) //default(shared)
+	#pragma omp parallel for num_threads(16) schedule(dynamic) //default(shared)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
@@ -348,7 +348,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	}
 	
 	t = clock() - t;	
-	//std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
+	std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
 	
 	return accumulateBuffer;
 }

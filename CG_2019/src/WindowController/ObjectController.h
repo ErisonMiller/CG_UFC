@@ -115,9 +115,6 @@ inline void RenderGeometry() {
 		
 		geometry->transform(m);
 	}
-
-
-
 }
 
 inline void RenderObject() {

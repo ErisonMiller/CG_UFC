@@ -17,10 +17,10 @@ struct TreeElement
 
 	//CRAB::Vector4Df center;
 	//float r2;
-	CRAB::Vector4Df min,max;
+	CRAB::Vector4Df min, max;
 
 	TreeElement(int _state) : state(_state), next(nullptr) {}
-	
+
 	void Free() { if (next) { next->Free(); } delete next; }
 };
 
@@ -29,7 +29,7 @@ struct OcElementNode : TreeElement
 {
 	TreeElement* sons[8];
 	OcElementNode() : TreeElement(TREE_SEMI_NODE) {}
-	
+
 	void Free() { for (TreeElement* t : sons) { t->Free(); delete t; } }
 };
 
@@ -47,12 +47,12 @@ struct OcElementLeaf : TreeElement
 	std::vector<Triangle> faces;
 
 	OcElementLeaf() : TreeElement(TREE_FULL_NODE) {}
-	OcElementLeaf(const FaceList &_faces) : TreeElement(TREE_FULL_NODE){
+	OcElementLeaf(const FaceList& _faces) : TreeElement(TREE_FULL_NODE) {
 		faces.reserve(_faces.size() * 0.5f);
 		int j = 0;
-		for (int i = 0, s = _faces.size(); i < s; i+=2) {
+		for (int i = 0, s = _faces.size(); i < s; i += 2) {
 			const Face& f = _faces[i];
-			const Face& n = _faces[i+1];
+			const Face& n = _faces[i + 1];
 			//faces[j] = (Triangle(f.v1, f.v2, f.v3, &vertice_normals[j]));
 			faces.push_back(Triangle(f.v1, f.v2, f.v3, n.v1, n.v2, n.v3));
 			//faces[j] = (Triangle(f.v1, f.v2, f.v3));
@@ -68,7 +68,7 @@ struct OcElementLeaf : TreeElement
 
 class OcTree : public Geometry {
 public:
-	CRAB::Vector4Df center;
+	CRAB::Vector4Df center, min, max;
 	float r;
 	TreeElement* tree;
 	std::vector<Face> vertices_normals;

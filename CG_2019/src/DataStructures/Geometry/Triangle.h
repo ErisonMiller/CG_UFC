@@ -4,6 +4,7 @@
 struct Face
 {
 	CRAB::Vector4Df v1, v2, v3;
+	CRAB::Vector4Df getCenter()const { return (v1 + v2 + v3)/3; }
 };
 #define FaceList std::vector<Face>
 

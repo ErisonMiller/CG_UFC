@@ -398,7 +398,7 @@ void InitScene() {
 	//objs.push_back(Object("Cubo 3", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Cube(Vector4Df{ 0, 0, 0,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
 	//objs.push_back(Object("Quad", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Quad(Vector4Df{ 0, 0, -3,1 }, Vector4Df{ 2,0,-3,0 }, Vector4Df{ 2,2,-3,0 }, Vector4Df{ 0,2,-3,0 })));
 	//objs.push_back(Object("Refract Cube", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 1000, 1, 0.8f, 1.33f), new Cube(Vector4Df{ 0, 0, 6,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
-	objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 0.0f, 6.0f, 1 }, 2.0f)));
+	//objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 0.0f, 6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Refract Cylinder", Refract, new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
 }
@@ -424,16 +424,18 @@ void Start_Window(int argc, char **argv) {
 	//Fill the scene
 	InitScene();
 	
-	std::vector<FaceList> faceList = CRAB::Load_Obj("crab3.obj");
+	std::vector<FaceList> faceList = CRAB::Load_Obj("bunny.obj");
 	//objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
 		objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));
 	}
-	std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
-	for (int i = 0; i < faceList2.size(); i++) {
-		objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
-	}
+	//std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
+	//for (int i = 0; i < faceList2.size(); i++) {
+	//	objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
+	//}
 	
+	//objs[0].Collide(CRAB::Ray{ cam.position + CRAB::Vector4Df{0,1,0,0}, (cam.view - cam.position).to_unitary() });
+	//std::cout << "done\n";
 	//start render loop
 	RenderAPI::RenderLoop();
 

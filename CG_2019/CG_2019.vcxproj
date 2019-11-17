@@ -146,13 +146,18 @@
       <AdditionalIncludeDirectories>$(SolutionDir)CG_2019\src\DataIO;$(SolutionDir)CG_2019\src\WindowController;$(SolutionDir)CG_2019\src\RenderEngine;$(SolutionDir)CG_2019\src\DataStructures\Material;$(SolutionDir)CG_2019\src\DataStructures\Geometry;$(SolutionDir)CG_2019\src\DataStructures\Lights;$(SolutionDir)\CG_2019\src\DataStructures\Material;$(SolutionDir)\CG_2019\src;$(SolutionDir)\CG_2019\DLL;$(SolutionDir)\CG_2019\Includes;$(SolutionDir)\CG_2019\src\WindowController;$(SolutionDir)\CG_2019\src\RenderEngine;$(SolutionDir)\CG_2019\src\DataStructures\Geometry;$(SolutionDir)\CG_2019\src\DataStructures;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <FloatingPointModel>Precise</FloatingPointModel>
       <EnablePREfast>false</EnablePREfast>
       <AdditionalOptions>/Zc:twoPhase- /tune:skylake %(AdditionalOptions)</AdditionalOptions>
       <AdditionalUsingDirectories>$(SolutionDir)CG_2019\Includes\imgui;$(SolutionDir)CG_2019\Includes\GL;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\WindowController;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\RenderEngine;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Material;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Lights;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataStructures\Geometry;C:\Users\Adahil\Documents\Faculdade\CG\CG_UFC\CG_2019\src\DataIO;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <OmitFramePointers>true</OmitFramePointers>
+      <StructMemberAlignment>8Bytes</StructMemberAlignment>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <LanguageStandard>Default</LanguageStandard>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
