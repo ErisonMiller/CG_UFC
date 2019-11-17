@@ -50,16 +50,16 @@ bool ObjFile::ReadObjFile(const std::string& inName)
 
 		if (line.substr(0, 1) == "o")
 		{
-			//Objeto anterior, se existir
-			//e limpa a variável q recebe o objeto corrente
+			//add last obj, if it exists
+			//and clear the current obj
 			if (object == true)
 			{
 				objList.push_back(currentObj);
 				ClearCurrentObj(currentObj);
 			}
 
-			object = true;					//ativa a leitura de um novo objeto
-			currentObj.Name = line.substr(2);		//recebe o nome do objeto
+			object = true;							//activate a new obj
+			currentObj.Name = line.substr(2);		//'o' name
 			std::cout << "\n\tReading Object ...: " << currentObj.Name << std::endl;
 		}
 		else if (object == true)
@@ -88,15 +88,12 @@ bool ObjFile::ReadObjFile(const std::string& inName)
 				Face face;
 				line = line.substr(1);
 				std::istringstream s(line);
-
-				//FIXME: just 3 vertices
-				while (true)
-				{
-					s >> vertex;
-					if (!s)
-						break;
-					//face.vertices.push_back(allVertices[vertex - 1]);
-				}
+				s >> vertex;
+				face.v1 = allVertices[vertex - 1];
+				s >> vertex;
+				face.v2 = allVertices[vertex - 1];
+				s >> vertex;
+				face.v3 = allVertices[vertex - 1];
 				currentObj.Faces.push_back(face);
 			}
 		}

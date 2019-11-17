@@ -8,7 +8,7 @@
 
 #include <GL/glew.h>
 #include <GL/glut.h>
-//#include <GL/freeglut.h>
+#include <GL/freeglut.h>
 
 #include "Linear_Algebra.h"
 
@@ -134,6 +134,7 @@ namespace RenderAPI{
 	inline void ReshapeFunc(void(*callback)(int, int))						{ glutReshapeFunc(callback); }
 	inline void DisplayFunc(void(*callback)(void))							{ glutDisplayFunc(callback); }
 	inline void MouseFunc(void(*callback)(int, int, int, int))				{ glutMouseFunc(callback); }
+	inline void MouseWheelFunc(void(*callback)(int, int, int, int))			{ glutMouseWheelFunc(callback); }
 	inline void MotionFunc(void(*callback)(int, int))						{ glutMotionFunc(callback); }
 	
 }

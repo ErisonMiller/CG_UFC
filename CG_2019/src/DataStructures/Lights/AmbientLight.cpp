@@ -25,3 +25,7 @@ CRAB::Vector4Df AmbientLight::Illumination(const Material &mat, const CRAB::Vect
 float AmbientLight::LightDistance(const CRAB::Vector4Df& point) const {
 	return 0;
 }
+
+CRAB::Vector4Df AmbientLight::GetLightDirection(const CRAB::Vector4Df& point) const {
+	return CRAB::Vector4Df{0.0f, 0.0f, 0.0f, 0.0f};
+}

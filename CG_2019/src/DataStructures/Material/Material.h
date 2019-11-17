@@ -7,10 +7,10 @@ public:
 	CRAB::Vector4Df ka; // Ambient Coefficient
 	CRAB::Vector4Df kd; // Diffuse Coefficient
 	CRAB::Vector4Df ks; // Spectral Coefficient
-	float shininess;   // Shininess
-	float alfa;   // Shininess
-	float reflection;
-	float ior = 1; //Refractie Index
+	float shininess;	// Shininess
+	float alfa;			// Transparency [0.0; 1.0]
+	float reflection;	// [0.0; 1.0]
+	float ior = 1;		//Refractive Index
 
 	Material();
 	Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess);

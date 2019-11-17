@@ -1,5 +1,5 @@
 #include "RayCastRender.h"
-
+#include "GlobalVariables.h"
 
 #include <iostream>
 #include <algorithm>
@@ -45,7 +45,6 @@ inline bool InShadow(const Ray& ray, const std::vector<Object>& objects, const L
 	return false;
 
 }
-
 
 //Refract Vector
 inline Vector4Df refract(const Vector4Df & incident, const Vector4Df & normal, const float & ior_t, const float & ior_i) {
@@ -153,7 +152,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		#endif
 	}
 	Vector4Df vec_offset = closest_collision.pint + ray.direction*0.001f;
-	Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f };
+	//Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f }; //blue sky
+	Vector4Df accucolor = Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }; //white room
 	if (closest_obj) {
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 		const Material mat = *closest_obj->getMaterial();
@@ -224,7 +224,7 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		}
 
 		
-		if (mat.ior > 1 && depth < 1) {
+		if (mat.ior >= 1 && depth < 1) {
 			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
 			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1)*(1-mat.alfa);
 		}
@@ -327,11 +327,25 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 	
 	const Vector4Df posi_pix_0_0 = base * cam.n + up * (height*(-0.5f) + 0.5f) + left * (width*(0.5f) - 0.5f);
 
-	#pragma omp parallel for num_threads(16) schedule(dynamic) //default(shared)
+	float tg_x = tanf((obliqueAngleX * M_PI / 180));
+	float tg_y = tanf((obliqueAngleY * M_PI / 180));
+	Matrix4 mSH{
+		1.0f, 0.0f, tg_x, 0.0f,
+		0.0f, 1.0f, tg_y, 0.0f,
+		0.0f, 0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f};
+
+#ifdef _WIN32
+#pragma omp parallel for num_threads(16) schedule(dynamic)
+#else
+#pragma omp parallel for collapse(2) num_threads(16) schedule(dynamic)
+#endif
+
+	// #pragma omp parallel for collapse(2) num_threads(16) schedule(dynamic) //default(shared)
 	for (int y = 0; y < height; y++) {
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y) + left * (-x);
-			direction.normalize();
+			//direction.normalize();
 
 #if PRINT == 1
 			if (x == X_PRINT && y == Y_PRINT) {
@@ -341,14 +355,41 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Obje
 				print = false;
 			}
 #endif
-			
-			accumulateBuffer[y*width + x] = ray_cast(Ray { cam.position, direction }, objects, lights, print, cam.n, 0);
+
+			//projection
+			Vector4Df origin, current_pixel;
+			switch (graphicalProjection)
+			{
+			case 1:
+				origin = cam.position;
+				break;
+			case 2:
+				current_pixel = cam.position + direction;
+				origin = current_pixel - base * cam.n;
+				direction = base;
+				break;
+			case 3:
+			{
+				current_pixel = cam.position + direction;
+				direction = ToCamera(cam) * ((cam.view - cam.position).to_unitary() * cam.n);
+				direction = mSH * direction;
+				direction = ToWorld(cam) * direction;
+				origin = current_pixel - direction;
+				break;
+			}
+			default:
+				origin = cam.position;
+				break;
+			}
+
+			direction.normalize();
+			accumulateBuffer[y*width + x] = ray_cast(Ray { origin, direction }, objects, lights, print, cam.n, 0);
 
 		}
 	}
 	
 	t = clock() - t;	
-	std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
+	//std::cout << "levou " << t << " clocks ou " << ((float)t) / CLOCKS_PER_SEC << " segundos ou " << 1.0f/(((float)t) / CLOCKS_PER_SEC) << " fps\n";
 	
 	return accumulateBuffer;
 }
@@ -523,6 +564,7 @@ CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Sphe
 		for (int x = 0; x < width; x++) {
 			Vector4Df direction = posi_pix_0_0 + up * (y)+left * (-x);
 			direction.normalize();
+
 			accumulateBuffer[y*width + x] = ray_cast(cam.position, direction, spheres, 4);
 
 		}

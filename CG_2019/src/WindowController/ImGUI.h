@@ -14,9 +14,9 @@ namespace GUI_API {
 		glutSpecialFunc(ImGui_ImplGLUT_SpecialFunc);
 		glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
 
-#ifdef __FREEGLUT_EXT_H__
-		glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
-#endif
+//#ifdef __FREEGLUT_EXT_H__
+//		glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
+//#endif
 	
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
