@@ -498,7 +498,7 @@ void InitScene() {
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
 	objs.push_back(Object("Cube", Neutral, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
 	objs.push_back(Object("silver tray", Silver, new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
-	objs.push_back(Object("Sphere", Gold, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1 }, 2.0f)));
+	objs.push_back(Object("Gold Sphere", Gold, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
 
 	/**********************/
@@ -510,8 +510,8 @@ void InitScene() {
 	//objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 250.0f, 0.0f, 1 }, 250.0f)));
 	//objs.push_back(Object("Globe Base", DarkWood, new Cylinder(50.0f, 50.0f, Vector4Df{ 0.0f,0.0f,0.0f,1 }, Vector4Df{ 0,1,0,0 })));
 
-	objs.push_back(Object("Sphere", Yellow_Plastic, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1.0f }, 2.0f)));
-	objs.push_back(Object("Sphere", Cyan_Plastic, new Sphere(Vector4Df{ 3.0f, 1.0f, -6.0f, 1.0f }, 1.5f)));
+	//objs.push_back(Object("Sphere", Yellow_Plastic, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1.0f }, 2.0f)));
+	//objs.push_back(Object("Sphere", Cyan_Plastic, new Sphere(Vector4Df{ 3.0f, 1.0f, -6.0f, 1.0f }, 1.5f)));
 }
 
 // Main.

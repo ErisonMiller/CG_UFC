@@ -156,17 +156,29 @@ inline void RenderGeometry() {
 
 		if (ImGui::DragFloat("Angle (Quaternion)", (float*)&angle_quat_vector, 0.5f)){
 			//CRAB::Vector4Df normal = CRAB::cross_simd(geometry->e1, geometry->e2);
-			CRAB::Vector4Df normal = CRAB::Vector4Df{ 0,0,1,0 };
+			/*CRAB::Vector4Df normal = CRAB::Vector4Df{ 1,1,1,0 };
+			normal.to_unitary();
 			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->v1));
-			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, normal) * m_to_origin;
+			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, normal) * m_to_origin;*/
 		}
-
-		/*if (ImGui::DragFloat4("Quart", (float*)&quartenio, 0.5f)) {
+		
+		if (ImGui::DragFloat4("Quart", (float*)&quartenio, 0.1f)) {
 			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->v1));
-			m = CRAB::rotateArbitrary(quartenio.w, quartenio)*m;
-			m = m_back * CRAB::rotateArbitrary(quartenio.w, quartenio) * m_to_origin;
+			//float angle = quartenio.w;
+			CRAB::Vector4Df quat_final =  quartenio.to_unitary();
+			//m = CRAB::rotateArbitrary(quartenio.w, quartenio)*m;
+			//m = m_back * CRAB::rotateArbitrary(quartenio.w, quartenio) * m_to_origin;
+			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quat_final) * m_to_origin;
+		}
+		/*
+		if (ImGui::DragFloat3("Quaternion", (float*)&quartenio, 0.5f))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			quartenio.to_unitary();
+			m = m_back * CRAB::rotateArbitrary(angle_quat_vector, quartenio) * m_to_origin;
 		}*/
 
 
