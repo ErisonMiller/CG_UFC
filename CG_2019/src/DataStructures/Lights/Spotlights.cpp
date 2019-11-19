@@ -15,7 +15,7 @@ Spotlights::~Spotlights()
 {
 }
 
-CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view, const CRAB::Vector4Df &P) const  {
+CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector4Df &normal, const CRAB::Vector4Df &view, const CRAB::Vector4Df &P) const {
 	CRAB::Vector4Df color;
 
 	CRAB::Vector4Df L = position - P;
@@ -32,8 +32,8 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 	}
 	else color = { 0.0f, 0.0f, 0.0f, 0 };
 
-	
-	CRAB::Vector4Df Ia = intensity * mat.ka; //ambient reflection
+
+	CRAB::Vector4Df Ia = color * mat.ka; //ambient reflection
 	CRAB::Vector4Df Id = (color * mat.kd) * dot_L_n; //diffuse reflection
 	CRAB::Vector4Df Is = { 0.0f, 0.0f, 0.0f, 0.0f };					  // specular reflection
 
@@ -49,9 +49,9 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 
 
 float Spotlights::LightDistance(const CRAB::Vector4Df& point) const {
-	return (point - position).length();
+	return (position - point).length();
 }
 
 CRAB::Vector4Df Spotlights::GetLightDirection(const CRAB::Vector4Df& point) const {
-	return (point - position);
+	return (position - point);
 }

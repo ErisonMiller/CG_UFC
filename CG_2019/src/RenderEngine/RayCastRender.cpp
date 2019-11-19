@@ -153,7 +153,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 	}
 	Vector4Df vec_offset = closest_collision.pint + ray.direction*0.001f;
 	//Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f }; //blue sky
-	Vector4Df accucolor = Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }; //white room
+	//Vector4Df accucolor = Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }; //white room
+	Vector4Df accucolor = Vector4Df{ 0.1f, 0.1f, 0.1f, 0.0f }; //dark room
 	if (closest_obj) {
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
 		const Material mat = *closest_obj->getMaterial();
