@@ -437,11 +437,11 @@ void InitScene() {
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
-	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ -1.0f, -1.0f, -1.0f, 0.0f }));
+	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }));
 	//lights.push_back(new DirectionalLight(Vector4Df{ 0.6f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
-	lights.push_back(new Spotlights(Vector4Df{ 0.5f, 10000.0f, 0.5f, 0.0f }, Vector4Df{ 10.0f, 10.0f, 10.0f, 1.0f }, Vector4Df{ -1.0f, -1.0f, -1.0f, 0.0f }, 45.0f, 100.0f));
+	lights.push_back(new Spotlights(Vector4Df{ 500.0f, 500.0f, 500.0f, 0.0f }, Vector4Df{ 2.0f, -0.9f, 1.5f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }, 60.0f, 100.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 0.5f, 1.0f, 0.5f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.03f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, 40.0f, 100.0f));
-	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 50.0f, 50.0f, 50.0f, 1.0f }));
+	lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 10.0f, 10.0f, 10.0f, 1.0f }));
 
 	//fill the object list
 	//objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(4.0f, 0.5f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
@@ -486,7 +486,6 @@ void InitScene() {
 
 	//Fill the object list (With material)
 	//objs.push_back(Object("Tronco da arvore 1", new Material(Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0, 0 }, 0.5f), new Cylinder(2.0f, 0.5f, Vector4Df{ 5.0f,0,30,1 }, Vector4Df{ 0,1,0,0 })));
-	objs.push_back(Object("Cilindro", Gold, new Cylinder(2.0f, 1.0f, Vector4Df{ -2.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0,1,0,0 })));
 	//objs.push_back(Object("Esfera", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Sphere(Vector4Df{ 0.0f, 0.0f, 0.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Cubo 3", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Cube(Vector4Df{ 0, 0, 0,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
 	//objs.push_back(Object("Quad", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Quad(Vector4Df{ 0, 0, -3,1 }, Vector4Df{ 2,0,-3,0 }, Vector4Df{ 2,2,-3,0 }, Vector4Df{ 0,2,-3,0 })));
@@ -496,9 +495,11 @@ void InitScene() {
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
 	//objs.push_back(Object("Cube", Neutral, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
 	objs.push_back(Object("silver tray", Silver, new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
-	objs.push_back(Object("Gold Sphere", DarkWood, new Sphere(Vector4Df{ 0.0f, 1.0f, -4.0f, 1 }, 2.0f)));
+	objs.push_back(Object("Gold Sphere", DarkWood, new Sphere(Vector4Df{ 0.0f, 1.5f, -4.0f, 1 }, 2.0f)));
 	objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
 	objs.push_back(Object("Cone", Gold, new Cone(5.0f, 1.0f, Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f })));
+	objs.push_back(Object("lantern_body", Black_Plastic, new Cylinder(2.0f, 0.25f, Vector4Df{ 2.0f, -0.60f, 4.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
+	objs.push_back(Object("lantern_head", Black_Plastic, new Cylinder(0.2f, 0.4f, Vector4Df{ 2.0f, -0.60f, 2.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
 
 	/**********************/
 	/****Final Scenario****/

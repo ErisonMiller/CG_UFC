@@ -71,7 +71,7 @@ CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
 		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cone?
 			col.distance = distance;
 			col.pint = p;
-			col.pint.w = -1.0f;
+			col.pint.w = 1.0f;
 			return col;
 		}
 	}
@@ -175,23 +175,23 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 {
 	
-	CRAB::Vector4Df n, vg, vt;
-	if (point.w < 0.0f) {
-		//CRAB::Vector4Df p = point;
-		//p.w = 1.0f;
-		//CRAB::Vector4Df a = (p - top_vertex);
-		//CRAB::Vector4Df b = (direction * point.w);
-		//n = (a - b).to_unitary();
-		vg = top_vertex - point;
-		vt = CRAB::cross(vg, direction);
+	//CRAB::Vector4Df n, vg, vt;
+	//if (point.w < 0.0f) {
+	//	//CRAB::Vector4Df p = point;
+	//	//p.w = 1.0f;
+	//	//CRAB::Vector4Df a = (p - top_vertex);
+	//	//CRAB::Vector4Df b = (direction * point.w);
+	//	//n = (a - b).to_unitary();
+	//	vg = top_vertex - point;
+	//	vt = CRAB::cross(vg, direction);
 
-		n = cross(vt, vg).to_unitary()*(-1);
-	}
-	else {
-		n = direction * (-1.0f);
-	}
+	//	n = cross(vt, vg).to_unitary()*(-1);
+	//}
+	//else {
+	//	n = direction * (-1.0f);
+	//}
 
-	/*CRAB::Vector4Df CP = point - base_center;
+	CRAB::Vector4Df CP = point - base_center;
 
 	if (CP.length() <= radius && fabs(dot(direction, CP)) < SMALL_NUMBER)
 	{
@@ -202,7 +202,7 @@ CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 	CRAB::Vector4Df n = CP - (direction * dot(CP, direction));
 	n = n / cosf(alfa);
 
-	n.normalize();*/
+	n.normalize();
 
 	return n;
 }
