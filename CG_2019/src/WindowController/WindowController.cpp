@@ -308,9 +308,18 @@ void motion(int x, int y)
 				cam.Transform(rotateArbitrary(deltaY, v), cam.view);
 				cam.Transform(rotateY(deltaX), cam.view);
 			}
-			else if (theButtonState == GLUT_MIDDLE_BUTTON) // Zoom
+			
+			if (theButtonState == GLUT_MIDDLE_BUTTON) // Pan
 			{
-
+				// change to camera
+				Vector4Df eyeToCam = ToCamera(cam) * cam.position;
+				Vector4Df lookatToCam = ToCamera(cam) * cam.view;
+				// motion
+				eyeToCam.x += deltaX * 0.05f; eyeToCam.y -= deltaY * 0.05f;
+				lookatToCam.x += deltaX * 0.05f; lookatToCam.y -= deltaY * 0.05f;
+				// change back to world
+				cam.position = ToWorld(cam) * eyeToCam;
+				cam.view = ToWorld(cam) * lookatToCam;
 			}
 
 			if (theButtonState == GLUT_RIGHT_BUTTON) // camera move
