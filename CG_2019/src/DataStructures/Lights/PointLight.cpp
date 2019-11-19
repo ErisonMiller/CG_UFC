@@ -32,5 +32,5 @@ float PointLight::LightDistance(const CRAB::Vector4Df& point) const {
 }
 
 CRAB::Vector4Df PointLight::GetLightDirection(const CRAB::Vector4Df& point) const {
-	return (position - point);
+	return (position - point).to_unitary();
 }

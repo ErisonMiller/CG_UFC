@@ -23,7 +23,7 @@ RayCast::RayCast(const CRAB::Camera &cam) : resolution(cam.resolution){
 	accumulateBuffer = new(nothrow) CRAB::Vector4Df[resolution.x * resolution.y * sizeof(CRAB::Vector4Df)];
 
 	for (unsigned y = 0, s = (unsigned)(resolution.x * resolution.y); y < s; y ++) {
-		accumulateBuffer[y] = CRAB::Vector4Df{ 0.5f, 0.5f, 0.5f, 0.5f };
+		accumulateBuffer[y] = CRAB::Vector4Df{ 0.9f, 0.5f, 0.5f, 0.5f };
 	}
 }
 
@@ -139,16 +139,16 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 			closest_collision = col;
 			closest_obj = &obj;
 		}
-		#if PRINT == 1
+		#if PRINT == 0
 		if (print) {
 			RayCollisionList cols = obj.CollideAll(ray);
-			std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
+			//std::cout << "-- Colisoes com :" << id << " " << typeid(*obj.getGeometry()).name() << "\n";
 			for (Collision c : cols.collisions) {
 				std::cout << "    t :" << c.distance << "; ";
 				std::cout << "    p :" << c.pint.x << " " << c.pint.y << " " << c.pint.z << "\n";
 			}
 		}
-		id++;
+		//id++;
 		#endif
 	}
 	Vector4Df vec_offset = closest_collision.pint + ray.direction*0.001f;

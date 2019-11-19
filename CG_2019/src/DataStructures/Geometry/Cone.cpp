@@ -51,7 +51,7 @@ CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
 	const CRAB::Vector4Df &v = top_vertex - ray.origin; // Vector between the Cone top vertex and the ray origin.
 
 	const float v_dot_n = dot_simd(v, direction);
-	
+
 	//Aux Variables
 	const float r_2 = this->radius * this->radius;
 	const float h_2 = this->height * this->height;
@@ -69,13 +69,13 @@ CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
 		const CRAB::Vector4Df &p = ray.origin + (ray.direction * distance); // Intersection Point
 		const float p_projection = dot_simd((top_vertex - p), direction); //Projection of the point P on the cone axis
 		if (p_projection >= 0.0f && p_projection <= this->height) { // Does the ray hit the cone?
-			col.pint = p;
 			col.distance = distance;
-			col.pint.w = -1;
+			col.pint = p;
+			col.pint.w = -1.0f;
 			return col;
 		}
 	}
-	
+
 	//TODO: It must be implmented only if one of the cone interception is not valid or 'a' is less than 0.
 	//Base
 	const CRAB::Vector4Df &base_dir = this->direction * (-1.0f);
@@ -85,9 +85,9 @@ CRAB::Collision __fastcall Cone::CollideClosest(const CRAB::Ray &ray) {
 	const float int_to_center = (p - this->base_center).lengthsq(); // Distance of the intersection point from the base center.
 
 	if (int_to_center <= r_2) {//The point intercept tha base iff its distance from the center is less than the radius.
-		col.pint = p;
 		col.distance = distance;
-		col.pint.w = 1;
+		col.pint = p;
+		col.pint.w = 1.0f;
 		return col;
 	}
 
@@ -175,7 +175,6 @@ CRAB::RayCollisionList Cone::Collide(const CRAB::Ray &ray)
 CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 {
 	
-	
 	CRAB::Vector4Df n, vg, vt;
 	if (point.w < 0.0f) {
 		//CRAB::Vector4Df p = point;
@@ -186,12 +185,24 @@ CRAB::Vector4Df Cone::getNormal(const CRAB::Vector4Df &point)
 		vg = top_vertex - point;
 		vt = CRAB::cross(vg, direction);
 
-		n = cross(vt, vg).to_unitary();
+		n = cross(vt, vg).to_unitary()*(-1);
 	}
 	else {
 		n = direction * (-1.0f);
 	}
 
+	/*CRAB::Vector4Df CP = point - base_center;
+
+	if (CP.length() <= radius && fabs(dot(direction, CP)) < SMALL_NUMBER)
+	{
+		return direction * (-1.0f);
+	}
+
+	float alfa = atanf(radius / height);
+	CRAB::Vector4Df n = CP - (direction * dot(CP, direction));
+	n = n / cosf(alfa);
+
+	n.normalize();*/
 
 	return n;
 }
