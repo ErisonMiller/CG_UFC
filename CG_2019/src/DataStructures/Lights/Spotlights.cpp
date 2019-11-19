@@ -33,7 +33,7 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 	else color = { 0.0f, 0.0f, 0.0f, 0 };
 
 
-	CRAB::Vector4Df Ia = color * mat.ka; //ambient reflection
+	//CRAB::Vector4Df Ia = color * mat.ka; //ambient reflection
 	CRAB::Vector4Df Id = (color * mat.kd) * dot_L_n; //diffuse reflection
 	CRAB::Vector4Df Is = { 0.0f, 0.0f, 0.0f, 0.0f };					  // specular reflection
 
@@ -44,7 +44,7 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 		Is = (color * mat.ks) * powf(dot_r_v, mat.shininess);//specular reflection
 	}
 
-	return Ia + Id + Is;
+	return /*Ia +*/ Id + Is;
 }
 
 

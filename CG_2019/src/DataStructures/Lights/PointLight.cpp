@@ -10,7 +10,7 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 	CRAB::Vector4Df L = position - P;
 	L.normalize();
 
-	CRAB::Vector4Df Ia = intensity * mat.ka;                                   // ambient reflection
+	//CRAB::Vector4Df Ia = intensity * mat.ka;                                   // ambient reflection
 	CRAB::Vector4Df Id = { 0.0f, 0.0f, 0.0f, 0.0f };			           // diffuse reflection
 	CRAB::Vector4Df Is = { 0.0f, 0.0f, 0.0f, 0.0f };					  // specular reflection
 
@@ -24,13 +24,13 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 		Is = (intensity * mat.ks) * powf(dot_r_v, mat.shininess);//specular reflection
 	}
 	
-	return Ia + Id + Is;
+	return /*Ia +*/ Id + Is;
 }
 
 float PointLight::LightDistance(const CRAB::Vector4Df& point) const {
-	return (point - position).length();
+	return (position - point).length();
 }
 
 CRAB::Vector4Df PointLight::GetLightDirection(const CRAB::Vector4Df& point) const {
-	return (point - position);
+	return (position - point);
 }
