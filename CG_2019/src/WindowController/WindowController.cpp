@@ -437,7 +437,7 @@ void InitScene() {
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
-	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }));
+	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }));
 	//lights.push_back(new DirectionalLight(Vector4Df{ 0.6f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
 	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 1.05f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, 30.0f, 50.0f));
 	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0}, Vector4Df{ 5.0f, 7.0f, 30.0f, 1 }));
