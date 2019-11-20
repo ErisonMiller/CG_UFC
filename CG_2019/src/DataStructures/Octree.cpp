@@ -45,14 +45,14 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 	FaceList faceList;
 	if (depth) {
 
-		for (int i = 0, s = fatherFaceList.size(); i < s; i+=2) {
-			const Face& f = fatherFaceList[i];
+		for (int i = 0, s = fatherFaceList.faces.size(); i < s; i+=2) {
+			const Face& f = fatherFaceList.faces[i];
 		//for (const Face& f : fatherFaceList) {
 			if ((f.v1 - center).lengthsq() <= r * r ||
 				(f.v2 - center).lengthsq() <= r * r ||
 				(f.v3 - center).lengthsq() <= r * r) {
-				faceList.push_back(f);
-				faceList.push_back(fatherFaceList[i+1]);
+				faceList.faces.push_back(f);
+				faceList.faces.push_back(fatherFaceList.faces[i+1]);
 				continue;
 			}
 
@@ -71,8 +71,8 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 			if (Line_Sphere(f.v1, v0v1, center, r) || Line_Sphere(f.v1, v0v2, center, r) || Line_Sphere(f.v2, f.v3 - f.v2, center, r)) {
 				//faceList.push_back(f);
 
-				faceList.push_back(f);
-				faceList.push_back(fatherFaceList[i + 1]);
+				faceList.faces.push_back(f);
+				faceList.faces.push_back(fatherFaceList.faces[i + 1]);
 				continue;
 			}
 
@@ -95,19 +95,19 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 
 			//faceList.push_back(f);
 
-			faceList.push_back(f);
-			faceList.push_back(fatherFaceList[i + 1]);
+			faceList.faces.push_back(f);
+			faceList.faces.push_back(fatherFaceList.faces[i + 1]);
 		}
 	}
 	else {
 		faceList = fatherFaceList;
 	}
 
-	if(faceList.empty()) return new TreeElement(TREE_EMPTY_NODE);
+	if(faceList.faces.empty()) return new TreeElement(TREE_EMPTY_NODE);
 	
 	const int cut_size = 0;
 	
-	if (faceList.size() > MAX_TREE_SIZE && (faceList.size() <= fatherFaceList.size() - cut_size * MAX_TREE_SIZE || depth == 0))
+	if (faceList.faces.size() > MAX_TREE_SIZE && (faceList.faces.size() <= fatherFaceList.faces.size() - cut_size * MAX_TREE_SIZE || depth == 0))
 	{
 		r *= 0.5f;
 		OcElementNode* ocn = new OcElementNode();
@@ -127,7 +127,7 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 		for (int i = 0; i < 8; i++) {
 			if (ocn->sons[i]->state == TREE_FULL_NODE) {
 				OcElementLeaf* ocl = (OcElementLeaf*)ocn->sons[i];
-				if (ocl->faces.size() == faceList.size()) {
+				if (ocl->faces.size() == faceList.faces.size()) {
 					equals++;
 				}
 			}
@@ -148,7 +148,7 @@ TreeElement* PovoateTree(const FaceList& fatherFaceList, const CRAB::Vector4Df &
 		}
 		return ocn;
 	}
-	if (faceList.size() > fatherFaceList.size() - cut_size * MAX_TREE_SIZE) {
+	if (faceList.faces.size() > fatherFaceList.faces.size() - cut_size * MAX_TREE_SIZE) {
 		return new OcElementLeaf(fatherFaceList);
 	}
 
@@ -292,8 +292,8 @@ OcTree::OcTree(const FaceList &faceList) {
 
 
 	std::cout << "Carregando faces\n";
-	for (int i = 0, s = faceList.size(); i < s; i+=2) {
-		const Face& f = faceList[i];
+	for (int i = 0, s = faceList.faces.size(); i < s; i+=2) {
+		const Face& f = faceList.faces[i];
 		min = CRAB::min(min, f.v1);
 		max = CRAB::max(max, f.v1);
 
@@ -404,8 +404,8 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 				//if (_mm_movemask_ps(_mm_cmplt_ps(t, _mm_set_ps1(0.1f))))continue;
 				//if (_mm_cvtss_f32(t) < 0.001f || _mm_cvtss_f32(t) >= col.distance)continue;
 				if (_mm_cvtss_f32(t) < 0.001f)continue;
-				const Vector4Df p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, r_v1);
-				//const Vector4Df p_plane = ray.direction * t + r_v1;
+				//const Vector4Df p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, r_v1);
+				const Vector4Df p_plane = ray.direction * t + r_v1;
 
 				const float proj1 = dot_simd(p_plane, tri.n_e1);
 				const float proj2 = dot_simd(p_plane, tri.n_e2);

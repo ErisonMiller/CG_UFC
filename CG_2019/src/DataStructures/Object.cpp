@@ -7,7 +7,7 @@ Object::Object()
 Object::Object(Geometry *_geometry) : geometry(_geometry)
 {
 	name = "untitled"; // default name
-	material = new Material(CRAB::Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, CRAB::Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, CRAB::Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, 100.0f); // default color
+	material = new Material("Neutral", CRAB::Vector4Df{ 0.3f, 0.3f, 0.3f, 0.0f }, CRAB::Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, CRAB::Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, 10.0f); // default color
 }
 
 Object::Object(const string &_name, Material * _material, Geometry *_geometry) : name(_name), geometry(_geometry), material(_material), visible(true)

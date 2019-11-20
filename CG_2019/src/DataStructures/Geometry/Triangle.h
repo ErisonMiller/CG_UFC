@@ -1,11 +1,19 @@
 #pragma once
+#include <string>
 #include "Geometry.h"
+#include "Material.h"
 
 struct Face
 {
 	CRAB::Vector4Df v1, v2, v3;
 };
-#define FaceList std::vector<Face>
+//#define FaceList std::vector<Face>
+struct FaceList
+{
+	std::string name;
+	std::vector<Face> faces;
+	Material* material;
+};
 
 class Triangle :
 	public Geometry

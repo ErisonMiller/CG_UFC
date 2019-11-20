@@ -5,8 +5,9 @@ Material::Material()
 
 }
 
-Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess)
+Material::Material(const std::string &name, CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess)
 {
+	this->name = name;
 	this->ka = ka;
 	this->kd = kd;
 	this->ks = ks;
@@ -15,8 +16,9 @@ Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, f
 	reflection = 0.0f;
 }
 
-Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess, float _alpha, float _reflection)
+Material::Material(const std::string &name, CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess, float _alpha, float _reflection)
 {
+	this->name = name;
 	this->ka = ka;
 	this->kd = kd;
 	this->ks = ks;
@@ -25,8 +27,9 @@ Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, f
 	reflection = _reflection;
 }
 
-Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess, float _ior)
+Material::Material(const std::string &name, CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess, float _ior)
 {
+	this->name = name;
 	this->ka = ka;
 	this->kd = kd;
 	this->ks = ks;
@@ -34,8 +37,9 @@ Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, f
 	ior = _ior;
 }
 
-Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess, float _alpha, float _reflection, float _ior)
+Material::Material(const std::string &name, CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, float shininess, float _alpha, float _reflection, float _ior)
 {
+	this->name = name;
 	this->ka = ka;
 	this->kd = kd;
 	this->ks = ks;
@@ -48,4 +52,8 @@ Material::Material(CRAB::Vector4Df ka, CRAB::Vector4Df kd, CRAB::Vector4Df ks, f
 Material::~Material()
 {
 
+}
+
+std::string Material::getName() const {
+	return name;
 }
