@@ -27,6 +27,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{0,0,0,0};
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		static CRAB::Vector4Df reflection_normal_vector = CRAB::Vector4Df{ 0,0,0,0 };
 
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -67,6 +68,21 @@ inline void RenderGeometry() {
 			//
 		}
 
+		if (ImGui::DragFloat3("Normal Reflection Plan", (float*)&reflection_normal_vector, 0.5f)) {
+			//
+		}
+
+		if (ImGui::Button("Reflect"))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->base_center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->base_center));
+			if (reflection_normal_vector.length() > 0)
+			{
+				reflection_normal_vector = reflection_normal_vector.to_unitary();
+			}
+			m = m_back * reflectionArbitrary(reflection_normal_vector) * m_to_origin;
+		}
+
 		geometry->transform(m);
 		geometry->direction.normalize();
 	}
@@ -77,6 +93,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		static CRAB::Vector4Df reflection_normal_vector = CRAB::Vector4Df{ 0,0,0,0 };
 
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -117,6 +134,21 @@ inline void RenderGeometry() {
 			//
 		}
 
+		if (ImGui::DragFloat3("Normal Reflection Plan", (float*)&reflection_normal_vector, 0.5f)) {
+			//
+		}
+
+		if (ImGui::Button("Reflect"))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->base_center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->base_center));
+			if (reflection_normal_vector.length() > 0)
+			{
+				reflection_normal_vector = reflection_normal_vector.to_unitary();
+			}
+			m = m_back * reflectionArbitrary(reflection_normal_vector) * m_to_origin;
+		}
+
 		geometry->transform(m);
 		geometry->direction.normalize();
 	}
@@ -126,6 +158,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df tranlate_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
+		static CRAB::Vector4Df reflection_normal_vector = CRAB::Vector4Df{ 0,0,0,0 };
 
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -162,6 +195,21 @@ inline void RenderGeometry() {
 			//
 		}
 
+		if (ImGui::DragFloat3("Normal Reflection Plan", (float*)&reflection_normal_vector, 0.5f)) {
+			//
+		}
+
+		if (ImGui::Button("Reflect"))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->center));
+			if (reflection_normal_vector.length() > 0)
+			{
+				reflection_normal_vector = reflection_normal_vector.to_unitary();
+			}
+			m = m_back * reflectionArbitrary(reflection_normal_vector) * m_to_origin;
+		}
+
 		geometry->transform(m);
 	}
 
@@ -172,6 +220,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 1,1,1,0 };
+		static CRAB::Vector4Df reflection_normal_vector = CRAB::Vector4Df{ 0,0,0,0 };
 
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -209,6 +258,23 @@ inline void RenderGeometry() {
 			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z);
 		}
 
+		if (ImGui::DragFloat3("Normal Reflection Plan", (float*)&reflection_normal_vector, 0.5f)) {
+			//
+		}
+
+		if (ImGui::Button("Reflect"))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->center) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->center));
+			if (reflection_normal_vector.length() >0)
+			{
+				reflection_normal_vector = reflection_normal_vector.to_unitary();
+			}
+			m = m_back * reflectionArbitrary(reflection_normal_vector) * m_to_origin;
+			
+		}
+
+
 		geometry->transform(m);
 	}
 
@@ -219,6 +285,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 1,1,1,0 };
+		static CRAB::Vector4Df reflection_normal_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -256,6 +323,21 @@ inline void RenderGeometry() {
 			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z) ;
 		}
 
+		if (ImGui::DragFloat3("Normal Reflection Plan", (float*)&reflection_normal_vector, 0.5f)) {
+			//
+		}
+
+		if (ImGui::Button("Reflect"))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			if (reflection_normal_vector.length() > 0)
+			{
+				reflection_normal_vector = reflection_normal_vector.to_unitary();
+			}
+			m = m_back * reflectionArbitrary(reflection_normal_vector) * m_to_origin;
+		}
+
 		geometry->transform(m);
 
 	}
@@ -267,6 +349,7 @@ inline void RenderGeometry() {
 		CRAB::Vector4Df angle_origin_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df angle_object_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		CRAB::Vector4Df scale_vector = CRAB::Vector4Df{ 1,1,1,0 };
+		static CRAB::Vector4Df reflection_normal_vector = CRAB::Vector4Df{ 0,0,0,0 };
 		
 		static CRAB::Vector4Df quaternion{ 0,1,0,0 };
 		float angle_quat_vector = 0.0f;
@@ -302,6 +385,21 @@ inline void RenderGeometry() {
 			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
 			CRAB::Matrix4 m_back = translate((geometry->v1));
 			m = CRAB::resizeMatrix(scale_vector.x, scale_vector.y, scale_vector.z);
+		}
+
+		if (ImGui::DragFloat3("Normal Reflection Plan", (float*)&reflection_normal_vector, 0.5f)) {
+			//
+		}
+
+		if (ImGui::Button("Reflect"))
+		{
+			CRAB::Matrix4 m_to_origin = translate((geometry->v1) * -1);
+			CRAB::Matrix4 m_back = translate((geometry->v1));
+			if (reflection_normal_vector.length() > 0)
+			{
+				reflection_normal_vector = reflection_normal_vector.to_unitary();
+			}
+			m = m_back * reflectionArbitrary(reflection_normal_vector) * m_to_origin;
 		}
 
 		geometry->transform(m);

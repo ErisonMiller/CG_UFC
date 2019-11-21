@@ -258,7 +258,7 @@ namespace CRAB {
 			  (wq*wq) + (u.x*u.x) - (u.y*u.y) - (u.z*u.z) ,   2 * (u.x*u.y) + 2 * (u.z*wq)                ,   2 * (u.x*u.z) - 2 * (u.y*wq)             , 0,
 			  2 * (u.x*u.y) - 2 * (u.z*wq)                ,   (wq*wq) - (u.x*u.x) + (u.y*u.y) - (u.z*u.z) ,   2 * (u.y*u.z) + 2 * (u.x*wq)             , 0,
 			  2 * (u.x*u.z) + 2 * (u.y*wq)                ,   2 * (u.y*u.z) - 2 * (u.x*wq)                , (wq*wq) - (u.x*u.x) - (u.y*u.y) + (u.z*u.z), 0,
-									  0                   ,                           0                   ,                          0                 , (wq*wq) + (u.x*u.x) + (u.y*u.y) + (u.z*u.z) };
+									  0                   ,                           0                   ,                          0                 , 1 };
 
 	}
 

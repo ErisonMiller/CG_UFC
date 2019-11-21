@@ -504,11 +504,12 @@ void InitScene() {
 	//objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Refract Cylinder", Refract, new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
-	//objs.push_back(Object("Cube", Neutral, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
+	objs.push_back(Object("Cube", materials[6], new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
 	objs.push_back(Object("silver tray", materials[8], new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
 	objs.push_back(Object("Gold Sphere", materials[18], new Sphere(Vector4Df{ 0.0f, 1.5f, -4.0f, 1 }, 2.0f)));
 	objs.push_back(Object("Globe", materials[3], new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
-	objs.push_back(Object("Cone", materials[6], new Cone(5.0f, 1.0f, Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f })));
+	//objs.push_back(Object("Cone", materials[6], new Cone(5.0f, 1.0f, Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f })));
+	//objs.push_back(Object("Ciylinder", materials[6], new Cylinder(5.0f, 1.0f, Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f })));
 	objs.push_back(Object("lantern_body", materials[12], new Cylinder(2.0f, 0.25f, Vector4Df{ 2.0f, -0.60f, 4.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
 	objs.push_back(Object("lantern_head", materials[12], new Cylinder(0.2f, 0.4f, Vector4Df{ 2.0f, -0.60f, 2.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
 
