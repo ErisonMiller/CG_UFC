@@ -282,7 +282,7 @@ void motion(int x, int y)
 			if (theButtonState == GLUT_LEFT_BUTTON)  // Rotate
 			{
 				Vector4Df v = cross(cam.view - cam.position, cam.up);
-				cam.Transform(rotateArbitrary(deltaY, v), cam.view);
+				cam.Transform(rotateArbitrary(-deltaY, v), cam.view);
 				cam.Transform(rotateY(deltaX), cam.view);
 			}
 			
@@ -424,11 +424,11 @@ void InitScene() {
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
-	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }));
+	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }));
 	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
-	lights.push_back(new Spotlights(Vector4Df{ 500.0f, 500.0f, 500.0f, 0.0f }, Vector4Df{ 2.0f, -0.9f, 1.5f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }, 60.0f, 100.0f));
+	lights.push_back(new Spotlights(Vector4Df{ 10.0f, 10.0f, 7.0f, 0.0f }, Vector4Df{ 2.0f, -0.9f, 1.5f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }, 60.0f, 100.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 0.5f, 1.0f, 0.5f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.03f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, 40.0f, 100.0f));
-	lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 10.0f, 10.0f, 10.0f, 1.0f }));
+	lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 2.0f, 1.0f, 3.0f, 1.0f }));
 
 	//fill the material list
 	/* 0 */materials.push_back(new Material("Neutral", Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 10.0f));

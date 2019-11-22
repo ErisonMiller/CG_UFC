@@ -246,7 +246,7 @@ namespace CRAB {
 	}
 
 	inline
-		Matrix4 rotateArbitrary(float ang, Vector4Df &u)
+		Matrix4 rotateArbitrary(float ang, Vector4Df u)
 	{
 		u.normalize();
 		ang = (ang* M_PI) / 180.0f;

@@ -219,13 +219,13 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		}*/
 		
 		
-		if (mat.reflection && depth < 1) {
+		if (mat.reflection && depth < 2) {
 			const CRAB::Vector4Df R = CRAB::reflection(ray.direction * (-1.0f), N);
 			accucolor += ray_cast(CRAB::Ray{ closest_collision.pint, R},objects,lights,false,SMALL_NUMBER,depth+1) * mat.reflection;
 		}
 
 		
-		if (mat.ior >= 1 && depth < 1) {
+		if (mat.alfa < 1 && depth < 2) {
 			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
 			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1)*(1-mat.alfa);
 		}
