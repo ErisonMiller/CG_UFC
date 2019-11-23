@@ -69,8 +69,9 @@ namespace CRAB
 				infile >> f1 >> c >> c >> n1;
 				infile >> f2 >> c >> c >> n2;
 				infile >> f3 >> c >> c >> n3;
-
+				//face vertices
 				objs[num_objs].push_back(Face{ vertices[f1 - 1], vertices[f2 - 1], vertices[f3 - 1] });
+				//normals
 				objs[num_objs].push_back(Face{ vertices_normal[n1 - 1], vertices_normal[n2 - 1], vertices_normal[n3 - 1] });
 				continue;
 			}

@@ -74,7 +74,7 @@ public:
 	std::vector<Face> vertices_normals;
 
 
-	OcTree(const FaceList& faceList);
+	OcTree(FaceList& faceList);
 
 	CRAB::Collision CollideClosest(const CRAB::Ray& ray);//return the closest collision distance of a ray and the geometry
 	CRAB::RayCollisionList CollideAll(const std::vector<CRAB::Ray>& ray) { return CRAB::RayCollisionList(); };//return all the colisions of a set of rays

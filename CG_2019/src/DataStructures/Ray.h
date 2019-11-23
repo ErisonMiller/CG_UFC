@@ -21,6 +21,7 @@ namespace CRAB {
 	};
 
 	//Because we to know the object that we collide besides the distance
+	__declspec(align(16))//memory aling to speed up acess
 	struct Collision
 	{
 		float distance;

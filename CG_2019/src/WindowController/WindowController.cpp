@@ -84,7 +84,7 @@ Camera cam = Camera(
 	//Vector4Df{ 10.0f, 9.0f,10.0f,1.0f },//lookat
 	//Vector4Df{ 10.0f,5.0f,50.0f,1.0f },//position
 	//Vector4Df{ 10.0f, 5.0f,15.0f,1.0f },//lookat
-	Vector4Df{ 0.0f,0.0f,15.0f,1.0f },//position
+	Vector4Df{ 0.0f,0.0f,-15.0f,1.0f },//position
 	Vector4Df{ 0.0f, 0.0f,0.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{ width*1.0f, height*1.0f }, //resolution
@@ -437,8 +437,8 @@ void InitScene() {
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
-	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.2f, 0.2f, 1.0f, 0.0f }));
-	lights.push_back(new DirectionalLight(Vector4Df{ 0.6f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
+	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.2f, 0.2f, -1.0f, 0.0f }));
+	//lights.push_back(new DirectionalLight(Vector4Df{ 0.6f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 3.0f, 1.0f, -4.5f, 1.0f }, Vector4Df{ 1.0f, 0.0f, 1.0f, 0.0f }, 5.0f, 50.0f));
 	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0}, Vector4Df{ 5.0f, 7.0f, 30.0f, 1 }));
 
@@ -491,13 +491,21 @@ void InitScene() {
 	//objs.push_back(Object("Cubo 3", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Cube(Vector4Df{ 0, 0, 0,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
 	//objs.push_back(Object("Quad", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 5.0f), new Quad(Vector4Df{ 0, 0, -3,1 }, Vector4Df{ 2,0,-3,0 }, Vector4Df{ 2,2,-3,0 }, Vector4Df{ 0,2,-3,0 })));
 	//objs.push_back(Object("Refract Cube", new Material(Vector4Df{ 0.19225f, 0.19225f, 0.19225f, 0 }, Vector4Df{ 0.50754f, 0.50754f, 0.50754f, 0 }, Vector4Df{ 0.508273f, 0.508273f, 0.508273f, 0 }, 1000, 1, 0.8f, 1.33f), new Cube(Vector4Df{ 0, 0, 6,1 }, Vector4Df{ 0,1,0,0 }, Vector4Df{ 0,0,1,0 }, 2.0f)));
-	objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
+	//objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Refract Cylinder", Refract, new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
-	objs.push_back(Object("Cube", Neutral, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
-	objs.push_back(Object("silver tray", Silver, new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
-	objs.push_back(Object("Gold Sphere", Gold, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1 }, 2.0f)));
+	//objs.push_back(Object("Cube", Window_Glass, new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
+	
+	//objs.push_back(Object("Cube", Gold, new Cube(Vector4Df{ 1.0f, 2.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
+	//objs.push_back(Object("silver tray", Silver, new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
+	//objs.push_back(Object("Gold Sphere", Gold, new Sphere(Vector4Df{ 0.0f, 1.0f, -6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Globe", Window_Glass, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
+
+
+	objs.push_back(Object("silver tray", White_Plastic, new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
+	objs.push_back(Object("Gold Sphere", Gold, new Sphere(Vector4Df{ 0.0f, 1.0f, 0.0f, 1 }, 2.0f)));
+	
+
 
 	/**********************/
 	/****Final Scenario****/
@@ -533,13 +541,14 @@ void Start_Window(int argc, char **argv) {
 
 	//Fill the scene
 	InitScene();
-	/*
-	std::vector<FaceList> faceList = CRAB::Load_Obj("crab3.obj");
-	//objs.clear();
+	
+	
+	std::vector<FaceList> faceList = CRAB::Load_Obj("buddha.obj");
+	objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
-		objs.push_back(Object("OBJ", Neutral, new OcTree(faceList[i])));
+		objs.push_back(Object("OBJ", White_Plastic, new OcTree(faceList[i])));
 	}
-	std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
+	/*std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
 	for (int i = 0; i < faceList2.size(); i++) {
 		objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
 	}*/
