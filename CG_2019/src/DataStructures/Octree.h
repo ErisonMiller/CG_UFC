@@ -48,11 +48,11 @@ struct OcElementLeaf : TreeElement
 
 	OcElementLeaf() : TreeElement(TREE_FULL_NODE) {}
 	OcElementLeaf(const FaceList& _faces) : TreeElement(TREE_FULL_NODE) {
-		faces.reserve(_faces.size() * 0.5f);
+		faces.reserve(_faces.faces.size() * 0.5f);
 		int j = 0;
-		for (int i = 0, s = _faces.size(); i < s; i += 2) {
-			const Face& f = _faces[i];
-			const Face& n = _faces[i + 1];
+		for (int i = 0, s = _faces.faces.size(); i < s; i += 2) {
+			const Face& f = _faces.faces[i];
+			const Face& n = _faces.faces[i + 1];
 			//faces[j] = (Triangle(f.v1, f.v2, f.v3, &vertice_normals[j]));
 			faces.push_back(Triangle(f.v1, f.v2, f.v3, n.v1, n.v2, n.v3));
 			//faces[j] = (Triangle(f.v1, f.v2, f.v3));

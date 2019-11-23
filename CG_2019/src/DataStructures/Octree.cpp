@@ -133,10 +133,10 @@ bool IsIntersecting(const Face &triangle, const CRAB::Vector4Df& bmin, const CRA
 
 TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Vector4Df max, int depth) {
 	
-	if (fatherFaceList.empty()) { 
+	if (fatherFaceList.faces.empty()) {
 
-		fatherFaceList.clear();
-		fatherFaceList.shrink_to_fit();
+		fatherFaceList.faces.clear();
+		fatherFaceList.faces.shrink_to_fit();
 
 		TreeElement *t = new TreeElement(TREE_EMPTY_NODE);
 		t->min = Vector4Df{ INFINITY,INFINITY,INFINITY,INFINITY };
@@ -148,8 +148,8 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 		_min0 = Vector4Df{ INFINITY,INFINITY,INFINITY,INFINITY };
 		_max0 = Vector4Df{ -INFINITY,-INFINITY,-INFINITY,-INFINITY };
 	
-		for (int i = 0, s = fatherFaceList.size(); i < s; i += 2) {
-			const Face& f = fatherFaceList[i];
+		for (int i = 0, s = fatherFaceList.faces.size(); i < s; i += 2) {
+			const Face& f = fatherFaceList.faces[i];
 			_min0 = CRAB::min(_min0, f.v1);
 			_max0 = CRAB::max(_max0, f.v1);
 
@@ -163,13 +163,13 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 		_max0 = CRAB::min(max, _max0);
 	}
 
-	if (depth >= 15 || fatherFaceList.size() <= MAX_TREE_SIZE*3) {
+	if (depth >= 15 || fatherFaceList.faces.size() <= MAX_TREE_SIZE*3) {
 		TreeElement* t = new OcElementLeaf(fatherFaceList);
 		t->min = _min0;
 		t->max = _max0;
 		
-		fatherFaceList.clear();
-		fatherFaceList.shrink_to_fit();
+		fatherFaceList.faces.clear();
+		fatherFaceList.faces.shrink_to_fit();
 
 		return t;
 	}
@@ -214,13 +214,13 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 	//}
 	//facesCenter = facesCenter / (fatherFaceList.size() * 0.5f);
 	
-	for (int i = 0, s = fatherFaceList.size(); i < s; i += 2) {
-		const Face& f = fatherFaceList[i];
+	for (int i = 0, s = fatherFaceList.faces.size(); i < s; i += 2) {
+		const Face& f = fatherFaceList.faces[i];
 		
 		for (int j = 0; j < 8; j++) {
 			if (IsIntersecting(f, min_vec[j], max_vec[j])) {
-				faceList[j].push_back(f);
-				faceList[j].push_back(fatherFaceList[i+1]);
+				faceList[j].faces.push_back(f);
+				faceList[j].faces.push_back(fatherFaceList.faces[i+1]);
 			}
 		}
 	}
@@ -231,10 +231,10 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 	int zeros = 0;
 	for (int i = 0; i < 8; i++) {
 		
-		if (faceList[i].size() >= fatherFaceList.size()*0.55) {
+		if (faceList[i].faces.size() >= fatherFaceList.faces.size()*0.55) {
 			equals0++;
 		}
-		if (faceList[i].empty()) {
+		if (faceList[i].faces.empty()) {
 			zeros++;
 		}
 	}
@@ -243,14 +243,14 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 		t->min = _min0;
 		t->max = _max0;
 	
-		fatherFaceList.clear();
-		fatherFaceList.shrink_to_fit();
+		fatherFaceList.faces.clear();
+		fatherFaceList.faces.shrink_to_fit();
 	
 		return t;
 	}
 	if (zeros == 8) {
-		fatherFaceList.clear();
-		fatherFaceList.shrink_to_fit();
+		fatherFaceList.faces.clear();
+		fatherFaceList.faces.shrink_to_fit();
 
 		TreeElement* t = new TreeElement(TREE_EMPTY_NODE);
 		t->min = Vector4Df{ INFINITY,INFINITY,INFINITY,INFINITY };
@@ -258,8 +258,8 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 		return t;
 	}
 
-	fatherFaceList.clear();
-	fatherFaceList.shrink_to_fit();
+	fatherFaceList.faces.clear();
+	fatherFaceList.faces.shrink_to_fit();
 	
 	
 
@@ -404,8 +404,8 @@ OcTree::OcTree(FaceList& faceList) {
 
 
 	std::cout << "Carregando faces\n";
-	for (int i = 0, s = faceList.size(); i < s; i += 2) {
-		const Face& f = faceList[i];
+	for (int i = 0, s = faceList.faces.size(); i < s; i += 2) {
+		const Face& f = faceList.faces[i];
 		min = CRAB::min(min, f.v1);
 		max = CRAB::max(max, f.v1);
 
@@ -415,7 +415,7 @@ OcTree::OcTree(FaceList& faceList) {
 		min = CRAB::min(min, f.v3);
 		max = CRAB::max(max, f.v3);
 	}
-	std::cout << faceList.size()*0.5f << " faces\n";
+	std::cout << faceList.faces.size()*0.5f << " faces\n";
 	Vector4Df ax = (max - min);
 
 	r = fmaxf(ax.x, fmaxf(ax.y, ax.z));
