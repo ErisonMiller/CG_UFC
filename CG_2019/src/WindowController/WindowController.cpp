@@ -397,11 +397,11 @@ void keyboard(unsigned char key, int x, int y) {
 	case('l'):
 	case('L'):
 		std::cout << "Load OBJ File:" << std::endl;
-		std::string fileName;
-		std::cin >> fileName;
+		std::string fileName = "scene.obj";
+		//std::cin >> fileName;
 		objs.clear();
 		lights.clear();
-		std::vector<FaceList> faceList = CRAB::Load_Obj(fileName, lights, materials);
+		std::vector<FaceList> faceList = CRAB::Load_Obj(fileName, lights, materials, objs);
 
 		for (int i = 0; i < faceList.size(); i++) {
 			objs.push_back(Object(faceList[i].name, faceList[i].material, new OcTree(faceList[i])));
@@ -548,15 +548,11 @@ void Start_Window(int argc, char **argv) {
 	//Fill the scene
 	InitScene();
 	
-	std::vector<FaceList> faceList = CRAB::Load_Obj("buddha.obj",lights,materials);
+	/*std::vector<FaceList> faceList = CRAB::Load_Obj("buddha.obj",lights,materials);
 	objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
 		objs.push_back(Object("OBJ", materials[0], new OcTree(faceList[i])));
-	}
-	//std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
-	//for (int i = 0; i < faceList2.size(); i++) {
-	//	objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
-	//}*/
+	}*/
 	
 	//start render loop
 	RenderAPI::RenderLoop();
