@@ -65,8 +65,8 @@ Camera cam = Camera(
 	Vector4Df{ 0.0f, 0.0f,0.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{ width*1.0f, height*1.0f }, //resolution
-	float2{ 0.5f, 0.5f },			//dimensions
-	0.5f							//near
+	float2{ 2.0f, 2.0f },			//dimensions
+	2.0f							//near
 );
 
 //raycast class for renderization 
@@ -397,11 +397,11 @@ void keyboard(unsigned char key, int x, int y) {
 	case('l'):
 	case('L'):
 		std::cout << "Load OBJ File:" << std::endl;
-		std::string fileName;
-		std::cin >> fileName;
+		std::string fileName = "scene.obj";
+		//std::cin >> fileName;
 		objs.clear();
 		lights.clear();
-		std::vector<FaceList> faceList = CRAB::Load_Obj(fileName, lights, materials);
+		std::vector<FaceList> faceList = CRAB::Load_Obj(fileName, lights, materials, objs);
 
 		for (int i = 0; i < faceList.size(); i++) {
 			objs.push_back(Object(faceList[i].name, faceList[i].material, new OcTree(faceList[i])));
@@ -424,11 +424,11 @@ void InitScene() {
 	//lights.push_back(new AmbientLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 0, -30.0f, 1 }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0 }, 20.0f, 50.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
-	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0.0f }));
+	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }));
 	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
 	//lights.push_back(new Spotlights(Vector4Df{ 10.0f, 10.0f, 7.0f, 0.0f }, Vector4Df{ 2.0f, -0.9f, 1.5f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }, 60.0f, 100.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 0.5f, 1.0f, 0.5f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.03f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, 40.0f, 100.0f));
-	lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 0.0f, 1.0f, 0.0f, 1.0f }));
+	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 2.0f, 1.0f, 3.0f, 1.0f }));
 
 	//fill the material list
 	/* 0 */materials.push_back(new Material("Neutral", Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 10.0f));
@@ -504,15 +504,14 @@ void InitScene() {
 	//objs.push_back(Object("Refract Sphere", Refract, new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Refract Cylinder", Refract, new Cylinder(2.0f, 0.5f, Vector4Df{ 0.0f,0,6.0f,1 }, Vector4Df{ 0,1,0,0 })));
 	//Material* Mirror = new Material(Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 1000, 1, 0.8f);
-	//objs.push_back(Object("Cube", materials[6], new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
-	objs.push_back(Object("silver tray", materials[16], new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
-	objs.push_back(Object("Gold Sphere", materials[16], new Sphere(Vector4Df{ 0.0f, 1.1f, -0.0f, 1 }, 2.0f)));
-	//objs.push_back(Object("Globe", materials[3], new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
-	
+	objs.push_back(Object("Cube", materials[6], new Cube(Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }, 2.0f)));
+	objs.push_back(Object("silver tray", materials[8], new Quad(Vector4Df{ 5.0f, -1.0f, 5.0f, 1.0f }, Vector4Df{ 5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, -5.0f, 1.0f }, Vector4Df{ -5.0f, -1.0f, 5.0f, 1.0f })));
+	objs.push_back(Object("Gold Sphere", materials[18], new Sphere(Vector4Df{ 0.0f, 1.5f, -4.0f, 1 }, 2.0f)));
+	objs.push_back(Object("Globe", materials[3], new Sphere(Vector4Df{ 0.0f, 1.0f, 6.0f, 1 }, 2.0f)));
 	//objs.push_back(Object("Cone", materials[6], new Cone(5.0f, 1.0f, Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f })));
 	//objs.push_back(Object("Ciylinder", materials[6], new Cylinder(5.0f, 1.0f, Vector4Df{ 0.0f, 0.0f, 0.0f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f })));
-	//objs.push_back(Object("lantern_body", materials[12], new Cylinder(2.0f, 0.25f, Vector4Df{ 2.0f, -0.60f, 4.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
-	//objs.push_back(Object("lantern_head", materials[12], new Cylinder(0.2f, 0.4f, Vector4Df{ 2.0f, -0.60f, 2.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
+	objs.push_back(Object("lantern_body", materials[12], new Cylinder(2.0f, 0.25f, Vector4Df{ 2.0f, -0.60f, 4.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
+	objs.push_back(Object("lantern_head", materials[12], new Cylinder(0.2f, 0.4f, Vector4Df{ 2.0f, -0.60f, 2.0f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f })));
 
 	/**********************/
 	/****Final Scenario****/
@@ -549,15 +548,11 @@ void Start_Window(int argc, char **argv) {
 	//Fill the scene
 	InitScene();
 	
-	std::vector<FaceList> faceList = CRAB::Load_Obj("sponza2.obj",lights,materials);
+	/*std::vector<FaceList> faceList = CRAB::Load_Obj("buddha.obj",lights,materials);
 	objs.clear();
 	for (int i = 0; i < faceList.size(); i++) {
 		objs.push_back(Object("OBJ", materials[0], new OcTree(faceList[i])));
-	}
-	//std::vector<FaceList> faceList2 = CRAB::Load_Obj("wall.obj");
-	//for (int i = 0; i < faceList2.size(); i++) {
-	//	objs.push_back(Object("OBJ", Mirror, new OcTree(faceList2[i])));
-	//}*/
+	}*/
 	
 	//start render loop
 	RenderAPI::RenderLoop();

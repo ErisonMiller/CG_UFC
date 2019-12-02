@@ -19,7 +19,7 @@ CRAB::Vector4Df Spotlights::Illumination(const Material &mat, const CRAB::Vector
 	CRAB::Vector4Df color;
 
 	CRAB::Vector4Df L = position - P;
-	float d2 = 0.5f * L.length(); //attenuation
+	float d2 = 1.0f + 0.3f * L.length() + 0.1f * L.lengthsq(); //attenuation
 	L.normalize();
 
 	float spotCos = dot(direction, L*(-1.0f)); // angle between the direction of the source and a vector 'L' to a point on the surface
