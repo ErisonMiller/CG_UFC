@@ -118,10 +118,10 @@ bool IsIntersecting(const Face &triangle, const CRAB::Vector4Df& bmin, const CRA
 		{
 			// The box normals are the same as it's edge tangents
 			CRAB::Vector4Df axis = cross_simd(triangleEdges[i],boxNormals[j]);
-			if (axis.x == 0 && axis.y == 0 && axis.z == 0)return false;
+			//if (axis.x == 0 && axis.y == 0 && axis.z == 0)return false;
 			Project(box_vertices, 8, axis, boxMin, boxMax);
 			Project(triangle.vertices, 3, axis, triangleMin, triangleMax);
-			if (boxMax <= triangleMin || boxMin >= triangleMax)
+			if (boxMax < triangleMin || boxMin > triangleMax)
 				return false; // No intersection possible
 		}
 
@@ -231,14 +231,14 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 	int zeros = 0;
 	for (int i = 0; i < 8; i++) {
 		
-		if (faceList[i].faces.size() >= fatherFaceList.faces.size()*0.55) {
+		if (faceList[i].faces.size() >= fatherFaceList.faces.size()*0.75) {
 			equals0++;
 		}
 		if (faceList[i].faces.empty()) {
 			zeros++;
 		}
 	}
-	if (equals0 == 8) {
+	if (equals0 >= 8) {
 		TreeElement* t = new OcElementLeaf(fatherFaceList);
 		t->min = _min0;
 		t->max = _max0;
@@ -251,12 +251,14 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 	if (zeros == 8) {
 		fatherFaceList.faces.clear();
 		fatherFaceList.faces.shrink_to_fit();
-
+	
 		TreeElement* t = new TreeElement(TREE_EMPTY_NODE);
 		t->min = Vector4Df{ INFINITY,INFINITY,INFINITY,INFINITY };
 		t->max = Vector4Df{ -INFINITY,-INFINITY,-INFINITY,-INFINITY };
 		return t;
 	}
+
+
 
 	fatherFaceList.faces.clear();
 	fatherFaceList.faces.shrink_to_fit();
@@ -266,13 +268,13 @@ TreeElement* PovoateTree(FaceList& fatherFaceList, CRAB::Vector4Df min, CRAB::Ve
 	OcElementNode* ocn = new OcElementNode();
 	
 
-	if (depth) {
+	if (depth >= 2) {
 		for (int i = 0; i < 8; i++) {
 			ocn->sons[i] = PovoateTree(faceList[i], min_vec[i], max_vec[i], depth + 1);
 		}
 	}
 	else {
-		#pragma openmp parallel for
+		#pragma openmp parallel for schedule(dynamic)
 		for (int i = 0; i < 8; i++) {
 			ocn->sons[i] = PovoateTree(faceList[i], min_vec[i], max_vec[i], depth + 1);
 		}
@@ -368,7 +370,7 @@ TreeElement* MakeCacheFriendlyTree(TreeElement* t, int& node, int& leaf, OcEleme
 			}
 		}
 		delete ocn;
-		return &nodes_array[pStart];
+		return &nodes_array[posi];
 	}
 }
 
@@ -439,6 +441,9 @@ OcTree::OcTree(FaceList& faceList) {
 	OcElementLeaf* leafs_array = new OcElementLeaf[leafs]();
 	int node = 0, leaf = 0;
 	tree = MakeCacheFriendlyTree(tree, node, leaf, nodes_array, leafs_array, center, r);
+	if (!tree) {
+		return;
+	}
 	Next_Fix(tree, nullptr);
 }
 
@@ -474,6 +479,7 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 	Collision col{ INFINITY, Vector4Df{0,0,0,0}, nullptr };
 	const CRAB::Vector4Df inv_dir = CRAB::Vector4Df{ 1,1,1,1 } / (ray.direction);
 
+	CRAB::Vector4Df dist{ INFINITY ,INFINITY,INFINITY,INFINITY };
 	const TreeElement* current = tree;
 	while (current) {
 		//const CRAB::Vector4Df c = current->min - ray.origin;
@@ -497,7 +503,7 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 		const CRAB::Vector4Df maxv = CRAB::max(v11, v22);
 		//const float min = horizontal_max_Vec4(minv);
 		//const float max = horizontal_min_Vec4(maxv);
-		//
+		
 		//if ((min > max) || (0 > max) || (min > col.distance)) {
 
 		//const CRAB::Vector4Df lw{ col.distance,max,max,0 };
@@ -511,8 +517,8 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 		//	(_mm_movemask_ps(_mm_cmplt_ps(maxv, _mm_setzero_ps())))
 		//	) {
 		if ((_mm_movemask_ps(_mm_cmplt_ps(maxv, min))) |
-			col.distance < _mm_cvtss_f32(min) |
-			(_mm_movemask_ps(_mm_cmplt_ps(maxv, _mm_setzero_ps())))
+			(_mm_movemask_ps(_mm_cmplt_ps(maxv, _mm_setzero_ps()))) |
+			(_mm_cvtss_f32(dist) < _mm_cvtss_f32(min))
 			) {
 			current = current->next;
 			continue;
@@ -532,21 +538,21 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 				const Vector4Df t = dot_simd_Vec(v1_r, tri.normal) / dot_simd_Vec(ray.direction, tri.normal);
 				//if (_mm_movemask_ps(_mm_cmplt_ps(t, _mm_set_ps1(0.1f))))continue;
 				//if (_mm_cvtss_f32(t) < 0.001f || _mm_cvtss_f32(t) >= col.distance)continue;
-				if (_mm_cvtss_f32(t) < 0.001f)continue;
-				const Vector4Df p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, r_v1);
-				//const Vector4Df p_plane = ray.direction * t + r_v1;
+				if (_mm_cvtss_f32(t) <= 0.001f)continue;
+				//const Vector4Df p_plane = *(Vector4Df*)&_mm_fmadd_ps(ray.direction, t, r_v1);
+				const Vector4Df p_plane = ray.direction * t + r_v1;
 
 				const float proj1 = dot_simd(p_plane, tri.n_e1);
 				const float proj2 = dot_simd(p_plane, tri.n_e2);
 
 				const Vector4Df h{
 					//1,
-					col.distance,
+					_mm_cvtss_f32(dist),
 					proj1,
 					proj2,
-					//tri.normal.w
+					tri.normal.w
 					//(float)_mm_extract_ps(tri.normal,3)
-					_mm_cvtss_f32(_mm_shuffle_ps(tri.normal, tri.normal, _MM_SHUFFLE(3, 3, 3, 3)))
+					//_mm_cvtss_f32(_mm_shuffle_ps(tri.normal, tri.normal, _MM_SHUFFLE(3, 3, 3, 3)))
 				};
 				const Vector4Df l{
 					//0,
@@ -559,6 +565,7 @@ Collision __fastcall TreeCollision(TreeElement* tree, const CRAB::Ray& ray) {
 				const __m128 gt = _mm_cmpge_ps(l, h);
 				//if (_mm_testz_ps(gt, gt)) {
 				if (!_mm_movemask_ps(gt)) {
+					dist = t;
 					col = { _mm_cvtss_f32(t), p_plane + tri.v1, &tri };
 				}
 			}

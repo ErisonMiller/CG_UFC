@@ -47,15 +47,9 @@ inline bool InShadow(const Ray& ray, const std::vector<Object>& objects, const L
 
 }
 
-#define FLT_MAX_INV 1/FLT_MAX
-
-int g_seed = rand();
-
 
 inline float RandNumber() {
-	//g_seed = (214013 * g_seed + 2531011);
-	//float a = (g_seed >> 16) & 0x7FFF;
-	//return (a*a)*FLT_MAX_INV;
+	//return rand();
 	return rand() / ((float)RAND_MAX);
 }
 
@@ -166,8 +160,8 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 	}
 	
 	//Vector4Df accucolor = Vector4Df{ 0, 0, 0, 0.0f }; //dark
-	Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f }; //blue sky
-	//Vector4Df accucolor = Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }; //white room
+	//Vector4Df accucolor = Vector4Df{ 0.1f, 0.68f, 0.93f, 0.0f }; //blue sky
+	Vector4Df accucolor = Vector4Df{ 0.8f, 0.8f, 0.8f, 0.0f }; //white room
 	if (closest_obj) {
 		Vector4Df vec_offset = closest_collision.pint + ray.direction * 0.001f;
 		//accucolor = Vector4Df{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -194,21 +188,22 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 					closest_collision.pint)*mat.alfa;
 			}
 			if (depth < 0) {
-				int samples = 16;
+				int samples = 8;
+				if (depth)samples = 1;
 				CRAB::Vector4Df c{ 0,0,0,0 };
 				for (int j = 0; j < samples; j++) {
 					float r1 = M_PI * RandNumber(), r2 = RandNumber(), r2s = sqrtf(r2);
 					CRAB::Vector4Df w = N;
-					CRAB::Vector4Df u = cross_simd((fabs(w.x) > .1 ? CRAB::Vector4Df{ 0, 1, 0, 0 } :
+					CRAB::Vector4Df u = cross_simd((fabs(w.x) > SMALL_NUMBER ? CRAB::Vector4Df{ 0, 1, 0, 0 } :
 						CRAB::Vector4Df{ 1, 0, 0, 0 }), w).to_unitary(), v = cross_simd(w, u);
-					CRAB::Vector4Df d = (u * cos(r1) * r2s + v * sin(r1) * r2s + w * sqrt(1 - r2)).to_unitary();
+					CRAB::Vector4Df d = (u * cosf(r1) * r2s + v * sinf(r1) * r2s + w * sqrtf(1 - r2)).to_unitary();
 					c += ray_cast(CRAB::Ray{ closest_collision.pint, d }, objects, lights, false, SMALL_NUMBER, depth + 1);
 
 
 					//f.mult(radiance(Ray(x, d), depth, Xi));
 				}
 				//accucolor = accucolor*0.8 + (c/ samples)*0.2;
-				accucolor = accucolor * 0.8 + (c / samples)*0.2;
+				accucolor = accucolor * (c / samples);
 			}
 		}
 
@@ -256,7 +251,7 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		}
 
 		
-		if (mat.alfa < 1 && depth < 3) {
+		if (mat.alfa < 1 && depth < 6) {
 			const Vector4Df refract_ray = refract(ray.direction, N, mat.ior, 1);
 			accucolor += ray_cast(CRAB::Ray{ vec_offset , refract_ray }, objects, lights, false, SMALL_NUMBER, depth + 1)*(1-mat.alfa);
 		}
@@ -573,7 +568,6 @@ inline Vector4Df __fastcall ray_cast(register const Vector4Df &origin, register 
 
 CRAB::Vector4Df* RayCast::Render(const CRAB::Camera &cam, const std::vector<Sphere> &spheres)
 {
-	
 	//clock_t t;
 	//t = clock();
 
