@@ -61,7 +61,7 @@ Camera cam = Camera(
 	//Vector4Df{ 10.0f, 9.0f,10.0f,1.0f },//lookat
 	//Vector4Df{ 10.0f,5.0f,50.0f,1.0f },//position
 	//Vector4Df{ 10.0f, 5.0f,15.0f,1.0f },//lookat
-	Vector4Df{ 0.0f,0.0f,-15.0f,1.0f },//position
+	Vector4Df{ 0.0f,0.0f,15.0f,1.0f },//position
 	Vector4Df{ 0.0f, 0.0f,0.0f,1.0f },//lookat
 	Vector4Df{ 0.0f,1.0f,0.0f,0.0f },//up
 	float2{ width*1.0f, height*1.0f }, //resolution
@@ -397,8 +397,8 @@ void keyboard(unsigned char key, int x, int y) {
 	case('l'):
 	case('L'):
 		std::cout << "Load OBJ File:" << std::endl;
-		std::string fileName = "scene.obj";
-		//std::cin >> fileName;
+		std::string fileName;
+		std::cin >> fileName;
 		objs.clear();
 		lights.clear();
 		std::vector<FaceList> faceList = CRAB::Load_Obj(fileName, lights, materials, objs);
@@ -456,6 +456,9 @@ void InitScene() {
 	//woods
 	/* 18 */materials.push_back(new Material("DarkWood", Vector4Df{ 0.04f, 0.02f, 0.01f, 0 }, Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, Vector4Df{ 0.4f, 0.2f, 0.1f, 0 }, 20.0f));
 	/* 19 */materials.push_back(new Material("WhiteWood", Vector4Df{ 0.835294f, 0.69019f, 0.51764f, 0 }, Vector4Df{ 0.8f, 0.6f, 0.4f, 0 }, Vector4Df{ 0.2f, 0.1f, 0.08f, 0 }, 1000));
+	//construction
+	/* 20 */materials.push_back(new Material("Concrete", Vector4Df{ 0.2f, 0.2f, 0.2f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.5f, 0.5f, 0.5f, 0 }, 10.0f));
+	/* 21 */materials.push_back(new Material("Lamp", Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 2000.0f, 0.9f, 1.0f, 1.2f));
 
 	//fill the object list
 	//objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(4.0f, 0.5f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));
