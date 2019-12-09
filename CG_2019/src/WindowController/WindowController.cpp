@@ -426,9 +426,9 @@ void InitScene() {
 	//lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.0f, 3.0f, 0.0f, 1 }, Vector4Df{ 0.0f, -1.0f, 0.0f, 0 }, 50.0f, 10.0f));
 	lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.0f, 0.0f }));
 	//lights.push_back(new DirectionalLight(Vector4Df{ 1.0f, 0.6f, 0.6f, 0.0f }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }));
-	//lights.push_back(new Spotlights(Vector4Df{ 10.0f, 10.0f, 7.0f, 0.0f }, Vector4Df{ 2.0f, -0.9f, 1.5f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }, 60.0f, 100.0f));
+	lights.push_back(new Spotlights(Vector4Df{ 1.0f, 1.0f, 0.7f, 0.0f }, Vector4Df{ 2.0f, -0.6f, 1.7f, 1.0f }, Vector4Df{ 0.0f, 0.0f, -1.0f, 0.0f }, 60.0f, 100.0f));
 	//lights.push_back(new Spotlights(Vector4Df{ 0.5f, 1.0f, 0.5f, 0.0f }, Vector4Df{ 0.0f, 0.0f, 1.03f, 1.0f }, Vector4Df{ 0.0f, 1.0f, 0.0f, 0.0f }, 40.0f, 100.0f));
-	//lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f}, Vector4Df{ 2.0f, 1.0f, 3.0f, 1.0f }));
+	lights.push_back(new PointLight(Vector4Df{ 1.0f, 1.0f, 1.0f, 0.0f }, Vector4Df{ 2.0f, 1.0f, 3.0f, 1.0f }));
 
 	//fill the material list
 	/* 0 */materials.push_back(new Material("Neutral", Vector4Df{ 0.3f, 0.3f, 0.3f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 10.0f));
@@ -458,7 +458,7 @@ void InitScene() {
 	/* 19 */materials.push_back(new Material("WhiteWood", Vector4Df{ 0.835294f, 0.69019f, 0.51764f, 0 }, Vector4Df{ 0.8f, 0.6f, 0.4f, 0 }, Vector4Df{ 0.2f, 0.1f, 0.08f, 0 }, 1000));
 	//construction
 	/* 20 */materials.push_back(new Material("Concrete", Vector4Df{ 0.2f, 0.2f, 0.2f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 0.5f, 0.5f, 0.5f, 0 }, 10.0f));
-	/* 21 */materials.push_back(new Material("Lamp", Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, Vector4Df{ 1.0f, 1.0f, 1.0f, 0 }, 2000.0f, 0.9f, 1.0f, 1.2f));
+	/* 21 */materials.push_back(new Material("Lamp", Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, Vector4Df{ 0.0f, 0.0f, 0.0f, 0 }, 2.0f, 0.1f, 1.0f, 200.0f));
 
 	//fill the object list
 	//objs.push_back(Object(Vector4Df{ 0.4f, 0.2f, 0.1f,0 }, new Cylinder(4.0f, 0.5f, Vector4Df{ 0,0,-10,1 }, Vector4Df{ 0,1,0,0 })));

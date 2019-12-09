@@ -10,7 +10,7 @@ CRAB::Vector4Df PointLight::Illumination(const Material& mat, const CRAB::Vector
 
 	// light vector
 	CRAB::Vector4Df L = position - P;
-	float d2 = 0.1f + 0.2f * L.length() + 0.1f * L.lengthsq(); //attenuation
+	float d2 = 0.1f + 0.1f * L.length() + 0.05f * L.lengthsq(); //attenuation
 	L.normalize();
 
 	//CRAB::Vector4Df Ia = intensity * mat.ka;                                   // ambient reflection

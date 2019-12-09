@@ -186,7 +186,18 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 				accucolor += light->Illumination(mat,
 					N, ray.direction * (-1.0f),
 					closest_collision.pint)*mat.alfa;
+
+				//light source
+				const CRAB::Vector4Df L_from_source = light->GetLightDirection(ray.origin);
+				float d = light->LightDistance(ray.origin);
+				float attenuation = 0.1f * d;
+				float dot_L_v = dot(L_from_source, ray.direction);
+				if (dot_L_v > 0.0f)
+				{
+					accucolor += light->intensity * 4.0f * powf(dot_L_v, 5000.0f) / attenuation;
+				}
 			}
+
 			if (depth < 0) {
 				int samples = 8;
 				if (depth)samples = 1;
@@ -259,6 +270,22 @@ inline Vector4Df ray_cast(const Ray &ray, const std::vector<Object> &objects, co
 		accucolor = accucolor * 0.5f;
 
 	}
+	else
+	for (Light* light : lights)
+	{
+		std::string lightName = typeid(*light).name();
+		if (!light->on || lightName != "class PointLight") continue;
+
+		const CRAB::Vector4Df L = light->GetLightDirection(ray.origin);
+		float d = light->LightDistance(ray.origin);
+		float attenuation = 0.1f * d;
+		float dot_L_v = dot(L, ray.direction);
+		if (dot_L_v > 0.0f)
+		{
+			accucolor += light->intensity * 2.0f * powf(dot_L_v, 5000.0f) / attenuation;
+		}
+	}
+
 	return accucolor;
 }
 
